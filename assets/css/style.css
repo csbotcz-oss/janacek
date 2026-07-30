@@ -1071,6 +1071,8 @@ strong { font-weight: 700; }
     /* Rozbalené menu je pruh přes celou šířku okna, ne box uvnitř hlavičky. */
     .hlavicka { padding-inline: 10px; position: relative; }
 
+    .hlavicka__logo { width: 193.609px; min-width: 0; }
+
     /* Menu se schová za přepínač a rozbaluje se pod hlavičkou. */
     .menu-prepinac { display: flex; }
 
@@ -1210,15 +1212,25 @@ strong { font-weight: 700; }
 }
 
 /* Pozor na pořadí: tenhle blok musí být až za definicemi .uvod__vnitrek
-   a .sluzby__vnitrek, jinak jejich margin:auto posun přebije. */
-/* Hlavička, hero a box služeb nejsou na originále přesně na střed —
-   Elementor je posouvá o 10 px doprava (margin-left uvnitř kontejneru). */
-@media (min-width: 1340px) {
+   a .sluzby__vnitrek, jinak jejich margin:auto posun přebije.
+
+   Tyhle boxy nejsou na originále přesně na střed — Elementor je posouvá
+   o 10 px doprava. Hlavička a služby tak mají i na tabletu, hero jen na
+   desktopu (na tabletu mu Elementor okraje ruší), na mobilu nikdo. */
+@media (min-width: 768px) {
     .hlavicka__vnitrek,
-    .uvod__vnitrek,
     .sluzby__vnitrek {
-        margin-left: calc((100% - var(--sirka-obsahu)) / 2 + 10px);
-        margin-right: calc((100% - var(--sirka-obsahu)) / 2 - 10px);
+        width: 100%;
+        margin-left: max(10px, calc((100% - var(--sirka-obsahu)) / 2 + 10px));
+        margin-right: 0;
+    }
+}
+
+@media (min-width: 1025px) {
+    .uvod__vnitrek {
+        width: 100%;
+        margin-left: max(10px, calc((100% - var(--sirka-obsahu)) / 2 + 10px));
+        margin-right: 0;
     }
 }
 
