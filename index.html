@@ -291,22 +291,23 @@
                 <div class="formular__pole">
                     <div class="pole pole--pul">
                         <label for="jmeno">Jméno</label>
-                        <input type="text" id="jmeno" name="jmeno" autocomplete="given-name">
+                        <input type="text" id="jmeno" name="jmeno" placeholder="Jméno" autocomplete="given-name">
                     </div>
 
                     <div class="pole pole--pul">
                         <label for="prijmeni">Příjmení</label>
-                        <input type="text" id="prijmeni" name="prijmeni" autocomplete="family-name">
+                        <!-- Placeholder je i na originále useknutý na "Příjmen". -->
+                        <input type="text" id="prijmeni" name="prijmeni" placeholder="Příjmen" autocomplete="family-name">
                     </div>
 
                     <div class="pole pole--pul">
-                        <label for="telefon">Telefon</label>
-                        <input type="tel" id="telefon" name="telefon" required autocomplete="tel">
+                        <label for="telefon">Telefon <span class="pole__povinne" aria-hidden="true">*</span></label>
+                        <input type="tel" id="telefon" name="telefon" placeholder="Telefon" required autocomplete="tel">
                     </div>
 
                     <div class="pole pole--pul">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required autocomplete="email">
+                        <label for="email">Email <span class="pole__povinne" aria-hidden="true">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="Email" required autocomplete="email">
                     </div>
 
                     <div class="pole">
@@ -401,14 +402,15 @@
         <h2 class="nadpis-zvyrazneny nadpis-zvyrazneny--stred">Ukázka naší hotové <span class="zvyraznene">práce</span></h2>
 
         <div class="galerie__mrizka">
-            <a class="galerie__polozka" href="assets/img/galerie-1-2400.jpg" data-galerie>
+            <!-- Tahle fotka je na výšku, proto je v galerii užší. -->
+            <a class="galerie__polozka galerie__polozka--na-vysku" href="assets/img/galerie-1-2400.jpg" data-galerie>
                 <picture>
                     <source srcset="assets/img/galerie-1-800.webp 800w, assets/img/galerie-1-1600.webp 1600w"
-                            sizes="(max-width: 767px) 92vw, (max-width: 1024px) 30vw, 420px" type="image/webp">
+                            sizes="(max-width: 767px) 45vw, (max-width: 1024px) 22vw, 280px" type="image/webp">
                     <img src="assets/img/galerie-1-800.jpg"
                          srcset="assets/img/galerie-1-800.jpg 800w, assets/img/galerie-1-1600.jpg 1600w"
-                         sizes="(max-width: 767px) 92vw, (max-width: 1024px) 30vw, 420px"
-                         width="800" height="600"
+                         sizes="(max-width: 767px) 45vw, (max-width: 1024px) 22vw, 280px"
+                         width="800" height="1067"
                          alt="Realizace dřevěných oken | Truhlářství Suchánek" loading="lazy">
                 </picture>
             </a>

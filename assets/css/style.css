@@ -150,7 +150,7 @@ h1, h2, h3, h4, h5, h6 {
 
 p { margin: 0 0 16px; }
 
-ul { margin: 0; padding: 0; list-style: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
 
 strong { font-weight: 700; }
 
@@ -376,7 +376,8 @@ strong { font-weight: 700; }
                                 url(../img/hero-pozadi.jpg)  type('image/jpeg'));
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    /* Originál pozici neurčuje, takže platí výchozí 0% 0% — jiný výřez fotky. */
+    background-position: 0 0;
     overflow: hidden;
 }
 
@@ -611,6 +612,9 @@ strong { font-weight: 700; }
 
 .pole--pul { flex: 1 1 calc(50% - 10px); }
 
+/* Hvězdička u povinných polí — na originále červená. */
+.pole__povinne { color: #d0021b; }
+
 .pole label {
     display: block;
     margin-bottom: 10px;
@@ -739,9 +743,12 @@ strong { font-weight: 700; }
     margin-inline: auto;
 }
 
+/* "Justified" galerie: všechny fotky mají stejnou výšku a šířka odpovídá
+   jejich poměru stran. Docílíme toho flex-basis 0 a flex-grow úměrným
+   poměru — první fotka je na výšku, proto je užší. */
 .galerie__mrizka {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 25px;
     width: 100%;
     margin-top: 20px;
@@ -752,9 +759,16 @@ strong { font-weight: 700; }
 .galerie__polozka {
     position: relative;
     display: block;
+    flex: 4 1 0;
+    min-width: 0;
     aspect-ratio: 4 / 3;
     border-radius: var(--radius);
     overflow: hidden;
+}
+
+.galerie__polozka--na-vysku {
+    flex-grow: 2.25;
+    aspect-ratio: 3 / 4;
 }
 
 .galerie__polozka img {
@@ -779,7 +793,10 @@ strong { font-weight: 700; }
 .galerie__polozka:hover::after,
 .galerie__polozka:focus-visible::after { opacity: 1; }
 
-/* Lightbox */
+/* Lightbox. Zavřený <dialog> má display:none, ale naše pravidlo níž by ho
+   přebilo a překryv by svítil přes celou stránku — proto tahle pojistka. */
+.lightbox:not([open]) { display: none; }
+
 .lightbox {
     position: fixed;
     inset: 0;
@@ -849,19 +866,18 @@ strong { font-weight: 700; }
     opacity: .5;
 }
 
+/* Tahle sekce je na originále přes celou šířku, ne omezená na 1320 px. */
 .vyzva__vnitrek {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    max-width: var(--sirka-obsahu);
-    margin-inline: auto;
     text-align: center;
 }
 
 .vyzva__nadpis {
-    max-width: 66%;
+    width: 66%;
     font-size: 50px;
     font-weight: 700;
     line-height: 1;
@@ -869,7 +885,7 @@ strong { font-weight: 700; }
 }
 
 .vyzva__podnadpis {
-    max-width: 66%;
+    width: 66%;
     margin: 0;
     font-family: var(--pismo-nadpis);
     font-size: 20px;
@@ -1037,7 +1053,7 @@ strong { font-weight: 700; }
 
     .krok__cislo { font-size: 56px; }
 
-    .galerie__mrizka { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .galerie__mrizka { gap: 20px; }
 
     .vyzva__nadpis,
     .vyzva__podnadpis { max-width: 100%; }
