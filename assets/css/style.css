@@ -1181,6 +1181,8 @@ strong { font-weight: 700; }
 
     .kontakt__formular { padding: 20px; }
 
+    .krok { flex: 0 0 100%; }
+
     .krok__cislo { font-size: 60px; }
 
     .galerie__mrizka { gap: 20px; }
