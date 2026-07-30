@@ -488,6 +488,7 @@ strong { font-weight: 700; }
 }
 
 .sluzby__karusel {
+    position: relative;
     width: 100%;
     padding: 0 10px 70px;
 }
@@ -554,12 +555,16 @@ strong { font-weight: 700; }
 
 .karta__tlacitko { padding-inline: 10px; }
 
-/* Šipky karuselu */
+/* Šipky karuselu. Originál je má vyvěšené z toku a místo pro ně dělá
+   spodní odsazení karuselu — jinak by sekce byla o 60 px vyšší. */
 .karusel-ovladani {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-top: 20px;
 }
 
 .karusel-sipka {
