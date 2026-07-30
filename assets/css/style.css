@@ -1115,7 +1115,13 @@ strong { font-weight: 700; }
 
     .karusel { grid-auto-columns: calc((100% - 10px) / 2); }
 
-    .kontakt__udaje { padding: 0 30px 20px; }
+    /* Na tabletu je formulář pod kontakty a kroky jsou dva na řádek. */
+    .kontakt__udaje,
+    .kontakt__formular { flex: 1 1 100%; }
+
+    .kontakt__udaje { padding: 0 30px; }
+
+    .krok { flex: 0 0 50%; }
 
     .vyzva {
         padding: 60px 20px;
