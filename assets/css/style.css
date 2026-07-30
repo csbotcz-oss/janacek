@@ -113,7 +113,7 @@
     --pismo-tlacitko:'Montserrat', sans-serif;
 
     --sirka-obsahu:  1320px;
-    --sirka-paticky: 1140px;       /* patička je stará Elementor sekce */
+    --sirka-paticky: 1320px;
     --radius:        25px;
     --radius-male:   15px;
 
@@ -221,22 +221,24 @@ strong { font-weight: 700; }
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
-    /* Délka dráhy se dopočítá v JS; animace se spouští přidáním .kresli. */
+    /* Čára je vykreslená ve výchozím stavu — když JS neproběhne, podtržení
+       tam pořád je. Animace ji jen přehraje od začátku (třída .kresli). */
     stroke-dasharray: var(--delka, 1000);
-    stroke-dashoffset: var(--delka, 1000);
+    stroke-dashoffset: 0;
 }
 
 .zvyraznene.kresli svg path {
-    animation: kresleni 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: kresleni 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @keyframes kresleni {
-    to { stroke-dashoffset: 0; }
+    from { stroke-dashoffset: var(--delka, 1000); }
+    to   { stroke-dashoffset: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .zvyraznene svg path { stroke-dashoffset: 0; animation: none; }
+    .zvyraznene svg path { animation: none; }
 }
 
 /* Tlačítko */
@@ -407,6 +409,8 @@ strong { font-weight: 700; }
 
 /* -------------------------------------------------------------- o nás -- */
 
+/* Dva stejně široké sloupce (na 1440 px každý 660). Fotka je uvnitř svého
+   sloupce zarovnaná vlevo, proto vzniká mezera před textem. */
 .o-nas__vnitrek {
     display: flex;
     align-items: flex-start;
@@ -414,7 +418,11 @@ strong { font-weight: 700; }
     margin-inline: auto;
 }
 
-.o-nas__foto { flex: 0 0 auto; }
+.o-nas__foto {
+    flex: 1 1 50%;
+    min-width: 0;
+    padding: 10px;
+}
 
 .o-nas__foto img {
     width: 476px;
@@ -426,8 +434,10 @@ strong { font-weight: 700; }
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    flex: 1 1 auto;
+    gap: 20px;
+    flex: 1 1 50%;
+    min-width: 0;
+    padding: 10px;
 }
 
 .o-nas__popis {
@@ -469,7 +479,11 @@ strong { font-weight: 700; }
 
 .karusel::-webkit-scrollbar { display: none; }
 
-.karusel__polozka { scroll-snap-align: start; }
+/* Slide je o 10 px širší než karta — stejný odstup má i originál. */
+.karusel__polozka {
+    scroll-snap-align: start;
+    padding-inline: 10px;
+}
 
 .karta {
     display: flex;
@@ -549,8 +563,9 @@ strong { font-weight: 700; }
 .kontakt__udaje {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    flex: 1 1 380px;
+    gap: 20px;
+    flex: 1 1 50%;
+    min-width: 0;
     padding: 30px 70px 30px 30px;
 }
 
@@ -573,8 +588,9 @@ strong { font-weight: 700; }
 .kontakt__formular {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    flex: 1 1 420px;
+    gap: 20px;
+    flex: 1 1 50%;
+    min-width: 0;
     padding: 30px;
     border-radius: var(--radius);
     background: var(--barva-krem);
@@ -675,12 +691,14 @@ strong { font-weight: 700; }
     width: 100%;
 }
 
+/* Tři kroky na řádek, bez mezer mezi sloupci — stejně jako originál. */
 .krok {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    flex: 1 1 300px;
-    padding: 16px;
+    gap: 20px;
+    flex: 0 0 33.3333%;
+    min-width: 0;
+    padding: 10px;
 }
 
 .krok__cislo {
@@ -726,10 +744,12 @@ strong { font-weight: 700; }
     margin-top: 20px;
 }
 
+/* Elementor tu má "justified" galerii. Tři fotky 4:3 na řádek se do obsahu
+   vejdou právě při poměru 4/3, takže výška vychází z šířky. */
 .galerie__polozka {
     position: relative;
     display: block;
-    height: 400px;
+    aspect-ratio: 4 / 3;
     border-radius: var(--radius);
     overflow: hidden;
 }
@@ -858,7 +878,7 @@ strong { font-weight: 700; }
 /* ------------------------------------------------------------- patička -- */
 
 .paticka {
-    padding: 50px var(--sekce-x) 20px;
+    padding: 100px 20px 30px;
     background: var(--barva-krem);
 }
 
@@ -937,8 +957,6 @@ strong { font-weight: 700; }
 
     .kontakt__udaje { padding: 0 30px 20px; }
 
-    .galerie__polozka { height: 230px; }
-
     .vyzva {
         padding: 60px 20px;
         /* Na užších displejích stačí menší pozadí. */
@@ -1016,9 +1034,7 @@ strong { font-weight: 700; }
 
     .krok__cislo { font-size: 56px; }
 
-    .galerie__mrizka { grid-template-columns: 1fr; gap: 20px; }
-
-    .galerie__polozka { height: 170px; }
+    .galerie__mrizka { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 
     .vyzva__nadpis,
     .vyzva__podnadpis { max-width: 100%; }
