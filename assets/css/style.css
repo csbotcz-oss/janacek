@@ -1123,6 +1123,9 @@ strong { font-weight: 700; }
 
     .krok { flex: 0 0 50%; }
 
+    /* V patičce jde logo na vlastní řádek, údaje a kontakty vedle sebe. */
+    .paticka__sloupec:first-child { flex: 1 1 100%; }
+
     .vyzva {
         padding: 60px 20px;
         /* Na užších displejích stačí menší pozadí. */
@@ -1187,8 +1190,11 @@ strong { font-weight: 700; }
 
     .galerie__mrizka { gap: 20px; }
 
+    .paticka__sloupec { flex: 1 1 100%; }
+
+    /* max-width by nepřebilo width: 66% ze základního pravidla. */
     .vyzva__nadpis,
-    .vyzva__podnadpis { max-width: 100%; }
+    .vyzva__podnadpis { width: 100%; }
 
     .vyzva__nadpis { font-size: 35px; }
 
