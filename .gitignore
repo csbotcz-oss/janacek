@@ -1,0 +1,11 @@
+# Tajemství — nikdy do gitu (deploy je na serveru ponechává na místě)
+.env
+config.local.php
+
+# OS / editory
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
