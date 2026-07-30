@@ -1168,8 +1168,6 @@ strong { font-weight: 700; }
 
     .uvod__text { font-size: 16px; }
 
-    .nadpis-zvyrazneny { max-width: 100%; }
-
     /* Na mobilu je fotka přes celou šířku a nadpis se sekcí na střed. */
     .o-nas__foto { padding: 0; }
 
@@ -1189,7 +1187,7 @@ strong { font-weight: 700; }
 
     .kontakt__formular { padding: 20px; }
 
-    .krok { flex: 0 0 100%; }
+    .krok { flex: 0 0 100%; padding: 0; }
 
     .krok__cislo { font-size: 60px; }
 
