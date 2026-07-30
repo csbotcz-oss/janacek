@@ -1,14 +1,88 @@
 /* ==========================================================================
    Truhlářství Suchánek — statický web
-   Design tokeny převzaté z původního webu (WordPress + Elementor).
+
+   Hodnoty nejsou odvozené z Elementor proměnných, ale naměřené v prohlížeči
+   na ostrém webu (vypočítané styly, šířka 1440 / 1024 / 480 px). Elementor
+   totiž většinu proměnných vůbec nepoužívá — nadpisy dědí Ubuntu z kitu
+   a text Open Sans z těla stránky.
    ========================================================================== */
 
 /* --------------------------------------------------------------- fonty -- */
 
+/* Ubuntu — všechny nadpisy. Váhu 600 font nemá, prohlížeč sáhne po 700,
+   stejně jako na původním webu. */
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/ubuntu-400-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/ubuntu-400-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(../fonts/ubuntu-500-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(../fonts/ubuntu-500-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(../fonts/ubuntu-700-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(../fonts/ubuntu-700-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Open Sans — běžný text, popisky, odkazy. Variabilní, 400–700. */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url(../fonts/open-sans-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url(../fonts/open-sans-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Montserrat — jen hero nadpis a tlačítka. Variabilní, 600–700. */
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
-    font-weight: 500 700;
+    font-weight: 600 700;
     font-display: swap;
     src: url(../fonts/montserrat-latin-ext.woff2) format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -16,70 +90,38 @@
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
-    font-weight: 500 700;
+    font-weight: 600 700;
     font-display: swap;
     src: url(../fonts/montserrat-latin.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-    font-family: 'Roboto Flex';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(../fonts/roboto-flex-latin-ext.woff2) format('woff2');
-    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-    font-family: 'Roboto Flex';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(../fonts/roboto-flex-latin.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url(../fonts/roboto-latin-ext.woff2) format('woff2');
-    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url(../fonts/roboto-latin.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* -------------------------------------------------------------- tokeny -- */
 
 :root {
-    --barva-primarni:   #522E0A;   /* tmavě hnědá  */
-    --barva-zelena:     #0B8600;   /* akcentní zelená, tlačítka a linky */
-    --barva-krem:       #EDEAE6;   /* světlé plochy */
-    --barva-hneda:      #844606;
+    --barva-zelena:     #0B8600;   /* akcent, tlačítka, podtržení, číslice kroků */
+    --barva-krem:       #EDEAE6;   /* světlé plochy a text na tmavém pozadí */
+    --barva-hneda:      #522E0A;
     --barva-bila:       #FFFFFF;
-    --barva-text:       #000000;
-    --barva-text-tlum:  #303030;
+    --barva-text:       #333333;   /* běžný text — ne černá */
+    --barva-text-tmava: #000000;   /* odkazy v menu a kontaktech */
+    --barva-text-tlum:  #303030;   /* zvýrazněné slovo v nadpisu */
+    --barva-paticka:    #1F1F1F;   /* kontakty v patičce */
 
-    --pismo-nadpis: 'Montserrat', sans-serif;
-    --pismo-text:   'Roboto Flex', sans-serif;
-    --pismo-akcent: 'Roboto', sans-serif;
+    --pismo-nadpis:  'Ubuntu', sans-serif;
+    --pismo-text:    'Open Sans', sans-serif;
+    --pismo-tlacitko:'Montserrat', sans-serif;
 
-    --sirka-obsahu: 1320px;
-    --radius:       25px;
-    --radius-male:  15px;
+    --sirka-obsahu:  1320px;
+    --sirka-paticky: 1140px;       /* patička je stará Elementor sekce */
+    --radius:        25px;
+    --radius-male:   15px;
 
-    --sekce-y:  50px;
-    --sekce-x:  10px;
+    --sekce-y: 50px;
+    --sekce-x: 10px;
 }
 
-/* ---------------------------------------------------------------- reset -- */
+/* --------------------------------------------------------------- reset -- */
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -88,9 +130,9 @@ html { scroll-behavior: smooth; }
 body {
     margin: 0;
     font-family: var(--pismo-text);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
-    line-height: 1.8em;
+    line-height: 1.5;
     color: var(--barva-text);
     background: var(--barva-bila);
     -webkit-font-smoothing: antialiased;
@@ -98,20 +140,23 @@ body {
 
 img { max-width: 100%; height: auto; display: block; }
 
-a { color: inherit; }
+a { color: var(--barva-text-tmava); font-weight: 600; }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--pismo-nadpis);
     margin: 0;
+    line-height: 1;
 }
+
+p { margin: 0 0 16px; }
 
 ul { margin: 0; padding: 0; list-style: none; }
 
-/* --------------------------------------------------------------- layout -- */
+strong { font-weight: 700; }
 
-.sekce {
-    padding: var(--sekce-y) var(--sekce-x);
-}
+/* -------------------------------------------------------------- layout -- */
+
+.sekce { padding: var(--sekce-y) var(--sekce-x); }
 
 .obsah {
     width: 100%;
@@ -119,7 +164,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     margin-inline: auto;
 }
 
-/* --------------------------------------------- opakující se komponenty -- */
+/* -------------------------------------------- opakující se komponenty -- */
 
 /* Štítek nad nadpisem — text mezi dvěma zelenými svislicemi. */
 .stitek {
@@ -128,6 +173,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     font-weight: 700;
     line-height: 2em;
     text-align: center;
+    color: var(--barva-text);
     padding: 5px 30px;
     border-inline: 4px solid var(--barva-zelena);
     align-self: flex-start;
@@ -139,10 +185,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* Nadpis se zvýrazněným slovem, pod kterým se kreslí zelená klikatá čára. */
 .nadpis-zvyrazneny {
     font-family: var(--pismo-nadpis);
-    font-size: 40px;
-    font-weight: 700;
-    line-height: 1.3em;
-    color: var(--barva-text-tlum);
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--barva-text);
     max-width: 75%;
     margin: 0;
 }
@@ -156,6 +202,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     position: relative;
     display: inline-block;
     white-space: nowrap;
+    color: var(--barva-text-tlum);
 }
 
 .zvyraznene svg {
@@ -174,7 +221,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
-    /* Délka dráhy je dopočítaná v JS; animace se spouští přidáním .kresli. */
+    /* Délka dráhy se dopočítá v JS; animace se spouští přidáním .kresli. */
     stroke-dasharray: var(--delka, 1000);
     stroke-dashoffset: var(--delka, 1000);
 }
@@ -195,10 +242,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* Tlačítko */
 .tlacitko {
     display: inline-block;
-    font-family: var(--pismo-nadpis);
+    font-family: var(--pismo-tlacitko);
     font-size: 20px;
     font-weight: 700;
-    line-height: 1.5;
+    line-height: 1;
     text-decoration: none;
     color: var(--barva-krem);
     background: var(--barva-zelena);
@@ -215,13 +262,13 @@ ul { margin: 0; padding: 0; list-style: none; }
     color: var(--barva-bila);
 }
 
+/* Tlačítko v hlavičce a odesílací tlačítko formuláře jsou menší. */
 .tlacitko--male {
     font-size: 18px;
     font-weight: 600;
-    line-height: 1em;
 }
 
-/* Odrážkový seznam se zelenou fajfkou */
+/* Odrážkový seznam se zelenou ikonou */
 .seznam-odrazky li {
     display: flex;
     align-items: center;
@@ -240,11 +287,9 @@ ul { margin: 0; padding: 0; list-style: none; }
     fill: var(--barva-zelena);
 }
 
-/* ------------------------------------------------------------- hlavička -- */
+/* ------------------------------------------------------------ hlavička -- */
 
-.hlavicka {
-    padding: 10px var(--sekce-x) 0;
-}
+.hlavicka { padding: 10px var(--sekce-x) 0; }
 
 .hlavicka__vnitrek {
     display: flex;
@@ -274,15 +319,16 @@ ul { margin: 0; padding: 0; list-style: none; }
 .menu {
     display: flex;
     align-items: center;
-    gap: 28px;
 }
 
 .menu a {
-    font-family: var(--pismo-nadpis);
+    font-family: var(--pismo-text);
     font-size: 16px;
     font-weight: 600;
+    line-height: 20px;
     text-decoration: none;
-    color: var(--barva-text);
+    color: var(--barva-text-tmava);
+    padding: 13px;
     transition: color .3s;
 }
 
@@ -306,11 +352,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .menu-prepinac svg { width: 24px; height: 24px; fill: currentColor; }
 
-/* --------------------------------------------------------------- úvodní -- */
+/* --------------------------------------------------------------- úvod -- */
 
-.uvod {
-    padding: 0 var(--sekce-x) var(--sekce-y);
-}
+.uvod { padding: 0 var(--sekce-x) var(--sekce-y); }
 
 .uvod__vnitrek {
     position: relative;
@@ -346,6 +390,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .uvod__nadpis {
     max-width: 730px;
+    font-family: var(--pismo-tlacitko);
     font-size: 45px;
     font-weight: 700;
     line-height: 1.2em;
@@ -353,26 +398,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .uvod__text {
-    max-width: 730px;
     margin: 0;
     font-size: 20px;
     font-weight: 500;
+    line-height: 1.5;
     color: var(--barva-krem);
 }
 
-/* ---------------------------------------------------------------- o nás -- */
+/* -------------------------------------------------------------- o nás -- */
 
 .o-nas__vnitrek {
     display: flex;
     align-items: flex-start;
-    gap: 0;
     max-width: var(--sirka-obsahu);
     margin-inline: auto;
 }
 
-.o-nas__foto {
-    flex: 0 0 auto;
-}
+.o-nas__foto { flex: 0 0 auto; }
 
 .o-nas__foto img {
     width: 476px;
@@ -393,18 +435,18 @@ ul { margin: 0; padding: 0; list-style: none; }
     margin: 0;
 }
 
-/* --------------------------------------------------------------- služby -- */
+/* ------------------------------------------------------------- služby -- */
 
 .sluzby__vnitrek {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
     max-width: var(--sirka-obsahu);
     margin: 10px auto;
     padding: 30px 0 0;
     border-radius: var(--radius);
     background: var(--barva-krem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
 }
 
 .sluzby__karusel {
@@ -437,28 +479,29 @@ ul { margin: 0; padding: 0; list-style: none; }
     height: 100%;
     padding: 10px;
     background: var(--barva-bila);
-    border: 1px solid var(--barva-text);
+    border: 1px solid var(--barva-text-tmava);
     border-radius: var(--radius);
 }
 
 .karta__foto {
-    border: 1px solid var(--barva-text);
+    border: 1px solid var(--barva-text-tmava);
     border-radius: 22px;
     overflow: hidden;
 }
 
 .karta__nadpis {
     padding-inline: 10px;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: 600;
-    line-height: 1.43em;
+    line-height: 1;
+    color: var(--barva-text);
 }
 
 .karta__text {
     padding-inline: 10px;
     margin: 0;
     font-size: 14px;
-    line-height: 1.8em;
+    line-height: 1.5;
 }
 
 .karta__tlacitko { padding-inline: 10px; }
@@ -477,7 +520,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     padding: 0;
     border: 0;
     background: none;
-    color: var(--barva-primarni);
+    color: var(--barva-hneda);
     cursor: pointer;
 }
 
@@ -485,7 +528,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .karusel-sipka:disabled { opacity: .35; cursor: default; }
 
-/* -------------------------------------------------------------- kontakt -- */
+/* ------------------------------------------------------------ kontakt -- */
 
 .kontakt__vnitrek {
     display: flex;
@@ -512,14 +555,18 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .kontakt__nadpis {
-    font-size: 40px;
+    font-size: 35px;
     font-weight: 600;
-    line-height: 1.3em;
+    line-height: 1;
+    color: var(--barva-text);
 }
 
 .kontakt__udaje p { margin: 0; }
 
-.kontakt__seznam li a { text-decoration: none; }
+.kontakt__seznam li a {
+    text-decoration: none;
+    font-weight: 700;
+}
 
 .kontakt__seznam li a:hover { text-decoration: underline; }
 
@@ -533,7 +580,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     background: var(--barva-krem);
 }
 
-/* ------------------------------------------------------------- formulář -- */
+/* ----------------------------------------------------------- formulář -- */
 
 .formular__pole {
     display: flex;
@@ -548,9 +595,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 .pole label {
     display: block;
     margin-bottom: 10px;
-    font-family: var(--pismo-nadpis);
+    font-family: var(--pismo-text);
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--barva-text);
 }
 
 .pole input,
@@ -584,11 +633,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .formular__souhlas {
-    font-size: 14px;
-    line-height: 1.6;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
 }
-
-.formular__souhlas a { color: var(--barva-primarni); }
 
 .formular__zprava {
     margin: 0;
@@ -603,7 +651,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .formular__zprava[hidden] { display: none; }
 
-/* ------------------------------------------------------------ realizace -- */
+/* ---------------------------------------------------------- realizace -- */
 
 .realizace__vnitrek {
     display: flex;
@@ -637,8 +685,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .krok__cislo {
     flex: 0 0 auto;
+    font-family: var(--pismo-nadpis);
     font-size: 80px;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1;
     color: var(--barva-zelena);
 }
@@ -650,14 +699,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .krok__nadpis {
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.43em;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--barva-text);
 }
 
 .krok__popis { margin: 0; }
 
-/* -------------------------------------------------------------- galerie -- */
+/* ------------------------------------------------------------ galerie -- */
 
 .galerie__vnitrek {
     display: flex;
@@ -747,15 +797,15 @@ ul { margin: 0; padding: 0; list-style: none; }
     cursor: pointer;
 }
 
-.lightbox__zavrit     { top: 20px; right: 20px; }
-.lightbox__predchozi  { left: 20px;  top: 50%; transform: translateY(-50%); }
-.lightbox__dalsi      { right: 20px; top: 50%; transform: translateY(-50%); }
+.lightbox__zavrit    { top: 20px; right: 20px; }
+.lightbox__predchozi { left: 20px;  top: 50%; transform: translateY(-50%); }
+.lightbox__dalsi     { right: 20px; top: 50%; transform: translateY(-50%); }
 
 .lightbox__zavrit:hover,
 .lightbox__predchozi:hover,
 .lightbox__dalsi:hover { background: rgb(255 255 255 / .3); }
 
-/* ------------------------------------------------------------------ CTA -- */
+/* ---------------------------------------------------------------- CTA -- */
 
 .vyzva {
     position: relative;
@@ -789,21 +839,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .vyzva__nadpis {
     max-width: 66%;
-    font-size: 45px;
+    font-size: 50px;
     font-weight: 700;
-    line-height: 1.2em;
+    line-height: 1;
     color: var(--barva-krem);
 }
 
 .vyzva__podnadpis {
     max-width: 66%;
+    margin: 0;
+    font-family: var(--pismo-nadpis);
     font-size: 20px;
     font-weight: 500;
-    line-height: 1.43em;
+    line-height: 1;
     color: var(--barva-krem);
 }
 
-/* -------------------------------------------------------------- patička -- */
+/* ------------------------------------------------------------- patička -- */
 
 .paticka {
     padding: 50px var(--sekce-x) 20px;
@@ -814,7 +866,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     display: flex;
     flex-wrap: wrap;
     gap: 40px;
-    max-width: var(--sirka-obsahu);
+    max-width: var(--sirka-paticky);
     margin-inline: auto;
 }
 
@@ -824,9 +876,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .paticka__nadpis {
     margin-bottom: 12px;
-    font-size: 18px;
+    font-size: 25px;
     font-weight: 600;
-    line-height: 1.43em;
+    line-height: 1.2;
+    color: var(--barva-text);
 }
 
 .paticka p { margin: 0; }
@@ -835,13 +888,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .paticka a:hover { text-decoration: underline; }
 
+.paticka .kontakt__seznam li a { color: var(--barva-paticka); }
+
 .paticka__spodek {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    max-width: var(--sirka-obsahu);
+    max-width: var(--sirka-paticky);
     margin: 40px auto 0;
     padding-top: 20px;
     border-top: 1px solid rgb(0 0 0 / .12);
@@ -850,7 +905,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .paticka__madby img { width: 150px; }
 
-/* ---------------------------------------------------------- responzivně -- */
+/* --------------------------------------------------------- responzivně -- */
 
 @media (max-width: 1024px) {
     :root { --sekce-x: 30px; }
@@ -859,12 +914,16 @@ ul { margin: 0; padding: 0; list-style: none; }
 
     .uvod { padding-inline: 10px; }
 
-    .uvod__vnitrek {
-        margin: 0;
-        padding: 50px 30px;
-    }
+    .uvod__vnitrek { margin: 0; padding: 50px 30px; }
+
+    .uvod__nadpis { font-size: 44px; }
 
     .uvod__text { font-size: 18px; }
+
+    /* Kit zmenšuje animovaný nadpis už od tabletu. */
+    .nadpis-zvyrazneny { font-size: 25px; line-height: 1.5em; }
+
+    .karta__nadpis { font-size: 18px; }
 
     /* Na tabletu je fotka pod textem. */
     .o-nas__vnitrek { flex-direction: column-reverse; }
@@ -887,8 +946,6 @@ ul { margin: 0; padding: 0; list-style: none; }
                                     url(../img/cta-pozadi-1200.jpg)  type('image/jpeg'));
     }
 
-    .vyzva__nadpis { font-size: 40px; }
-
     .vyzva__podnadpis { font-size: 18px; }
 }
 
@@ -897,7 +954,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
     .hlavicka { padding: 0 5px; }
 
-    .hlavicka__vnitrek { padding: 10px 15px; }
+    .hlavicka__vnitrek { position: relative; padding: 10px 15px; }
 
     .hlavicka__logo { width: 46.038%; min-width: 0; }
 
@@ -914,7 +971,6 @@ ul { margin: 0; padding: 0; list-style: none; }
         z-index: 20;
         flex-direction: column;
         align-items: stretch;
-        gap: 0;
         margin-top: 10px;
         padding: 10px;
         background: var(--barva-krem);
@@ -924,13 +980,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
     .menu[hidden] { display: none; }
 
-    .menu a {
-        display: block;
-        padding: 12px 16px;
-        font-size: 18px;
-    }
-
-    .hlavicka__vnitrek { position: relative; }
+    .menu a { display: block; padding: 12px 16px; font-size: 18px; }
 
     .hlavicka .tlacitko { display: none; }
 
@@ -946,7 +996,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 
     .stitek { font-size: 20px; padding-inline: 20px; }
 
-    .nadpis-zvyrazneny { font-size: 25px; line-height: 1.5em; max-width: 100%; }
+    .nadpis-zvyrazneny { max-width: 100%; }
+
+    .karta__nadpis { font-size: 20px; }
 
     .o-nas__text { padding-inline: 10px; }
 
