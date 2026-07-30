@@ -222,6 +222,8 @@ strong { font-weight: 700; }
     height: calc(100% + 20px);
     overflow: visible;
     pointer-events: none;
+    /* Pod text — jinak čára přejede háčky a čárky na dalším řádku. */
+    z-index: -1;
 }
 
 .zvyraznene svg path {
@@ -1022,14 +1024,14 @@ strong { font-weight: 700; }
 .paticka__logo { max-width: 300px; margin-bottom: 20px; }
 
 .paticka__nadpis {
-    margin-bottom: 12px;
+    margin-bottom: 20px;
     font-size: 25px;
     font-weight: 600;
     line-height: 1.2;
     color: var(--barva-text);
 }
 
-.paticka p { margin: 0; }
+.paticka p { margin: 0 0 14.4px; }
 
 .paticka a { text-decoration: none; }
 

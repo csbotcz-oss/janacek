@@ -103,7 +103,9 @@
         if (puvodni.length < 2) return;
 
         var MEZERA = 10;
-        var klonu = Math.min(puvodni.length, 3);   // tolik, kolik se jich vejde
+        // Klonujeme celou sadu na obě strany — pak je vždy dost místa
+        // na popojetí, ať stojíme kdekoli.
+        var klonu = puvodni.length;
 
         puvodni.slice(-klonu).forEach(function (p) {
             var k = p.cloneNode(true);
@@ -125,52 +127,37 @@
         }
 
         // Výchozí pozice = za úvodními klony, tedy na první skutečné položce.
-        function srovnej(plynule) {
-            karusel.scrollTo({ left: sirkaKroku() * klonu, behavior: plynule ? 'smooth' : 'auto' });
+        function srovnej() {
+            karusel.scrollLeft = sirkaKroku() * klonu;
         }
 
-        var srovnavam = false;
-
-        function dorovnejKlony() {
-            if (srovnavam) return;
+        /* Klíčové: přeskok do klonů se udělá JEŠTĚ PŘED animací, ne po ní.
+           Kdybychom čekali, až posuv doběhne na okraj, prohlížeč by se
+           zastavil na konci rozsahu a další klik by viditelně přejel zpátky
+           na začátek. Takhle se skočí na vizuálně shodný klon (nikdo si
+           nevšimne) a teprve odtud se plynule popojede. */
+        function posun(smer) {
             var krok = sirkaKroku();
             if (!krok) return;
 
             var delka = puvodni.length * krok;
             var zacatek = klonu * krok;
+            var cil = karusel.scrollLeft + krok * smer;
 
-            if (karusel.scrollLeft < zacatek - krok / 2) {
-                srovnavam = true;
-                karusel.scrollLeft += delka;
-                srovnavam = false;
-            } else if (karusel.scrollLeft > zacatek + delka - krok / 2) {
-                srovnavam = true;
+            if (cil > zacatek + delka - 1) {
                 karusel.scrollLeft -= delka;
-                srovnavam = false;
+            } else if (cil < zacatek - 1) {
+                karusel.scrollLeft += delka;
             }
+
+            karusel.scrollBy({ left: krok * smer, behavior: neanimovat ? 'auto' : 'smooth' });
         }
 
-        zpet.addEventListener('click', function () {
-            karusel.scrollBy({ left: -sirkaKroku(), behavior: neanimovat ? 'auto' : 'smooth' });
-        });
+        zpet.addEventListener('click', function () { posun(-1); });
+        vpred.addEventListener('click', function () { posun(1); });
 
-        vpred.addEventListener('click', function () {
-            karusel.scrollBy({ left: sirkaKroku(), behavior: neanimovat ? 'auto' : 'smooth' });
-        });
-
-        // scrollend má jen novější prohlížeč, jinak si počkáme sami.
-        if ('onscrollend' in window) {
-            karusel.addEventListener('scrollend', dorovnejKlony);
-        } else {
-            var casovac;
-            karusel.addEventListener('scroll', function () {
-                clearTimeout(casovac);
-                casovac = setTimeout(dorovnejKlony, 140);
-            }, { passive: true });
-        }
-
-        window.addEventListener('resize', function () { srovnej(false); });
-        srovnej(false);
+        window.addEventListener('resize', srovnej);
+        srovnej();
     }
 
     document.querySelectorAll('[data-karusel-zpet]').forEach(function (zpet) {
