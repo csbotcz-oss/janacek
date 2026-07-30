@@ -214,11 +214,14 @@ ul { margin: 0; padding: 0; list-style: none; }
             mask-position: center top, center bottom;
 }
 
+/* Přesahuje o 50 px nahoru do předchozí sekce — jinak by se vlna kreslila
+   až pod ní a nebyla by vidět. */
 .vlna--nahore::before {
+    top: -50px;
     -webkit-mask-image: url(../img/mask-content.svg), url(../img/wave-top.svg);
             mask-image: url(../img/mask-content.svg), url(../img/wave-top.svg);
-    -webkit-mask-size: 100% calc(100% - 49px), 100% 50px;
-            mask-size: 100% calc(100% - 49px), 100% 50px;
+    -webkit-mask-size: 100% calc(100% - 50px), 100% 50px;
+            mask-size: 100% calc(100% - 50px), 100% 50px;
     -webkit-mask-position: center bottom, center top;
             mask-position: center bottom, center top;
 }
@@ -317,7 +320,26 @@ ul { margin: 0; padding: 0; list-style: none; }
     color: var(--barva-bila);
 }
 
-.hero__obsah { max-width: 640px; }
+/* Tmavý přechod zleva, aby byl text na fotce čitelný. Hodnoty i režim
+   prolnutí jsou naměřené na originále. */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: linear-gradient(220deg, rgb(0 0 0 / 0) 25.84%, rgb(0 0 0 / .76) 44.8%);
+    mix-blend-mode: multiply;
+    -webkit-mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
+            mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: 100% calc(100% - 49px), 100% 50px;
+            mask-size: 100% calc(100% - 49px), 100% 50px;
+    -webkit-mask-position: center top, center bottom;
+            mask-position: center top, center bottom;
+}
+
+.hero__obsah { max-width: 640px; position: relative; z-index: 1; }
 
 .hero__stitek {
     margin: 0 0 8px;
