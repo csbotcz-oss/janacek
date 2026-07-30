@@ -178,6 +178,45 @@ ul { margin: 0; padding: 0; list-style: none; }
 .tlacitko:hover,
 .tlacitko:focus-visible { background: #cf4e04; }
 
+
+/* ----------------------------------------------------------------- vlny -- */
+
+/* Solidpixels odděluje sekce zvlněnou hranou. Dělá to CSS maskou o výšce
+   50 px složenou ze dvou vrstev: plné plochy a tvaru vlny na kraji.
+   Maska musí sedět na podkladové vrstvě, ne na celé sekci — jinak by
+   ořízla i text. */
+.vlna { position: relative; }
+
+.vlna > * { position: relative; z-index: 1; }
+
+.vlna::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: inherit;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+}
+
+.vlna--dole::before {
+    -webkit-mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
+            mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
+    -webkit-mask-size: 100% calc(100% - 49px), 100% 50px;
+            mask-size: 100% calc(100% - 49px), 100% 50px;
+    -webkit-mask-position: center top, center bottom;
+            mask-position: center top, center bottom;
+}
+
+.vlna--nahore::before {
+    -webkit-mask-image: url(../img/mask-content.svg), url(../img/wave-top.svg);
+            mask-image: url(../img/mask-content.svg), url(../img/wave-top.svg);
+    -webkit-mask-size: 100% calc(100% - 49px), 100% 50px;
+            mask-size: 100% calc(100% - 49px), 100% 50px;
+    -webkit-mask-position: center bottom, center top;
+            mask-position: center bottom, center top;
+}
+
 /* --------------------------------------------------------------- hlavička -- */
 
 .hlavicka {
@@ -219,6 +258,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     font-size: 17px;
     font-weight: 700;
     line-height: 1.4;
+    text-transform: uppercase;
     text-decoration: none;
     color: var(--barva-bila);
     transition: color .2s;
@@ -264,6 +304,17 @@ ul { margin: 0; padding: 0; list-style: none; }
     background-position: center;
     color: var(--barva-bila);
 }
+
+/* Fotku ztmavíme, jinak je na ní text nečitelný — stejně jako originál. */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgb(0 0 0 / .35);
+}
+
+.hero > * { position: relative; z-index: 1; }
 
 .hero__obsah { max-width: 640px; }
 
