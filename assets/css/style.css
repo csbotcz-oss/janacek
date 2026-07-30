@@ -602,22 +602,26 @@ strong { font-weight: 700; }
 
 /* ----------------------------------------------------------- formulář -- */
 
+/* Na originále jsou všechna pole přes celou šířku pod sebou, ne ve dvou
+   sloupcích. Odstupy odpovídají naměřeným hodnotám. */
 .formular__pole {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px 10px;
+    margin-inline: -5px;
 }
 
-.pole { flex: 1 1 100%; }
-
-.pole--pul { flex: 1 1 calc(50% - 10px); }
+.pole {
+    flex: 1 1 100%;
+    margin-bottom: 20px;
+    padding-inline: 5px;
+}
 
 /* Hvězdička u povinných polí — na originále červená. */
 .pole__povinne { color: #d0021b; }
 
 .pole label {
     display: block;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
     font-family: var(--pismo-text);
     font-size: 16px;
     font-weight: 400;
@@ -627,11 +631,12 @@ strong { font-weight: 700; }
 
 .pole input,
 .pole textarea {
+    display: block;
     width: 100%;
-    padding: 12px 16px;
+    padding: 8px 16px;
     font-family: inherit;
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 21px;
     color: var(--barva-text);
     background: var(--barva-bila);
     border: 1px solid #d5d0c9;
@@ -644,7 +649,12 @@ strong { font-weight: 700; }
     outline-offset: 1px;
 }
 
-.pole textarea { min-height: 130px; resize: vertical; }
+/* Čtyři řádky po 21 px, jako na originále. */
+.pole textarea {
+    height: 96px;
+    padding: 5px 14px;
+    resize: vertical;
+}
 
 /* Past na roboty — pro člověka neviditelná, pro spam boty lákavá. */
 .pole--past {
@@ -721,6 +731,8 @@ strong { font-weight: 700; }
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 20px;
+    padding: 10px;
 }
 
 .krok__nadpis {
@@ -730,7 +742,7 @@ strong { font-weight: 700; }
     color: var(--barva-text);
 }
 
-.krok__popis { margin: 0; }
+.krok__popis { margin: 0 0 14px; }
 
 /* ------------------------------------------------------------ galerie -- */
 
@@ -1048,8 +1060,6 @@ strong { font-weight: 700; }
     .kontakt__nadpis { font-size: 30px; }
 
     .kontakt__formular { padding: 20px; }
-
-    .pole--pul { flex: 1 1 100%; }
 
     .krok__cislo { font-size: 56px; }
 
