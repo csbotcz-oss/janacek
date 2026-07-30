@@ -195,9 +195,19 @@
             else if (!uzivatelZasahl) spustAutoplay();
         });
 
-        // Po ručním přetažení prstem dohledáme, kde jsme skončili,
-        // a vrátíme se do střední sady.
+        /* Dorovnání po ručním přetažení prstem nebo kolečkem.
+
+           Běží JEN po scrollování, které vyvolal uživatel. Kdyby se pouštělo
+           po každém scrollend, chytlo by i náš vlastní okamžitý přeskok na
+           klon — uprostřed navazující animace by přepočítalo pozici, usoudilo,
+           že jsme mimo střední sadu, a skočilo zpátky. Přesně tím posuv
+           narážel na stopku. */
+        var rucniScroll = false;
+
         function dorovnej() {
+            if (!rucniScroll) return;
+            rucniScroll = false;
+
             var nejblizsi = i;
             var nejmensi = Infinity;
 
@@ -221,10 +231,13 @@
             }, { passive: true });
         }
 
-        karusel.addEventListener('pointerdown', function () {
-            uzivatelZasahl = true;
-            zastavAutoplay();
-        }, { passive: true });
+        ['pointerdown', 'touchstart', 'wheel'].forEach(function (udalost) {
+            karusel.addEventListener(udalost, function () {
+                rucniScroll = true;
+                uzivatelZasahl = true;
+                zastavAutoplay();
+            }, { passive: true });
+        });
 
         window.addEventListener('resize', function () { jedNa(pozice(i), true); });
 
