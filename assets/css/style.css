@@ -249,6 +249,8 @@ strong { font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+
+    .menu, .menu.menu--otevrene { transition: none; }
     .zvyraznene svg path { animation: none; }
 }
 
@@ -1089,9 +1091,19 @@ strong { font-weight: 700; }
         margin: 0;
         padding: 0;
         background: var(--barva-bila);
+        /* Rozbaluje se plynule přes max-height (0,3 s), stejně jako originál.
+           Viditelnost se přepne až po dojetí, aby v zavřeném stavu nešlo
+           na odkazy skočit tabulátorem. */
+        overflow: hidden;
+        max-height: 0;
+        visibility: hidden;
+        transition: max-height .3s, visibility 0s .3s;
     }
 
-    .menu[hidden] { display: none; }
+    .menu.menu--otevrene {
+        visibility: visible;
+        transition: max-height .3s, visibility 0s;
+    }
 
     .menu a {
         display: block;

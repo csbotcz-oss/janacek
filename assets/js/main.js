@@ -63,25 +63,37 @@
     var prepinac = document.querySelector('.menu-prepinac');
     var menu = document.getElementById('menu');
 
-    function zavriMenu() {
-        if (!prepinac) return;
-        menu.hidden = true;
-        prepinac.setAttribute('aria-expanded', 'false');
-        prepinac.setAttribute('aria-label', 'Otevřít menu');
-    }
-
     if (prepinac && menu) {
         // Originál přepíná na hamburger už od tabletu (1024 px), ne až na mobilu.
         var mobil = window.matchMedia('(max-width: 1024px)');
-        var srovnej = function () { if (mobil.matches) zavriMenu(); else menu.hidden = false; };
-        srovnej();
-        mobil.addEventListener('change', srovnej);
+
+        function otevriMenu() {
+            menu.classList.add('menu--otevrene');
+            // Konkrétní výška obsahu — na "auto" se přechod animovat nedá.
+            menu.style.maxHeight = menu.scrollHeight + 'px';
+            prepinac.setAttribute('aria-expanded', 'true');
+            prepinac.setAttribute('aria-label', 'Zavřít menu');
+        }
+
+        function zavriMenu() {
+            menu.classList.remove('menu--otevrene');
+            menu.style.maxHeight = '';
+            prepinac.setAttribute('aria-expanded', 'false');
+            prepinac.setAttribute('aria-label', 'Otevřít menu');
+        }
+
+        zavriMenu();
+        mobil.addEventListener('change', zavriMenu);
+        window.addEventListener('resize', function () {
+            // Po změně šířky se obsah přeskládá, výšku je potřeba přepočítat.
+            if (menu.classList.contains('menu--otevrene')) {
+                menu.style.maxHeight = menu.scrollHeight + 'px';
+            }
+        });
 
         prepinac.addEventListener('click', function () {
-            var otevreno = menu.hidden;
-            menu.hidden = !otevreno;
-            prepinac.setAttribute('aria-expanded', String(otevreno));
-            prepinac.setAttribute('aria-label', otevreno ? 'Zavřít menu' : 'Otevřít menu');
+            if (menu.classList.contains('menu--otevrene')) zavriMenu();
+            else otevriMenu();
         });
 
         menu.addEventListener('click', function (e) {
