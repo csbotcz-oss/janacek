@@ -1059,7 +1059,8 @@ strong { font-weight: 700; }
 /* --------------------------------------------------------- responzivně -- */
 
 @media (max-width: 1024px) {
-    :root { --sekce-x: 30px; }
+    /* Sekce mají po stranách 10 px, jen Proces realizace 30 px. */
+    .realizace { padding-inline: 30px; }
 
     .hlavicka { padding-inline: 10px; }
 
@@ -1127,7 +1128,11 @@ strong { font-weight: 700; }
 }
 
 @media (max-width: 767px) {
-    :root { --sekce-y: 20px; --sekce-x: 15px; }
+    :root { --sekce-y: 20px; --sekce-x: 5px; }
+
+    .realizace { padding-inline: 15px; }
+
+    .galerie { padding-bottom: 50px; }
 
     .hlavicka { padding: 0 5px; }
 
