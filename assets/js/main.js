@@ -71,8 +71,8 @@
     }
 
     if (prepinac && menu) {
-        // Na mobilu startuje zavřené; na širších displejích ho CSS zobrazí vždy.
-        var mobil = window.matchMedia('(max-width: 767px)');
+        // Originál přepíná na hamburger už od tabletu (1024 px), ne až na mobilu.
+        var mobil = window.matchMedia('(max-width: 1024px)');
         var srovnej = function () { if (mobil.matches) zavriMenu(); else menu.hidden = false; };
         srovnej();
         mobil.addEventListener('change', srovnej);
