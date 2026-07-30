@@ -333,7 +333,7 @@ strong { font-weight: 700; }
     line-height: 20px;
     text-decoration: none;
     color: var(--barva-text-tmava);
-    padding: 13px;
+    padding: 13px 20px;
     transition: color .3s;
 }
 
