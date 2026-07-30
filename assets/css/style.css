@@ -1144,6 +1144,10 @@ strong { font-weight: 700; }
 
     .kontakt__udaje { padding: 0 30px; }
 
+    /* Odchylka od originálu: tam se formulář lepí přímo na kontakty.
+       Na přání klienta má mezeru. */
+    .kontakt__formular { margin-top: 20px; }
+
     .krok { flex: 0 0 50%; }
 
     /* V patičce jde logo na vlastní řádek, údaje a kontakty vedle sebe. */
