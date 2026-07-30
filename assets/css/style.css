@@ -298,7 +298,9 @@ strong { font-weight: 700; }
 .seznam-odrazky svg {
     flex: 0 0 auto;
     width: 48px;
-    height: auto;
+    /* Pevná výška schválně: náš vnější <svg> nemá viewBox, takže by
+       height:auto spadlo na výchozích 150 px. */
+    height: 48px;
     padding: 10px;
     background: var(--barva-zelena-ikona);
     border-radius: 50%;
