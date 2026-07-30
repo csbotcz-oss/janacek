@@ -170,6 +170,9 @@
                 e.preventDefault();
                 zobraz(i);
                 lightbox.showModal();
+                // Bez tohohle by prohlížeč zaostřil první tlačítko a kolem křížku
+                // by hned po otevření svítil fokusový rámeček.
+                lightbox.focus();
             });
         });
 
