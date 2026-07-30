@@ -9,6 +9,14 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
 
+/**
+ * Pozor na volbu stavového kódu.
+ *
+ * nginx má pro tyhle weby `fastcgi_intercept_errors on` a `error_page` pro
+ * 403, 404, 500 a 503. Kdyby endpoint některý z nich vrátil, nginx naše JSON
+ * tělo zahodí a nahradí chybovou stránkou (a pro 503 žádná neexistuje, takže
+ * z toho vypadne 404). Používáme proto jen kódy, které nginx nechá projít.
+ */
 function odpoved(bool $ok, string $zprava, int $stav = 200): void
 {
     http_response_code($stav);
@@ -23,7 +31,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 $config = __DIR__ . '/config.local.php';
 if (!is_file($config)) {
     error_log('odeslat.php: chybí config.local.php');
-    odpoved(false, 'Formulář zatím není nastavený. Napište nám prosím přímo na truhlarstvi.hesu@seznam.cz.', 503);
+    odpoved(false, 'Formulář zatím není nastavený. Napište nám prosím přímo na truhlarstvi.hesu@seznam.cz.', 502);
 }
 $nastaveni = require $config;
 
