@@ -1071,10 +1071,11 @@ strong { font-weight: 700; }
 
     .uvod__text { font-size: 18px; }
 
-    /* Kit zmenšuje animovaný nadpis už od tabletu. */
-    .nadpis-zvyrazneny { font-size: 25px; line-height: 1.5em; }
+    /* Nadpisy sekcí, karty ani kontakt se nezmenšují — kit pro ně
+       responzivní hodnoty nemá. Mění se jen hero, kroky, CTA a patička. */
+    .tlacitko--male { font-size: 16px; }
 
-    .karta__nadpis { font-size: 18px; }
+    .paticka__nadpis { font-size: 22px; line-height: 1.2; }
 
     /* Na tabletu je fotka pod textem. */
     .o-nas__vnitrek { flex-direction: column-reverse; }
@@ -1137,17 +1138,13 @@ strong { font-weight: 700; }
 
     .uvod__vnitrek { padding: 30px 10px 20px; }
 
-    .uvod .stitek { font-size: 20px; }
+    .uvod .stitek { font-size: 20px; line-height: 2em; }
 
     .uvod__nadpis { font-size: 28px; }
 
     .uvod__text { font-size: 16px; }
 
-    .stitek { font-size: 20px; padding-inline: 20px; }
-
     .nadpis-zvyrazneny { max-width: 100%; }
-
-    .karta__nadpis { font-size: 20px; }
 
     .o-nas__text { padding-inline: 10px; }
 
@@ -1157,18 +1154,18 @@ strong { font-weight: 700; }
 
     .kontakt__udaje { padding: 0 10px 20px; }
 
-    .kontakt__nadpis { font-size: 30px; }
-
     .kontakt__formular { padding: 20px; }
 
-    .krok__cislo { font-size: 56px; }
+    .krok__cislo { font-size: 60px; }
 
     .galerie__mrizka { gap: 20px; }
 
     .vyzva__nadpis,
     .vyzva__podnadpis { max-width: 100%; }
 
-    .vyzva__nadpis { font-size: 28px; }
+    .vyzva__nadpis { font-size: 35px; }
+
+    .vyzva__podnadpis { font-size: 16px; }
 
     .lightbox { padding: 56px 12px 40px; }
 
