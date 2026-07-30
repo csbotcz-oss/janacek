@@ -1,0 +1,29 @@
+<?php
+/**
+ * Vzor konfigurace kontaktního formuláře.
+ *
+ * Zkopírovat do docrootu jako config.local.php a doplnit údaje:
+ *   cp config.local.php.vzor /www/hosting/cstest.cz/truhlarstvi-suchanek/config.local.php
+ *
+ * Soubor je v .gitignore a deploy skript ho z rsyncu vylučuje — přežije tedy
+ * nasazení a nikdy se nedostane do repozitáře.
+ */
+
+return [
+    // Kam chodí poptávky.
+    'prijemce' => 'truhlarstvi.hesu@seznam.cz',
+
+    // Adresa v hlavičce From. Musí patřit k SMTP účtu níž, jinak to
+    // příjemcův server označí za podvrh (SPF/DMARC) a zahodí.
+    'odesilatel'      => 'web@truhlarstvi-suchanek.cz',
+    'odesilatelJmeno' => 'Web truhlářství Suchánek',
+
+    'smtp' => [
+        'host'      => 'smtp.example.cz',
+        'port'      => 587,
+        'uzivatel'  => 'web@truhlarstvi-suchanek.cz',
+        'heslo'     => '',
+        'sifrovani' => 'tls',   // 'tls' = STARTTLS (587), 'ssl' = implicitní (465)
+        'timeout'   => 20,
+    ],
+];
