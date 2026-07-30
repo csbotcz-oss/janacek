@@ -880,7 +880,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 
     .galerie__polozka { height: 230px; }
 
-    .vyzva { padding: 60px 20px; }
+    .vyzva {
+        padding: 60px 20px;
+        /* Na užších displejích stačí menší pozadí. */
+        background-image: image-set(url(../img/cta-pozadi-1200.webp) type('image/webp'),
+                                    url(../img/cta-pozadi-1200.jpg)  type('image/jpeg'));
+    }
 
     .vyzva__nadpis { font-size: 40px; }
 
