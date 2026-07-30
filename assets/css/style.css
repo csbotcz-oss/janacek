@@ -323,17 +323,6 @@ strong { font-weight: 700; }
     border-radius: var(--radius);
 }
 
-/* Hlavička, hero a box služeb nejsou na originále přesně na střed —
-   Elementor je posouvá o 10 px doprava (margin-left uvnitř kontejneru). */
-@media (min-width: 1340px) {
-    .hlavicka__vnitrek,
-    .uvod__vnitrek,
-    .sluzby__vnitrek {
-        margin-left: calc((100% - var(--sirka-obsahu)) / 2 + 10px);
-        margin-right: calc((100% - var(--sirka-obsahu)) / 2 - 10px);
-    }
-}
-
 .hlavicka__logo {
     flex: 0 0 auto;
     width: 16.734%;
@@ -1181,3 +1170,17 @@ strong { font-weight: 700; }
     .lightbox__sipka--zpet  { left: 4px; }
     .lightbox__sipka--vpred { right: 4px; }
 }
+
+/* Pozor na pořadí: tenhle blok musí být až za definicemi .uvod__vnitrek
+   a .sluzby__vnitrek, jinak jejich margin:auto posun přebije. */
+/* Hlavička, hero a box služeb nejsou na originále přesně na střed —
+   Elementor je posouvá o 10 px doprava (margin-left uvnitř kontejneru). */
+@media (min-width: 1340px) {
+    .hlavicka__vnitrek,
+    .uvod__vnitrek,
+    .sluzby__vnitrek {
+        margin-left: calc((100% - var(--sirka-obsahu)) / 2 + 10px);
+        margin-right: calc((100% - var(--sirka-obsahu)) / 2 - 10px);
+    }
+}
+
