@@ -206,6 +206,9 @@ strong { font-weight: 700; }
     display: inline-block;
     white-space: nowrap;
     color: var(--barva-text-tlum);
+    /* Bez tohohle by se rámeček slova zarovnal na účaří, sedl v řádku výš
+       a klikatá čára by zajížděla do písmen. */
+    vertical-align: bottom;
 }
 
 /* Naměřeno na originále: plátno přesahuje slovo o 10 px na všechny strany.
@@ -900,6 +903,20 @@ strong { font-weight: 700; }
     max-width: 100%;
     min-height: 0;
     object-fit: contain;
+}
+
+/* Přepnutí fotky nalétne ze strany, ze které se listuje. */
+.lightbox__obsah img.prijizdi-zprava { animation: prijezd-zprava .35s ease both; }
+.lightbox__obsah img.prijizdi-zleva  { animation: prijezd-zleva  .35s ease both; }
+
+@keyframes prijezd-zprava {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes prijezd-zleva {
+    from { opacity: 0; transform: translateX(-40px); }
+    to   { opacity: 1; transform: none; }
 }
 
 .lightbox__popisek {

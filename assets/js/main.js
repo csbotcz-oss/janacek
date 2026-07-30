@@ -92,32 +92,91 @@
 
     /* ---------------------------------------------------------------- karusel -- */
 
-    /* Karusel se točí dokola: z první položky se šipkou zpět dostaneme na
-       poslední a naopak. Šipky proto nikdy nešednou. */
-    function posun(karusel, smer) {
-        var polozka = karusel.querySelector('.karusel__polozka');
-        if (!polozka) return;
+    /* Nekonečný karusel.
+       Na začátek a konec se naklonují krajní položky, takže posuv nikdy
+       nenarazí na okraj a nemusí se viditelně vracet. Jakmile se doscrolluje
+       do klonů, skočí se bez animace na odpovídající originál — pro oko
+       plynulé otáčení dokola. */
 
-        var krok = polozka.getBoundingClientRect().width + 10;   // + mezera
-        var max = karusel.scrollWidth - karusel.clientWidth;
-        var chovani = neanimovat ? 'auto' : 'smooth';
+    function postavKarusel(karusel, zpet, vpred) {
+        var puvodni = [].slice.call(karusel.children);
+        if (puvodni.length < 2) return;
 
-        if (smer < 0 && karusel.scrollLeft <= 1) {
-            karusel.scrollTo({ left: max, behavior: chovani });
-        } else if (smer > 0 && karusel.scrollLeft >= max - 1) {
-            karusel.scrollTo({ left: 0, behavior: chovani });
-        } else {
-            karusel.scrollBy({ left: krok * smer, behavior: chovani });
+        var MEZERA = 10;
+        var klonu = Math.min(puvodni.length, 3);   // tolik, kolik se jich vejde
+
+        puvodni.slice(-klonu).forEach(function (p) {
+            var k = p.cloneNode(true);
+            k.setAttribute('aria-hidden', 'true');
+            k.dataset.klon = '1';
+            karusel.insertBefore(k, karusel.firstChild);
+        });
+
+        puvodni.slice(0, klonu).forEach(function (p) {
+            var k = p.cloneNode(true);
+            k.setAttribute('aria-hidden', 'true');
+            k.dataset.klon = '1';
+            karusel.appendChild(k);
+        });
+
+        function sirkaKroku() {
+            var p = karusel.querySelector('.karusel__polozka');
+            return p ? p.getBoundingClientRect().width + MEZERA : 0;
         }
+
+        // Výchozí pozice = za úvodními klony, tedy na první skutečné položce.
+        function srovnej(plynule) {
+            karusel.scrollTo({ left: sirkaKroku() * klonu, behavior: plynule ? 'smooth' : 'auto' });
+        }
+
+        var srovnavam = false;
+
+        function dorovnejKlony() {
+            if (srovnavam) return;
+            var krok = sirkaKroku();
+            if (!krok) return;
+
+            var delka = puvodni.length * krok;
+            var zacatek = klonu * krok;
+
+            if (karusel.scrollLeft < zacatek - krok / 2) {
+                srovnavam = true;
+                karusel.scrollLeft += delka;
+                srovnavam = false;
+            } else if (karusel.scrollLeft > zacatek + delka - krok / 2) {
+                srovnavam = true;
+                karusel.scrollLeft -= delka;
+                srovnavam = false;
+            }
+        }
+
+        zpet.addEventListener('click', function () {
+            karusel.scrollBy({ left: -sirkaKroku(), behavior: neanimovat ? 'auto' : 'smooth' });
+        });
+
+        vpred.addEventListener('click', function () {
+            karusel.scrollBy({ left: sirkaKroku(), behavior: neanimovat ? 'auto' : 'smooth' });
+        });
+
+        // scrollend má jen novější prohlížeč, jinak si počkáme sami.
+        if ('onscrollend' in window) {
+            karusel.addEventListener('scrollend', dorovnejKlony);
+        } else {
+            var casovac;
+            karusel.addEventListener('scroll', function () {
+                clearTimeout(casovac);
+                casovac = setTimeout(dorovnejKlony, 140);
+            }, { passive: true });
+        }
+
+        window.addEventListener('resize', function () { srovnej(false); });
+        srovnej(false);
     }
 
     document.querySelectorAll('[data-karusel-zpet]').forEach(function (zpet) {
         var karusel = document.getElementById(zpet.dataset.karuselZpet);
         var vpred = document.querySelector('[data-karusel-vpred="' + zpet.dataset.karuselZpet + '"]');
-        if (!karusel || !vpred) return;
-
-        zpet.addEventListener('click', function () { posun(karusel, -1); });
-        vpred.addEventListener('click', function () { posun(karusel, 1); });
+        if (karusel && vpred) postavKarusel(karusel, zpet, vpred);
     });
 
 
@@ -153,7 +212,7 @@
         var popisek = document.getElementById('lightbox-popisek');
         var index = 0;
 
-        function zobraz(i) {
+        function zobraz(i, smer) {
             index = (i + odkazy.length) % odkazy.length;
             var odkaz = odkazy[index];
             var vnitrni = odkaz.querySelector('img');
@@ -163,12 +222,19 @@
             obrazek.alt = popis;
             popisek.textContent = popis;
             pocitadlo.textContent = (index + 1) + ' / ' + odkazy.length;
+
+            // Fotka nalétne ze strany, ze které se přepíná.
+            if (!neanimovat) {
+                obrazek.classList.remove('prijizdi-zleva', 'prijizdi-zprava');
+                void obrazek.offsetWidth;           // vynutí restart animace
+                obrazek.classList.add(smer < 0 ? 'prijizdi-zleva' : 'prijizdi-zprava');
+            }
         }
 
         odkazy.forEach(function (odkaz, i) {
             odkaz.addEventListener('click', function (e) {
                 e.preventDefault();
-                zobraz(i);
+                zobraz(i, 1);
                 lightbox.showModal();
                 // Bez tohohle by prohlížeč zaostřil první tlačítko a kolem křížku
                 // by hned po otevření svítil fokusový rámeček.
@@ -178,7 +244,8 @@
 
         lightbox.querySelectorAll('[data-lightbox-krok]').forEach(function (tlacitko) {
             tlacitko.addEventListener('click', function () {
-                zobraz(index + Number(tlacitko.dataset.lightboxKrok));
+                var smer = Number(tlacitko.dataset.lightboxKrok);
+                zobraz(index + smer, smer);
             });
         });
 
@@ -193,8 +260,8 @@
 
         document.addEventListener('keydown', function (e) {
             if (!lightbox.open) return;
-            if (e.key === 'ArrowLeft')  zobraz(index - 1);
-            if (e.key === 'ArrowRight') zobraz(index + 1);
+            if (e.key === 'ArrowLeft')  zobraz(index - 1, -1);
+            if (e.key === 'ArrowRight') zobraz(index + 1, 1);
         });
     }
 
