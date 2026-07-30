@@ -131,9 +131,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* Prázdný sloupec, kterým originál odděluje fotku od textu. */
 .sl-mezera { width: 8.3333%; }
 
-/* Bílý oddělovač mezi sekcemi. */
-.oddelovac { height: 60px; }
-
 /* ---------------------------------------------------------- komponenty -- */
 
 /* Malý oranžový nadpisek nad hlavním nadpisem sekce. */
@@ -151,6 +148,8 @@ ul { margin: 0; padding: 0; list-style: none; }
     font-size: 40px;
     line-height: 1.3;
 }
+
+.na-stred { text-align: center; }
 
 .podnadpis {
     font-size: 23px;
@@ -179,61 +178,36 @@ ul { margin: 0; padding: 0; list-style: none; }
 .tlacitko:focus-visible { background: #cf4e04; }
 
 
-/* ----------------------------------------------------------------- vlny -- */
+/* ------------------------------------------------------------- pásy a vlny -- */
 
-/* Solidpixels odděluje sekce zvlněnou hranou: CSS maskou o výšce 50 px,
-   složenou ze dvou vrstev — plné plochy a tvaru vlny na kraji.
+/* Web je poskládaný ze střídajících se meruňkových a bílých pásů a na každém
+   předělu je zvlněná hrana vysoká 50 px. Ověřeno rozborem barev po pixelech
+   na ostrém webu, ne odvozením z tříd.
 
-   Podklad nese pseudoprvek, ne sekce samotná. Kdyby ho měla sekce, maska
-   by ořízla i text; a kdyby podklad chyběl úplně, nebylo by co ořezávat. */
-.vlna {
+   Vlnu nese vždy pás pod hranou: přesahuje o 50 px nahoru do pásu nad sebou
+   a maska jí dá tvar. Tím je vždy vidět, i když jsou oba pásy různobarevné. */
+.pas {
     position: relative;
-    background: none;
+    background: var(--pas-barva, transparent);
 }
 
-.vlna > * { position: relative; z-index: 1; }
+.pas > * { position: relative; z-index: 1; }
 
-.vlna::before {
+.pas::before {
     content: "";
     position: absolute;
-    inset: 0;
+    left: 0;
+    right: 0;
+    top: -49px;
+    height: 50px;
     z-index: 0;
-    background: var(--vlna-podklad, transparent);
-    background-size: cover;
-    background-position: var(--vlna-pozice, center);
-    -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
+    background: var(--pas-barva, transparent);
+    -webkit-mask: url(../img/wave-top.svg) center / 100% 100% no-repeat;
+            mask: url(../img/wave-top.svg) center / 100% 100% no-repeat;
 }
 
-.vlna--dole::before {
-    -webkit-mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
-            mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
-    -webkit-mask-size: 100% calc(100% - 49px), 100% 50px;
-            mask-size: 100% calc(100% - 49px), 100% 50px;
-    -webkit-mask-position: center top, center bottom;
-            mask-position: center top, center bottom;
-}
-
-/* Přesahuje o 50 px nahoru do předchozí sekce — jinak by se vlna kreslila
-   až pod ní a nebyla by vidět. */
-.vlna--nahore::before {
-    top: -50px;
-    -webkit-mask-image: url(../img/mask-content.svg), url(../img/wave-top.svg);
-            mask-image: url(../img/mask-content.svg), url(../img/wave-top.svg);
-    -webkit-mask-size: 100% calc(100% - 50px), 100% 50px;
-            mask-size: 100% calc(100% - 50px), 100% 50px;
-    -webkit-mask-position: center bottom, center top;
-            mask-position: center bottom, center top;
-}
-
-/* Jaký podklad která zvlněná sekce nese. */
-.hero      { --vlna-podklad: image-set(url(../img/hero-1920.webp) type("image/webp"),
-                                       url(../img/hero-1920.jpg)  type("image/jpeg"));
-             --vlna-pozice: 59% 0%; }
-.oddelovac { --vlna-podklad: var(--barva-bila); }
-.rezervace { --vlna-podklad: var(--barva-meruna); }
-.paticka   { --vlna-podklad: var(--barva-meruna); }
-.sekce.vlna { --vlna-podklad: var(--barva-bila); }
+.pas--meruna { --pas-barva: var(--barva-meruna); }
+.pas--bila   { --pas-barva: var(--barva-bila); }
 
 /* --------------------------------------------------------------- hlavička -- */
 
@@ -315,8 +289,11 @@ ul { margin: 0; padding: 0; list-style: none; }
     align-items: center;
     min-height: 867px;
     padding: 150px 0;
-    /* Fotku nese pseudoprvek s vlnou, viz sekce "vlny" výš. Originál nemá
-       žádný ztmavovací překryv — text leží na tmavé části fotky. */
+    background-image: image-set(url(../img/hero-1920.webp) type('image/webp'),
+                                url(../img/hero-1920.jpg)  type('image/jpeg'));
+    background-size: cover;
+    /* Výřez naměřený na originále. */
+    background-position: 59% 0%;
     color: var(--barva-bila);
 }
 
@@ -329,15 +306,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     z-index: 0;
     background-image: linear-gradient(220deg, rgb(0 0 0 / 0) 25.84%, rgb(0 0 0 / .76) 44.8%);
     mix-blend-mode: multiply;
-    -webkit-mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
-            mask-image: url(../img/mask-content.svg), url(../img/wave-bottom.svg);
-    -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-    -webkit-mask-size: 100% calc(100% - 49px), 100% 50px;
-            mask-size: 100% calc(100% - 49px), 100% 50px;
-    -webkit-mask-position: center top, center bottom;
-            mask-position: center top, center bottom;
-}
+/}
 
 .hero__obsah { max-width: 640px; position: relative; z-index: 1; }
 
@@ -379,16 +348,17 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* Fotky se ořezávají na pevný poměr, jinak by se roztáhly podle zdroje.
    Poměry jsou naměřené na originále, zaoblení nemá žádná. */
-.foto-ubytovani { width: 100%; aspect-ratio: 474 / 710; object-fit: cover; }
+.foto-ubytovani { width: 100%; aspect-ratio: 474 / 710; object-fit: cover; border-radius: 15px; }
 
-.foto-vybaveni  { width: 100%; aspect-ratio: 373 / 559; object-fit: cover; }
+.foto-vybaveni  { width: 100%; aspect-ratio: 373 / 559; object-fit: cover; border-radius: 15px; }
 
-.foto-cenik     { width: 100%; aspect-ratio: 575 / 281; object-fit: cover; }
+.foto-cenik     { width: 100%; aspect-ratio: 575 / 281; object-fit: cover; border-radius: 15px; }
 
 .foto-aktivita  {
     width: 100%;
     aspect-ratio: 474 / 316;
     object-fit: cover;
+    border-radius: 15px;
     margin-bottom: 10px;
 }
 
@@ -423,6 +393,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .galerie__polozka {
     position: relative;
     display: block;
+    border-radius: 15px;
     aspect-ratio: 715 / 477;
     overflow: hidden;
 }
