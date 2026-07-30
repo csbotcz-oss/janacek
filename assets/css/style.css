@@ -354,6 +354,22 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .dlazdice__polozka img { width: 120px; height: 120px; }
 
+
+/* Fotky se ořezávají na pevný poměr, jinak by se roztáhly podle zdroje.
+   Poměry jsou naměřené na originále, zaoblení nemá žádná. */
+.foto-ubytovani { width: 100%; aspect-ratio: 474 / 710; object-fit: cover; }
+
+.foto-vybaveni  { width: 100%; aspect-ratio: 373 / 559; object-fit: cover; }
+
+.foto-cenik     { width: 100%; aspect-ratio: 575 / 281; object-fit: cover; }
+
+.foto-aktivita  {
+    width: 100%;
+    aspect-ratio: 474 / 316;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
 /* -------------------------------------------------------------- ikonový -- */
 
 /* Položka s ikonou vlevo a textem vpravo — používá se ve třech sekcích. */
