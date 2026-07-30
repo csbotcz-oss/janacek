@@ -1149,7 +1149,18 @@ strong { font-weight: 700; }
 
     .nadpis-zvyrazneny { max-width: 100%; }
 
-    .o-nas__text { padding-inline: 10px; }
+    /* Na mobilu je fotka přes celou šířku a nadpis se sekcí na střed. */
+    .o-nas__foto { padding: 0; }
+
+    .o-nas__text { padding: 0 10px; }
+
+    .o-nas .stitek { align-self: center; }
+
+    .o-nas .nadpis-zvyrazneny { text-align: center; max-width: 100%; }
+
+    .o-nas__popis { max-width: 100%; padding-inline: 5px; }
+
+    .o-nas .seznam-odrazky { padding-bottom: 20px; }
 
     .karusel { grid-auto-columns: 100%; }
 
