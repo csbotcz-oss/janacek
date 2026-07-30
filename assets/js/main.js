@@ -101,17 +101,16 @@
        přemístíme o celou sadu na vizuálně shodné místo a teprve odtud se
        plynule popojede. Díky tomu nikdy nenarazíme na okraj rozsahu.
 
-       Posun si animujeme sami, ne přes scroll-behavior — CSS animuje
-       i přímé zápisy do scrollLeft, takže by se „okamžitý" přeskok na klon
-       viditelně přejel. */
+       Plynulost řídíme parametrem scrollTo, ne vlastností scroll-behavior
+       v CSS — ta totiž animuje i přímé zápisy do scrollLeft, takže by se
+       „okamžitý" přeskok na klon viditelně přejel. */
 
     function postavKarusel(karusel, zpet, vpred) {
         var puvodni = [].slice.call(karusel.children);
         var n = puvodni.length;
         if (n < 2) return;
 
-        var RYCHLOST = 500;    // délka přejezdu
-        var PRODLEVA = 5000;   // pauza mezi automatickými posuvy
+        var PRODLEVA = 5000;   // pauza mezi automatickými posuvy, jako na originále
 
         var predek = document.createDocumentFragment();
         var zadek = document.createDocumentFragment();
@@ -130,7 +129,6 @@
 
         var deti = [].slice.call(karusel.children);
         var i = n;                 // index položky u levého okraje
-        var animace = null;
 
         // Absolutní pozice položky v rámci posuvníku. Nezávisí na tom,
         // kde zrovna jsme, takže se dá počítat i uprostřed animace.
@@ -140,25 +138,15 @@
                  + karusel.scrollLeft;
         }
 
+        /* Posun necháváme na prohlížeči. Vlastní animace přes
+           requestAnimationFrame by se v zabrzděné nebo skryté záložce
+           nemusela vůbec rozběhnout a karusel by stál. */
         function jedNa(cil, hned) {
-            if (animace) { cancelAnimationFrame(animace); animace = null; }
-
             if (hned || neanimovat) {
                 karusel.scrollLeft = cil;
-                return;
+            } else {
+                karusel.scrollTo({ left: cil, behavior: 'smooth' });
             }
-
-            var zacatek = karusel.scrollLeft;
-            var drahy = cil - zacatek;
-            var t0 = null;
-
-            animace = requestAnimationFrame(function krok(t) {
-                if (t0 === null) t0 = t;
-                var p = Math.min(1, (t - t0) / RYCHLOST);
-                var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-                karusel.scrollLeft = zacatek + drahy * e;
-                animace = p < 1 ? requestAnimationFrame(krok) : null;
-            });
         }
 
         function jdi(smer) {
@@ -176,7 +164,7 @@
         var tik = null;
 
         function spustAutoplay() {
-            if (neanimovat || tik) return;
+            if (tik) return;
             tik = setInterval(function () { jdi(1); }, PRODLEVA);
         }
 
@@ -210,8 +198,6 @@
         // Po ručním přetažení prstem dohledáme, kde jsme skončili,
         // a vrátíme se do střední sady.
         function dorovnej() {
-            if (animace) return;
-
             var nejblizsi = i;
             var nejmensi = Infinity;
 
