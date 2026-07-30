@@ -100,6 +100,7 @@
 
 :root {
     --barva-zelena:     #0B8600;   /* akcent, tlačítka, podtržení, číslice kroků */
+    --barva-zelena-ikona: #289C23; /* kolečka pod ikonami — jiný odstín */
     --barva-krem:       #EDEAE6;   /* světlé plochy a text na tmavém pozadí */
     --barva-hneda:      #522E0A;
     --barva-bila:       #FFFFFF;
@@ -190,7 +191,9 @@ strong { font-weight: 700; }
     line-height: 1.2;
     color: var(--barva-text);
     max-width: 75%;
-    margin: 0;
+    /* Widget animovaného nadpisu nemá reset okrajů jako ostatní nadpisy,
+       takže mu zůstávají výchozí .5rem nahoře a 1rem dole. */
+    margin: 8px 0 16px;
 }
 
 .nadpis-zvyrazneny--stred {
@@ -285,16 +288,21 @@ strong { font-weight: 700; }
 
 .seznam-odrazky li + li { margin-top: 19px; }
 
+/* Ikona je bílá v zeleném kolečku. Kolečko má vlastní odstín zelené,
+   jinou než tlačítka. */
 .seznam-odrazky svg {
     flex: 0 0 auto;
     width: 48px;
     height: 48px;
-    fill: var(--barva-zelena);
+    padding: 10px;
+    background: var(--barva-zelena-ikona);
+    border-radius: 50%;
+    fill: var(--barva-bila);
 }
 
 /* ------------------------------------------------------------ hlavička -- */
 
-.hlavicka { padding: 10px var(--sekce-x) 0; }
+.hlavicka { padding: 10px; }
 
 .hlavicka__vnitrek {
     display: flex;
@@ -306,6 +314,17 @@ strong { font-weight: 700; }
     padding: 10px 30px;
     background: var(--barva-krem);
     border-radius: var(--radius);
+}
+
+/* Hlavička, hero a box služeb nejsou na originále přesně na střed —
+   Elementor je posouvá o 10 px doprava (margin-left uvnitř kontejneru). */
+@media (min-width: 1340px) {
+    .hlavicka__vnitrek,
+    .uvod__vnitrek,
+    .sluzby__vnitrek {
+        margin-left: calc((100% - var(--sirka-obsahu)) / 2 + 10px);
+        margin-right: calc((100% - var(--sirka-obsahu)) / 2 - 10px);
+    }
 }
 
 .hlavicka__logo {
@@ -455,7 +474,7 @@ strong { font-weight: 700; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     max-width: var(--sirka-obsahu);
     margin: 10px auto;
     padding: 30px 0 0;
@@ -493,7 +512,7 @@ strong { font-weight: 700; }
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 14px;
+    gap: 20px;
     height: 100%;
     padding: 10px;
     background: var(--barva-bila);
@@ -505,6 +524,13 @@ strong { font-weight: 700; }
     border: 1px solid var(--barva-text-tmava);
     border-radius: 22px;
     overflow: hidden;
+}
+
+/* Fotka služby je na originále výrazně nižší než čtverec. */
+.karta__foto img {
+    width: 100%;
+    aspect-ratio: 383 / 230;
+    object-fit: cover;
 }
 
 .karta__nadpis {
@@ -546,6 +572,9 @@ strong { font-weight: 700; }
 
 .karusel-sipka:disabled { opacity: .35; cursor: default; }
 
+/* Elementor mezerník mezi nadpisem sekce a jejím obsahem. */
+.mezera { flex: 0 0 auto; width: 100%; height: 20px; }
+
 /* ------------------------------------------------------------ kontakt -- */
 
 .kontakt__vnitrek {
@@ -559,9 +588,11 @@ strong { font-weight: 700; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     width: 100%;
-    margin-bottom: 20px;
+    /* Horní odsazení je o 20 px větší kvůli skryté kotvě, která v originále
+       taky zabírá jednu mezeru. */
+    padding: 30px 10px 10px;
 }
 
 .kontakt__udaje {
@@ -667,7 +698,7 @@ strong { font-weight: 700; }
 }
 
 .formular__souhlas {
-    margin: 0;
+    margin: 0 0 20px;
     font-size: 16px;
     line-height: 1.5;
 }
@@ -698,9 +729,9 @@ strong { font-weight: 700; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     width: 100%;
-    margin-bottom: 20px;
+    padding: 10px;
 }
 
 .kroky {
@@ -754,7 +785,7 @@ strong { font-weight: 700; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     max-width: var(--sirka-obsahu);
     margin-inline: auto;
 }
@@ -767,7 +798,6 @@ strong { font-weight: 700; }
     flex-wrap: wrap;
     gap: 25px;
     width: 100%;
-    margin-top: 20px;
 }
 
 /* Elementor tu má "justified" galerii. Tři fotky 4:3 na řádek se do obsahu
@@ -809,8 +839,29 @@ strong { font-weight: 700; }
 .galerie__polozka:hover::after,
 .galerie__polozka:focus-visible::after { opacity: 1; }
 
-/* Lightbox. Zavřený <dialog> má display:none, ale naše pravidlo níž by ho
-   přebilo a překryv by svítil přes celou stránku — proto tahle pojistka. */
+/* Galerie na originále nabíhá při scrollu zdola (Elementor "fadeInUp",
+   1,25 s). Do doby, než se dostane do zorného pole, je skrytá. */
+.nabiha { visibility: hidden; }
+
+.nabiha.nabehlo {
+    visibility: visible;
+    animation: nabehnuti 1.25s both;
+}
+
+@keyframes nabehnuti {
+    from { opacity: 0; transform: translate3d(0, 100%, 0); }
+    to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nabiha { visibility: visible; }
+    .nabiha.nabehlo { animation: none; }
+}
+
+/* Lightbox ve stylu Elementoru: prosvítající tmavý překryv, počítadlo vlevo
+   nahoře, tenké šipky po stranách, popisek pod fotkou.
+   Zavřený <dialog> má display:none, ale pravidlo níž by ho přebilo — proto
+   tahle pojistka, jinak by překryv svítil přes celou stránku. */
 .lightbox:not([open]) { display: none; }
 
 .lightbox {
@@ -820,47 +871,75 @@ strong { font-weight: 700; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px;
-    background: rgb(0 0 0 / .9);
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    padding: 60px 80px;
+    background: rgb(0 0 0 / .8);
     border: 0;
+    color: #fff;
 }
 
-.lightbox::backdrop { background: rgb(0 0 0 / .9); }
+.lightbox::backdrop { background: transparent; }
 
-.lightbox img {
+.lightbox__obsah {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
     max-width: 100%;
     max-height: 100%;
+    margin: 0;
+}
+
+.lightbox__obsah img {
+    max-width: 100%;
+    min-height: 0;
     object-fit: contain;
-    border-radius: 8px;
+}
+
+.lightbox__popisek {
+    font-family: var(--pismo-text);
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.lightbox__pocitadlo {
+    position: absolute;
+    top: 18px;
+    left: 22px;
+    margin: 0;
+    font-size: 15px;
 }
 
 .lightbox__zavrit,
-.lightbox__predchozi,
-.lightbox__dalsi {
+.lightbox__sipka {
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
     padding: 0;
     border: 0;
-    border-radius: 50%;
-    background: rgb(255 255 255 / .15);
+    background: none;
     color: #fff;
-    font-size: 26px;
-    line-height: 1;
     cursor: pointer;
+    opacity: .85;
+    transition: opacity .2s;
 }
 
-.lightbox__zavrit    { top: 20px; right: 20px; }
-.lightbox__predchozi { left: 20px;  top: 50%; transform: translateY(-50%); }
-.lightbox__dalsi     { right: 20px; top: 50%; transform: translateY(-50%); }
-
 .lightbox__zavrit:hover,
-.lightbox__predchozi:hover,
-.lightbox__dalsi:hover { background: rgb(255 255 255 / .3); }
+.lightbox__sipka:hover { opacity: 1; }
 
+.lightbox__zavrit { top: 14px; right: 18px; width: 34px; height: 34px; }
+
+.lightbox__zavrit svg { fill: currentColor; }
+
+.lightbox__sipka { top: 50%; width: 44px; height: 44px; transform: translateY(-50%); }
+
+.lightbox__sipka--zpet  { left: 20px; }
+.lightbox__sipka--vpred { right: 20px; }
 /* ---------------------------------------------------------------- CTA -- */
 
 .vyzva {
@@ -914,7 +993,7 @@ strong { font-weight: 700; }
 
 .paticka {
     padding: 100px 20px 30px;
-    background: var(--barva-krem);
+    background: var(--barva-bila);
 }
 
 .paticka__vnitrek {
@@ -958,8 +1037,6 @@ strong { font-weight: 700; }
     font-size: 16px;
     font-weight: 700;
 }
-
-.paticka__madby img { width: 150px; }
 
 /* --------------------------------------------------------- responzivně -- */
 
@@ -1075,8 +1152,8 @@ strong { font-weight: 700; }
 
     .vyzva__nadpis { font-size: 28px; }
 
-    .lightbox { padding: 12px; }
+    .lightbox { padding: 56px 12px 40px; }
 
-    .lightbox__predchozi { left: 8px; }
-    .lightbox__dalsi     { right: 8px; }
+    .lightbox__sipka--zpet  { left: 4px; }
+    .lightbox__sipka--vpred { right: 4px; }
 }

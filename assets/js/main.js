@@ -92,17 +92,23 @@
 
     /* ---------------------------------------------------------------- karusel -- */
 
+    /* Karusel se točí dokola: z první položky se šipkou zpět dostaneme na
+       poslední a naopak. Šipky proto nikdy nešednou. */
     function posun(karusel, smer) {
         var polozka = karusel.querySelector('.karusel__polozka');
         if (!polozka) return;
-        var krok = polozka.getBoundingClientRect().width + 10;   // + mezera
-        karusel.scrollBy({ left: krok * smer, behavior: neanimovat ? 'auto' : 'smooth' });
-    }
 
-    function obnovSipky(karusel, zpet, vpred) {
+        var krok = polozka.getBoundingClientRect().width + 10;   // + mezera
         var max = karusel.scrollWidth - karusel.clientWidth;
-        zpet.disabled  = karusel.scrollLeft <= 1;
-        vpred.disabled = karusel.scrollLeft >= max - 1;
+        var chovani = neanimovat ? 'auto' : 'smooth';
+
+        if (smer < 0 && karusel.scrollLeft <= 1) {
+            karusel.scrollTo({ left: max, behavior: chovani });
+        } else if (smer > 0 && karusel.scrollLeft >= max - 1) {
+            karusel.scrollTo({ left: 0, behavior: chovani });
+        } else {
+            karusel.scrollBy({ left: krok * smer, behavior: chovani });
+        }
     }
 
     document.querySelectorAll('[data-karusel-zpet]').forEach(function (zpet) {
@@ -112,12 +118,28 @@
 
         zpet.addEventListener('click', function () { posun(karusel, -1); });
         vpred.addEventListener('click', function () { posun(karusel, 1); });
-
-        var prekresli = function () { obnovSipky(karusel, zpet, vpred); };
-        karusel.addEventListener('scroll', prekresli, { passive: true });
-        window.addEventListener('resize', prekresli);
-        prekresli();
     });
+
+
+    /* ------------------------------------------------ náběh při scrollování -- */
+
+    var nabihajici = [].slice.call(document.querySelectorAll('.nabiha'));
+
+    if (nabihajici.length) {
+        if ('IntersectionObserver' in window) {
+            var sledovac = new IntersectionObserver(function (zaznamy, self) {
+                zaznamy.forEach(function (z) {
+                    if (!z.isIntersecting) return;
+                    z.target.classList.add('nabehlo');
+                    self.unobserve(z.target);
+                });
+            }, { threshold: 0.15 });
+
+            nabihajici.forEach(function (p) { sledovac.observe(p); });
+        } else {
+            nabihajici.forEach(function (p) { p.classList.add('nabehlo'); });
+        }
+    }
 
 
     /* --------------------------------------------------------------- lightbox -- */
@@ -126,15 +148,21 @@
 
     if (lightbox && typeof lightbox.showModal === 'function') {
         var odkazy = [].slice.call(document.querySelectorAll('[data-galerie]'));
-        var obrazek = lightbox.querySelector('img');
+        var obrazek = lightbox.querySelector('.lightbox__obsah img');
+        var pocitadlo = document.getElementById('lightbox-pocitadlo');
+        var popisek = document.getElementById('lightbox-popisek');
         var index = 0;
 
         function zobraz(i) {
             index = (i + odkazy.length) % odkazy.length;
             var odkaz = odkazy[index];
-            obrazek.src = odkaz.href;
             var vnitrni = odkaz.querySelector('img');
-            obrazek.alt = vnitrni ? vnitrni.alt : '';
+            var popis = vnitrni ? vnitrni.alt : '';
+
+            obrazek.src = odkaz.href;
+            obrazek.alt = popis;
+            popisek.textContent = popis;
+            pocitadlo.textContent = (index + 1) + ' / ' + odkazy.length;
         }
 
         odkazy.forEach(function (odkaz, i) {
