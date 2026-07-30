@@ -497,7 +497,6 @@ strong { font-weight: 700; }
     overflow-x: auto;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
-    padding-bottom: 4px;
 }
 
 .karusel::-webkit-scrollbar { display: none; }
@@ -1143,10 +1142,6 @@ strong { font-weight: 700; }
 
     .galerie { padding-bottom: 50px; }
 
-    .hlavicka { padding: 0 5px; }
-
-    .hlavicka__vnitrek { padding: 10px 15px; }
-
     .hlavicka__logo { width: 46.038%; min-width: 0; }
 
     .hlavicka .tlacitko { display: none; }
@@ -1177,8 +1172,6 @@ strong { font-weight: 700; }
     .o-nas .seznam-odrazky { padding-bottom: 20px; }
 
     .karusel { grid-auto-columns: 100%; }
-
-    .sluzby__karusel { padding-bottom: 40px; }
 
     .kontakt__udaje { padding: 0 10px 20px; }
 
