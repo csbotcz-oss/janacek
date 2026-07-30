@@ -1,0 +1,4 @@
+# Testovací verze webu — nesmí se dostat do vyhledávačů.
+# PŘED SPUŠTĚNÍM NA OSTRÉ DOMÉNĚ nahradit obsahem níž (viz README).
+User-agent: *
+Disallow: /

@@ -1,0 +1,710 @@
+/* ==========================================================================
+   Chata Prášilka — statický web
+
+   Původní web běží na Solidpixels a zdrojové kódy neexistují. Všechny
+   hodnoty níž jsou naměřené v prohlížeči na ostrém webu (vypočítané styly
+   a geometrie na šířkách 1440 / 768 / 375 px), ne odhadnuté.
+   ========================================================================== */
+
+/* --------------------------------------------------------------- fonty -- */
+
+/* Barlow je jediné písmo na celém webu. */
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/barlow-400-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/barlow-400-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(../fonts/barlow-600-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(../fonts/barlow-600-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(../fonts/barlow-700-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(../fonts/barlow-700-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* -------------------------------------------------------------- tokeny -- */
+
+:root {
+    --barva-oranzova:  #E85805;              /* akcent, tlačítka, štítky */
+    --barva-meruna:    #FFBD70;              /* výplně sekcí a patičky */
+    --barva-lista:     rgb(255 189 112 / .7);/* poloprůhledná lišta hlavičky */
+    --barva-mata:      #E5FFF8;              /* podklad hera pod fotkou */
+    --barva-text:      #000000;
+    --barva-popisek:   #3D3B38;              /* popisky ve formuláři */
+    --barva-bila:      #FFFFFF;
+
+    --pismo: 'Barlow', sans-serif;
+
+    /* Obsah je 1230 px, uvnitř 8px odsazení a sloupce po 16px. */
+    --sirka-obsahu: 1230px;
+    --radius-pole:  50px;
+}
+
+/* --------------------------------------------------------------- reset -- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: var(--pismo);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--barva-text);
+    background: var(--barva-bila);
+    -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: inherit; }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+
+p { margin: 0 0 16px; }
+
+ul { margin: 0; padding: 0; list-style: none; }
+
+/* --------------------------------------------------------------- mřížka -- */
+
+.sekce { padding: 70px 0; }
+
+.obsah {
+    width: 100%;
+    max-width: var(--sirka-obsahu);
+    margin-inline: auto;
+    padding-inline: 8px;
+}
+
+.radek {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Sloupce jsou zlomky obsahu; vnitřní odsazení dělá mezery mezi nimi. */
+.sl { padding-inline: 16px; }
+
+.sl-4  { width: 33.3333%; }
+.sl-5  { width: 41.6667%; }
+.sl-6  { width: 50%; }
+.sl-8  { width: 66.6667%; }
+.sl-12 { width: 100%; }
+
+/* Prázdný sloupec, kterým originál odděluje fotku od textu. */
+.sl-mezera { width: 8.3333%; }
+
+/* Bílý oddělovač mezi sekcemi. */
+.oddelovac { height: 60px; background: var(--barva-bila); }
+
+/* ---------------------------------------------------------- komponenty -- */
+
+/* Malý oranžový nadpisek nad hlavním nadpisem sekce. */
+.stitek {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.65;
+    letter-spacing: .02em;
+    color: var(--barva-oranzova);
+    text-transform: uppercase;
+}
+
+.nadpis {
+    font-size: 40px;
+    line-height: 1.3;
+}
+
+.podnadpis {
+    font-size: 23px;
+    line-height: 1.3;
+}
+
+.tlacitko {
+    display: inline-block;
+    padding: 14px 27px;
+    font-family: var(--pismo);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--barva-bila);
+    background: var(--barva-oranzova);
+    border: 0;
+    border-radius: var(--radius-pole);
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.tlacitko:hover,
+.tlacitko:focus-visible { background: #cf4e04; }
+
+/* --------------------------------------------------------------- hlavička -- */
+
+.hlavicka {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    z-index: 30;
+}
+
+.hlavicka__lista {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: var(--sirka-obsahu);
+    margin-inline: auto;
+    padding: 0 24px;
+    min-height: 106px;
+    background: var(--barva-lista);
+    border-radius: 8px;
+}
+
+.hlavicka__logo img { width: 70px; height: 70px; }
+
+.hlavicka__vpravo {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
+
+.menu a {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+    color: var(--barva-bila);
+    transition: color .2s;
+}
+
+.menu a:hover,
+.menu a:focus-visible,
+.menu a[aria-current="page"] { color: var(--barva-oranzova); }
+
+.menu-prepinac {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: var(--barva-oranzova);
+    color: var(--barva-bila);
+    cursor: pointer;
+}
+
+.menu-prepinac svg { width: 20px; height: 20px; fill: currentColor; }
+
+.menu-prepinac__zavrit { display: none; }
+
+.menu-prepinac[aria-expanded="true"] .menu-prepinac__otevrit { display: none; }
+.menu-prepinac[aria-expanded="true"] .menu-prepinac__zavrit { display: block; }
+
+/* ----------------------------------------------------------------- hero -- */
+
+.hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 867px;
+    padding: 150px 0;
+    background-color: var(--barva-mata);
+    background-image: image-set(url(../img/hero-1920.webp) type('image/webp'),
+                                url(../img/hero-1920.jpg)  type('image/jpeg'));
+    background-size: cover;
+    background-position: center;
+    color: var(--barva-bila);
+}
+
+.hero__obsah { max-width: 640px; }
+
+.hero__stitek {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--barva-oranzova);
+}
+
+.hero__nadpis {
+    margin: 0 0 16px;
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.hero__text { margin-bottom: 24px; }
+
+/* ------------------------------------------------------------- dlaždice -- */
+
+.dlazdice {
+    padding: 70px 0;
+    background: var(--barva-meruna);
+    color: var(--barva-bila);
+}
+
+.dlazdice__polozka {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.dlazdice__polozka img { width: 120px; height: 120px; }
+
+/* -------------------------------------------------------------- ikonový -- */
+
+/* Položka s ikonou vlevo a textem vpravo — používá se ve třech sekcích. */
+.ikona-polozka {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.ikona-polozka img {
+    flex: 0 0 auto;
+    width: 60px;
+    height: 60px;
+}
+
+.ikona-polozka p { margin: 0; }
+
+/* ---------------------------------------------------------- fotogalerie -- */
+
+/* Mozaika přes celou šířku: v každém řádku jedna široká a dvě úzké fotky,
+   pozice široké se střídá. */
+.galerie {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+}
+
+.galerie__polozka {
+    position: relative;
+    display: block;
+    aspect-ratio: 715 / 477;
+    overflow: hidden;
+}
+
+.galerie__polozka--siroka { grid-column: span 2; }
+
+.galerie__polozka--uzka { aspect-ratio: 353 / 477; }
+
+.galerie__polozka img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .5s;
+}
+
+.galerie__polozka:hover img,
+.galerie__polozka:focus-visible img { transform: scale(1.04); }
+
+/* ------------------------------------------------------------- rezervace -- */
+
+.rezervace {
+    padding: 25px 0;
+    background: var(--barva-meruna);
+    color: var(--barva-bila);
+    text-align: center;
+}
+
+.rezervace__nadpis {
+    margin-bottom: 12px;
+    font-size: 48px;
+    line-height: 1.3;
+}
+
+.rezervace .tlacitko {
+    margin-top: 8px;
+    background: var(--barva-bila);
+    color: var(--barva-oranzova);
+}
+
+.rezervace .tlacitko:hover,
+.rezervace .tlacitko:focus-visible { background: #f2f2f2; }
+
+/* ---------------------------------------------------------------- ceník -- */
+
+.cenik__blok {
+    margin-bottom: 24px;
+}
+
+.cenik__sezona {
+    margin-bottom: 12px;
+    font-size: 23px;
+    line-height: 1.3;
+}
+
+.cenik__radek {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgb(0 0 0 / .1);
+}
+
+.cenik__polozka {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cenik__cena {
+    font-size: 20px;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+/* -------------------------------------------------------------- kontakt -- */
+
+.kontakt__email {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.6;
+    text-decoration: none;
+}
+
+.kontakt__email:hover { text-decoration: underline; }
+
+.kontakt__udaje p { margin: 0 0 12px; }
+
+.kontakt__udaje a { text-decoration: none; }
+
+.kontakt__udaje a:hover { text-decoration: underline; }
+
+/* ------------------------------------------------------------- formulář -- */
+
+.formular__pole {
+    display: flex;
+    flex-wrap: wrap;
+    margin-inline: -16px;
+}
+
+.pole {
+    width: 50%;
+    padding: 0 16px 20px;
+}
+
+.pole--cely { width: 100%; }
+
+.pole label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--barva-popisek);
+}
+
+.pole__povinne { color: var(--barva-oranzova); }
+
+.pole input,
+.pole textarea {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--barva-text);
+    background: var(--barva-bila);
+    border: 1px solid #d5d0c9;
+    border-radius: var(--radius-pole);
+}
+
+.pole textarea {
+    height: 130px;
+    border-radius: 24px;
+    resize: vertical;
+}
+
+.pole input:focus,
+.pole textarea:focus {
+    outline: 2px solid var(--barva-oranzova);
+    outline-offset: 1px;
+}
+
+/* Past na roboty — pro člověka neviditelná, pro spam boty lákavá. */
+.pole--past {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.formular__souhlas {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 0 16px 16px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.formular__souhlas input { margin-top: 4px; }
+
+.formular__odeslat { padding-inline: 16px; }
+
+.formular__zprava {
+    margin: 12px 16px 0;
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.formular__zprava--ok    { background: #dff3dd; color: #14520d; }
+.formular__zprava--chyba { background: #fbe0e0; color: #7a1414; }
+
+.formular__zprava[hidden] { display: none; }
+
+/* -------------------------------------------------------------- patička -- */
+
+.paticka {
+    padding: 25px 0;
+    background: var(--barva-meruna);
+    color: var(--barva-text);
+    text-align: center;
+    font-size: 16px;
+}
+
+.paticka p { margin: 0; }
+
+/* ------------------------------------------------------------- lightbox -- */
+
+.lightbox:not([open]) { display: none; }
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    padding: 60px 80px;
+    background: rgb(0 0 0 / .85);
+    border: 0;
+    color: #fff;
+}
+
+.lightbox::backdrop { background: transparent; }
+
+.lightbox__obsah {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+}
+
+.lightbox__obsah img {
+    max-width: 100%;
+    min-height: 0;
+    object-fit: contain;
+}
+
+.lightbox__obsah img.prijizdi-zprava { animation: prijezd-zprava .35s ease both; }
+.lightbox__obsah img.prijizdi-zleva  { animation: prijezd-zleva  .35s ease both; }
+
+@keyframes prijezd-zprava {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes prijezd-zleva {
+    from { opacity: 0; transform: translateX(-40px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.lightbox__popisek {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.lightbox__pocitadlo {
+    position: absolute;
+    top: 18px;
+    left: 22px;
+    margin: 0;
+    font-size: 15px;
+}
+
+.lightbox__zavrit,
+.lightbox__sipka {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+    opacity: .85;
+    transition: opacity .2s;
+}
+
+.lightbox__zavrit:hover,
+.lightbox__sipka:hover { opacity: 1; }
+
+.lightbox__zavrit { top: 14px; right: 18px; width: 34px; height: 34px; }
+
+.lightbox__zavrit svg { fill: currentColor; }
+
+.lightbox__sipka { top: 50%; width: 44px; height: 44px; transform: translateY(-50%); }
+
+.lightbox__sipka--zpet  { left: 20px; }
+.lightbox__sipka--vpred { right: 20px; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .galerie__polozka img,
+    .lightbox__obsah img { transition: none; animation: none; }
+    .menu, .menu.menu--otevrene { transition: none; }
+}
+
+/* ---------------------------------------------------------- responzivně -- */
+
+@media (max-width: 1024px) {
+    .hlavicka { position: relative; top: 0; padding-top: 20px; }
+
+    .hlavicka__lista { position: relative; }
+
+    .menu-prepinac { display: flex; }
+
+    .menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        z-index: 20;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        background: var(--barva-bila);
+        overflow: hidden;
+        max-height: 0;
+        visibility: hidden;
+        transition: max-height .3s, visibility 0s .3s;
+    }
+
+    .menu.menu--otevrene {
+        visibility: visible;
+        transition: max-height .3s, visibility 0s;
+    }
+
+    .menu a {
+        display: block;
+        padding: 12px 24px;
+        color: var(--barva-text);
+    }
+
+    .hero { min-height: 640px; padding: 90px 0; }
+
+    .hero__nadpis { font-size: 44px; }
+
+    /* Sloupce se skládají pod sebe. */
+    .sl-4, .sl-5, .sl-6, .sl-8 { width: 100%; }
+
+    .sl-mezera { display: none; }
+
+    .dlazdice__polozka { margin-bottom: 24px; }
+}
+
+@media (max-width: 767px) {
+    .sekce { padding: 50px 0; }
+
+    .hlavicka__lista { padding: 0 16px; min-height: 84px; }
+
+    .hlavicka__logo img { width: 56px; height: 56px; }
+
+    .hlavicka .tlacitko { display: none; }
+
+    .hero { min-height: 520px; padding: 70px 0; }
+
+    .hero__nadpis { font-size: 34px; }
+
+    .hero__stitek { font-size: 17px; }
+
+    .nadpis { font-size: 30px; }
+
+    .rezervace__nadpis { font-size: 34px; }
+
+    /* Mozaika se na mobilu srovná na jeden sloupec. */
+    .galerie { grid-template-columns: 1fr; }
+
+    .galerie__polozka--siroka { grid-column: span 1; }
+
+    .galerie__polozka,
+    .galerie__polozka--uzka { aspect-ratio: 4 / 3; }
+
+    .pole { width: 100%; }
+
+    .lightbox { padding: 56px 12px 40px; }
+
+    .lightbox__sipka--zpet  { left: 4px; }
+    .lightbox__sipka--vpred { right: 4px; }
+}

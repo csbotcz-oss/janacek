@@ -1,0 +1,29 @@
+<?php
+/**
+ * Vzor konfigurace kontaktního formuláře.
+ *
+ * Zkopírovat do docrootu jako config.local.php a doplnit údaje:
+ *   cp config.local.php.vzor /www/hosting/cstest.cz/chata-prasilka/config.local.php
+ *
+ * Soubor je v .gitignore a deploy skript ho z rsyncu vylučuje — přežije tedy
+ * nasazení a nikdy se nedostane do repozitáře.
+ */
+
+return [
+    // Kam chodí poptávky.
+    'prijemce' => 'info@chata-prasilka.cz',
+
+    // Adresa v hlavičce From. Musí patřit k SMTP účtu níž, jinak to
+    // příjemcův server označí za podvrh (SPF/DMARC) a zahodí.
+    'odesilatel'      => 'web@chata-prasilka.cz',
+    'odesilatelJmeno' => 'Web Chata Prášilka',
+
+    'smtp' => [
+        'host'      => 'smtp.example.cz',
+        'port'      => 587,
+        'uzivatel'  => 'web@chata-prasilka.cz',
+        'heslo'     => '',
+        'sifrovani' => 'tls',   // 'tls' = STARTTLS (587), 'ssl' = implicitní (465)
+        'timeout'   => 20,
+    ],
+];
