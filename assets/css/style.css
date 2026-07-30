@@ -484,15 +484,18 @@ strong { font-weight: 700; }
     padding: 0 10px 70px;
 }
 
-/* Vodorovný posuvník s přichytáváním — bez JS knihovny. */
+/* Vodorovný posuvník s přichytáváním — bez JS knihovny.
+   Schválně bez scroll-behavior: smooth — animaci si řídí skript a CSS by
+   rozhýbalo i okamžité přeskoky na klon, které mají být neviditelné.
+   Z téhož důvodu jen "proximity", ne "mandatory": tvrdé přichytávání
+   pere se s vlastní animací. */
 .karusel {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: calc((100% - 20px) / 3);
     gap: 10px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
     scrollbar-width: none;
     padding-bottom: 4px;
 }
