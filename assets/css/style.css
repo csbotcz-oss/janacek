@@ -132,7 +132,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sl-mezera { width: 8.3333%; }
 
 /* Bílý oddělovač mezi sekcemi. */
-.oddelovac { height: 60px; background: var(--barva-bila); }
+.oddelovac { height: 60px; }
 
 /* ---------------------------------------------------------- komponenty -- */
 
@@ -181,11 +181,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ----------------------------------------------------------------- vlny -- */
 
-/* Solidpixels odděluje sekce zvlněnou hranou. Dělá to CSS maskou o výšce
-   50 px složenou ze dvou vrstev: plné plochy a tvaru vlny na kraji.
-   Maska musí sedět na podkladové vrstvě, ne na celé sekci — jinak by
-   ořízla i text. */
-.vlna { position: relative; }
+/* Solidpixels odděluje sekce zvlněnou hranou: CSS maskou o výšce 50 px,
+   složenou ze dvou vrstev — plné plochy a tvaru vlny na kraji.
+
+   Podklad nese pseudoprvek, ne sekce samotná. Kdyby ho měla sekce, maska
+   by ořízla i text; a kdyby podklad chyběl úplně, nebylo by co ořezávat. */
+.vlna {
+    position: relative;
+    background: none;
+}
 
 .vlna > * { position: relative; z-index: 1; }
 
@@ -194,7 +198,9 @@ ul { margin: 0; padding: 0; list-style: none; }
     position: absolute;
     inset: 0;
     z-index: 0;
-    background: inherit;
+    background: var(--vlna-podklad, transparent);
+    background-size: cover;
+    background-position: var(--vlna-pozice, center);
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
 }
@@ -217,10 +223,19 @@ ul { margin: 0; padding: 0; list-style: none; }
             mask-position: center bottom, center top;
 }
 
+/* Jaký podklad která zvlněná sekce nese. */
+.hero      { --vlna-podklad: image-set(url(../img/hero-1920.webp) type("image/webp"),
+                                       url(../img/hero-1920.jpg)  type("image/jpeg"));
+             --vlna-pozice: 59% 0%; }
+.oddelovac { --vlna-podklad: var(--barva-bila); }
+.rezervace { --vlna-podklad: var(--barva-meruna); }
+.paticka   { --vlna-podklad: var(--barva-meruna); }
+.sekce.vlna { --vlna-podklad: var(--barva-bila); }
+
 /* --------------------------------------------------------------- hlavička -- */
 
 .hlavicka {
-    position: absolute;
+    position: fixed;
     top: 20px;
     left: 0;
     right: 0;
@@ -237,7 +252,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     padding: 0 24px;
     min-height: 106px;
     background: var(--barva-lista);
-    border-radius: 8px;
+    border-radius: 100px;
 }
 
 .hlavicka__logo img { width: 70px; height: 70px; }
@@ -297,24 +312,10 @@ ul { margin: 0; padding: 0; list-style: none; }
     align-items: center;
     min-height: 867px;
     padding: 150px 0;
-    background-color: var(--barva-mata);
-    background-image: image-set(url(../img/hero-1920.webp) type('image/webp'),
-                                url(../img/hero-1920.jpg)  type('image/jpeg'));
-    background-size: cover;
-    background-position: center;
+    /* Fotku nese pseudoprvek s vlnou, viz sekce "vlny" výš. Originál nemá
+       žádný ztmavovací překryv — text leží na tmavé části fotky. */
     color: var(--barva-bila);
 }
-
-/* Fotku ztmavíme, jinak je na ní text nečitelný — stejně jako originál. */
-.hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: rgb(0 0 0 / .35);
-}
-
-.hero > * { position: relative; z-index: 1; }
 
 .hero__obsah { max-width: 640px; }
 
@@ -378,7 +379,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .galerie {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
+    gap: 10px;
 }
 
 .galerie__polozka {
@@ -406,7 +407,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .rezervace {
     padding: 25px 0;
-    background: var(--barva-meruna);
     color: var(--barva-text);
     text-align: center;
 }
@@ -561,7 +561,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .paticka {
     padding: 25px 0;
-    background: var(--barva-meruna);
     color: var(--barva-text);
     text-align: center;
     font-size: 16px;
