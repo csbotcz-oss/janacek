@@ -781,6 +781,9 @@ strong { font-weight: 700; }
 
 /* ------------------------------------------------------------ galerie -- */
 
+/* Sekce galerie má na originále spodní odsazení 100 px, ne 50. */
+.galerie { padding-bottom: 100px; }
+
 .galerie__vnitrek {
     display: flex;
     flex-direction: column;
