@@ -136,17 +136,18 @@
         // Pod 720 px se odkazy schovají za přepínač; na tabletu je řeší „Více".
         var mobil = window.matchMedia('(max-width: 719px)');
 
+        // Rozbalené menu překrývá celou stránku bílou plochou, jako originál.
+        // Třída na <body> zprůhlední lištu a zamkne rolování pod překryvem.
         function otevriMenu() {
             menu.classList.add('menu--otevrene');
-            // Konkrétní výška obsahu — na "auto" se přechod animovat nedá.
-            menu.style.maxHeight = menu.scrollHeight + 'px';
+            document.body.classList.add('je-menu');
             prepinac.setAttribute('aria-expanded', 'true');
             prepinac.setAttribute('aria-label', 'Zavřít menu');
         }
 
         function zavriMenu() {
             menu.classList.remove('menu--otevrene');
-            menu.style.maxHeight = '';
+            document.body.classList.remove('je-menu');
             prepinac.setAttribute('aria-expanded', 'false');
             prepinac.setAttribute('aria-label', 'Otevřít menu');
         }
@@ -154,10 +155,8 @@
         zavriMenu();
         mobil.addEventListener('change', zavriMenu);
 
-        window.addEventListener('resize', function () {
-            if (menu.classList.contains('menu--otevrene')) {
-                menu.style.maxHeight = menu.scrollHeight + 'px';
-            }
+        document.addEventListener('keydown', function (u) {
+            if (u.key === 'Escape') zavriMenu();
         });
 
         prepinac.addEventListener('click', function () {

@@ -430,7 +430,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .menu-prepinac svg { width: 20px; height: 14px; fill: currentColor; }
 
-.menu-prepinac__zavrit { display: none; }
+.menu-prepinac__popis { font-size: 14px; font-weight: 700; }
+
+.menu-prepinac__zavrit { display: none; width: 16px; }
+
+/* Tlačítko pod odkazy se ukazuje jen v rozbaleném menu na mobilu. */
+.menu__cta { display: none; }
 
 .menu-prepinac[aria-expanded="true"] .menu-prepinac__otevrit { display: none; }
 .menu-prepinac[aria-expanded="true"] .menu-prepinac__zavrit { display: block; }
@@ -994,37 +999,63 @@ ul { margin: 0; padding: 0; list-style: none; }
 
     .hlavicka .tlacitko { display: none; }
 
-    /* Odkazy se schovají za přepínač „Menu" a rozbalují se přes celou šířku. */
+    /* Odkazy se schovají za přepínač „Menu". Rozbalené menu je bílý překryv
+       přes celou stránku — odsazení i rozměry jsou naměřené na originále. */
     .menu-prepinac { display: flex; }
 
     .menu {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 100%;
-        z-index: 20;
-        flex-direction: column;
-        align-items: stretch;
-        margin-top: 8px;
-        padding: 0;
-        border-radius: 24px;
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: block;
+        padding: 152px 30px 40px;
         background: var(--barva-bila);
-        overflow: hidden;
-        max-height: 0;
+        overflow-y: auto;
+        opacity: 0;
         visibility: hidden;
-        transition: max-height .3s, visibility 0s .3s;
+        transition: opacity .3s, visibility 0s .3s;
     }
 
     .menu.menu--otevrene {
+        opacity: 1;
         visibility: visible;
-        transition: max-height .3s, visibility 0s;
+        transition: opacity .3s, visibility 0s;
     }
 
     .menu a {
         display: block;
-        padding: 12px 24px;
-        color: var(--barva-text);
+        padding: 6px 9px;
+        font-size: 16px;
+        line-height: 1.4;
+        color: var(--barva-oranzova);
     }
+
+    .menu a.menu__cta {
+        display: block;
+        margin-top: 18px;
+        padding: 6px 9px;
+        border: 1px solid transparent;
+        border-radius: 30px;
+        background: var(--barva-oranzova);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.4;
+        text-align: center;
+        text-transform: none;
+        text-decoration: none;
+        color: var(--barva-bila);
+    }
+
+    /* Logo a přepínač zůstávají nad překryvem, lišta pod ním ztratí pozadí. */
+    .hlavicka__logo,
+    .menu-prepinac { position: relative; z-index: 50; }
+
+    .je-menu .hlavicka__lista { background: none; }
+
+    .je-menu .menu-prepinac { color: var(--barva-meruna); }
+
+    /* Pod otevřeným menu se nesmí rolovat. */
+    .je-menu { overflow: hidden; }
 
     .hero__nadpis { font-size: 38px; }
 

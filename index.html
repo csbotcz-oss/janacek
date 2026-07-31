@@ -61,7 +61,7 @@
 <!-- Ikony pro ovládání. Vloženo inline, ať web nedělá požadavek navíc. -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
     <symbol id="i-menu" viewBox="0 0 20 14"><path d="M0 0h20v2H0V0Zm0 6h20v2H0V6Zm0 6h20v2H0v-2Z"/></symbol>
-    <symbol id="i-zavrit" viewBox="0 0 24 24"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.89 18.3 9.18 12 2.89 5.71 4.3 4.29l6.29 6.3 6.3-6.3 1.41 1.42Z"/></symbol>
+    <symbol id="i-zavrit" viewBox="0 0 16 14"><path d="M1.4 0 8 5.6 14.6 0l1.4 1.2L9.5 7l6.5 5.8-1.4 1.2L8 8.4 1.4 14 0 12.8 6.5 7 0 1.2Z"/></symbol>
 </svg>
 
 
@@ -86,6 +86,9 @@
                     <button class="menu__vice-prepinac" type="button" aria-expanded="false">Více<svg aria-hidden="true" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4"/></svg></button>
                     <div class="menu__vice-obsah"></div>
                 </div>
+
+                <!-- V rozbaleném menu na mobilu je pod odkazy ještě tlačítko. -->
+                <a class="menu__cta" href="#kontakt">Rezervovat ubytování</a>
             </nav>
 
             <button class="menu-prepinac" type="button"
