@@ -446,7 +446,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* Odsazení podle skutečných hranic obsahu na originále. */
 .rezervace {
-    padding: 89px 0 52px;
+    padding: 89px 0 0;
     color: var(--barva-text);
     text-align: center;
 }
