@@ -206,6 +206,10 @@ ul { margin: 0; padding: 0; list-style: none; }
             mask: url(../img/wave-top.svg) center / 100% 100% no-repeat;
 }
 
+/* Mezi některými pásy je ještě 60px bílý pruh — originál je řeší
+   samostatnou sekcí. Vlna dalšího pásu do něj zasahuje. */
+.mezipas { height: 60px; background: var(--barva-bila); }
+
 .pas--meruna { --pas-barva: var(--barva-meruna); }
 .pas--bila   { --pas-barva: var(--barva-bila); }
 
