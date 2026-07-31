@@ -362,23 +362,49 @@ ul { margin: 0; padding: 0; list-style: none; }
     margin-bottom: 10px;
 }
 
-/* -------------------------------------------------------------- ikonový -- */
+/* --------------------------------------------------------------- položky -- */
 
-/* Položka s ikonou vlevo a textem vpravo — používá se ve třech sekcích. */
-.ikona-polozka {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 24px;
+/* Web má dva typy položky s ikonou. Ubytování a aktivity mají ikonu NAD
+   textem, vybavení VEDLE něj. Odstupy jsou naměřené na originále:
+   ikona 60 px, pod ní 13 px mezera, mezi položkami 24 px. */
+.polozka { margin-bottom: 24px; }
+
+.polozka img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 13px;
 }
 
-.ikona-polozka img {
+.polozka h3 { margin-bottom: 10px; }
+
+.polozka p { margin: 0; }
+
+/* Vybavení: ikona vlevo, text vpravo, mezi položkami 58 px. */
+.polozka-radek {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 58px;
+}
+
+.polozka-radek img {
     flex: 0 0 auto;
     width: 60px;
     height: 60px;
 }
 
-.ikona-polozka p { margin: 0; }
+.polozka-radek h3 { margin-bottom: 10px; }
+
+.polozka-radek p { margin: 0; }
+
+/* Dvojice položek v ubytování — dva sloupce po 276 px s mezerou 24 px. */
+.dvojice {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+}
+
+.dvojice .polozka { width: calc(50% - 12px); }
 
 /* ---------------------------------------------------------- fotogalerie -- */
 
@@ -435,30 +461,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .cenik__sezona {
-    margin-bottom: 12px;
+    margin-bottom: 13px;
     font-size: 23px;
     line-height: 1.3;
 }
 
-.cenik__radek {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgb(0 0 0 / .1);
-}
-
+/* Popisek a cena jsou pod sebou, bez linek — jako na originále. */
 .cenik__polozka {
+    margin: 0 0 6px;
     font-size: 20px;
     font-weight: 700;
     line-height: 1.3;
 }
 
 .cenik__cena {
+    margin: 0 0 17px;
     font-size: 17px;
     font-weight: 400;
-    white-space: nowrap;
 }
 
 /* -------------------------------------------------------------- kontakt -- */
