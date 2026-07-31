@@ -19,7 +19,10 @@
 
 <link rel="preload" href="assets/fonts/barlow-700-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-400-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">
+<!-- ?v= je proti cache: server neposílá Cache-Control, takže bez toho
+     může prohlížeč držet staré CSS k novému JS. Při změně stylů nebo
+     skriptu číslo zvýšit. -->
+<link rel="stylesheet" href="assets/css/style.css?v=2">
 
 <!-- Výchozí (skrytý) stav najíždějících bloků zapíná až tenhle řádek. Bez JS
      nebo s vypnutými animacemi tak zůstane obsah normálně viditelný. Pojistka
@@ -689,6 +692,6 @@
     </figure>
 </dialog>
 
-<script src="assets/js/main.js" defer></script>
+<script src="assets/js/main.js?v=2" defer></script>
 </body>
 </html>

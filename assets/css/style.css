@@ -1005,7 +1005,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 
     .menu {
         position: fixed;
-        inset: 0;
+        /* Rozepsané kvůli starším Safari, která `inset` neznají. */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         z-index: 40;
         display: block;
         padding: 152px 30px 40px;
