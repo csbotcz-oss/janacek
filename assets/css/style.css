@@ -124,6 +124,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* Sloupce jsou zlomky obsahu; vnitřní odsazení dělá mezery mezi nimi. */
 .sl { padding-inline: 16px; }
 
+.sl-3  { width: 25%; }
 .sl-4  { width: 33.3333%; }
 .sl-5  { width: 41.6667%; }
 .sl-6  { width: 50%; }
@@ -165,6 +166,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 #cenik .sl > p { margin-bottom: 25.6px; }
 
+/* Poslední odstavec ve sloupci už za sebou mezeru nemá — u originálu ji dělá
+   obal řádku, ne odstavec. Projeví se to jen tam, kde je textový sloupec
+   vyšší než sousední fotka. */
+.sl > p:last-child,
+#cenik .sl > p:last-child { margin-bottom: 0; }
+
 .podnadpis {
     font-size: 23px;
     line-height: 1.3;
@@ -181,6 +188,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     letter-spacing: 1.04px;
     text-transform: uppercase;
     text-decoration: none;
+    white-space: nowrap;
     color: var(--barva-bila);
     background: var(--barva-oranzova);
     border: 1px solid transparent;
@@ -236,10 +244,55 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* Mezi bílou sekcí a následujícím meruňkovým pásem je ještě 60px bílý pruh —
    originál ho řeší samostatnou sekcí a spodní vlnu nese on. */
-.mezipas { position: relative; height: 60px; background: var(--barva-bila); }
+/* `overflow: hidden` kvůli mobilu: pruh je tam nižší než vlna a originál
+   ji ořízne stejně — vidět je jen její spodní část. */
+.mezipas {
+    position: relative;
+    height: 60px;
+    overflow: hidden;
+    background: var(--barva-bila);
+}
 
 .pas--meruna { --pas-barva: var(--barva-meruna); }
 .pas--bila   { --pas-barva: var(--barva-bila); }
+
+/* Odsazení jednotlivých sekcí. Vychází z naměřených hranic obsahu na ostrém
+   webu — každá sekce má jiné, protože Solidpixels si výšku sekce drží pevně
+   a obsah v ní jen posouvá. */
+#ubytovani { padding: 162px 0 116px; }
+#vybaveni { padding: 132px 0 86px; }
+#aktivity { padding: 112px 0 62px; }
+#cenik { padding: 83px 0 84px; }
+#kontakt { padding: 134px 0 110px; }
+
+/* ------------------------------------------------------------- najíždění -- */
+
+/* Bloky najíždějí zdola, jakmile se dostanou do okna. Hodnoty jsou opsané
+   z originálu (Solidpixels, plugin inViewport): posun 48 px, 0,9 s, křivka
+   cubic-bezier(.215,.61,.355,1), průhlednost o 0,1 s opožděná. Jakmile blok
+   jednou najede, zpátky se už neschovává.
+
+   Seznam bloků odpovídá tomu, co originál animuje: každý řádek sekce zvlášť,
+   dlaždice galerie a fotky u aktivit jednotlivě. */
+.animace :where(.hero__obsah,
+                .dlazdice .radek,
+                .sekce .radek,
+                .rezervace .obsah,
+                .paticka .obsah,
+                .galerie__polozka,
+                #aktivity .foto-aktivita) {
+    opacity: 0;
+    transform: translate3d(0, 48px, 0);
+    transition: transform .9s cubic-bezier(.215, .61, .355, 1),
+                opacity .9s .1s cubic-bezier(.215, .61, .355, 1);
+}
+
+/* `:where()` výš nemá žádnou váhu, takže tohle pravidlo spolehlivě vyhraje
+   i nad selektory s ID. */
+.animace .je-videt {
+    opacity: 1;
+    transform: none;
+}
 
 /* --------------------------------------------------------------- hlavička -- */
 
@@ -264,6 +317,10 @@ ul { margin: 0; padding: 0; list-style: none; }
     border-radius: 100px;
 }
 
+/* Logo ani tlačítko se nesmí smrsknout — místo pro menu se dopočítává
+   z jejich skutečné šířky. */
+.hlavicka__logo { flex: 0 0 auto; }
+
 .hlavicka__logo img { width: 70px; height: 70px; }
 
 .hlavicka__vpravo {
@@ -271,6 +328,8 @@ ul { margin: 0; padding: 0; list-style: none; }
     align-items: center;
     gap: 15px;
 }
+
+.hlavicka__vpravo > .tlacitko { flex: 0 0 auto; }
 
 /* Tlačítko v hlavičce je nižší a užší než tlačítka v obsahu. */
 .hlavicka .tlacitko {
@@ -293,6 +352,7 @@ ul { margin: 0; padding: 0; list-style: none; }
     line-height: 1.4;
     text-transform: uppercase;
     text-decoration: none;
+    white-space: nowrap;
     color: var(--barva-bila);
     transition: color .2s;
 }
@@ -301,21 +361,74 @@ ul { margin: 0; padding: 0; list-style: none; }
 .menu a:focus-visible,
 .menu a[aria-current="page"] { color: var(--barva-oranzova); }
 
-.menu-prepinac {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    padding: 0;
+/* Když se odkazy nevejdou, originál je nepřehodí za hamburger, ale odloží
+   je do rozbalovátka „Více". Skript v main.js přesouvá odkazy podle toho,
+   kolik je v liště místa. */
+.menu__vice { position: relative; flex: 0 0 auto; }
+
+.menu__vice-prepinac {
+    padding: 9px 14px;
     border: 0;
-    border-radius: 6px;
-    background: var(--barva-oranzova);
+    background: none;
+    font-family: var(--pismo);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
     color: var(--barva-bila);
     cursor: pointer;
 }
 
-.menu-prepinac svg { width: 20px; height: 20px; fill: currentColor; }
+
+.menu__vice-prepinac svg {
+    width: 10px;
+    height: 6px;
+    margin-left: 7px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+}
+
+.menu__vice-prepinac:hover,
+.menu__vice-prepinac[aria-expanded="true"] { color: var(--barva-oranzova); }
+
+.menu__vice-obsah {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 20;
+    display: none;
+    min-width: 200px;
+    padding: 8px 0;
+    border-radius: 16px;
+    background: var(--barva-bila);
+    box-shadow: 0 8px 24px rgb(0 0 0 / .18);
+}
+
+.menu__vice[data-otevreno] .menu__vice-obsah { display: block; }
+
+.menu__vice-obsah a {
+    display: block;
+    padding: 6px 20px;
+    color: var(--barva-text);
+}
+
+/* Originál má místo tlačítka jen ikonu s popiskem „Menu" v bílé. */
+.menu-prepinac {
+    display: none;
+    align-items: center;
+    gap: 9px;
+    height: 37px;
+    padding: 0 0 0 8px;
+    border: 0;
+    background: none;
+    font-family: var(--pismo);
+    font-size: 16px;
+    color: var(--barva-bila);
+    cursor: pointer;
+}
+
+.menu-prepinac svg { width: 20px; height: 14px; fill: currentColor; }
 
 .menu-prepinac__zavrit { display: none; }
 
@@ -350,7 +463,9 @@ ul { margin: 0; padding: 0; list-style: none; }
     mix-blend-mode: multiply;
 }
 
-.hero__obsah { max-width: 676px; margin-left: 16px; position: relative; z-index: 1; }
+/* Obsah hera je na originále sloupec 7/12 včetně 16px odsazení jako ostatní
+   sloupce mřížky. */
+.hero__obsah { width: 58.3333%; padding-inline: 16px; position: relative; z-index: 1; }
 
 .hero__stitek {
     margin: 0 0 28px;
@@ -465,6 +580,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .dvojice .polozka { width: calc(50% - 12px); }
 
+/* Položky u aktivit jsou na desktopu pod sebou, od tabletu vedle sebe. */
+.dvojice--aktivity .polozka { width: 100%; }
+
 /* ---------------------------------------------------------- fotogalerie -- */
 
 /* Mozaika přes celou šířku: v každém řádku jedna široká a dvě úzké fotky,
@@ -506,6 +624,13 @@ ul { margin: 0; padding: 0; list-style: none; }
     padding: 39px 0;
     color: var(--barva-text);
     text-align: center;
+}
+
+/* Text rezervace je na originále v polovičním sloupci uprostřed. */
+.rezervace__sloupec {
+    width: 50%;
+    margin-inline: auto;
+    padding-inline: 16px;
 }
 
 .rezervace__nadpis {
@@ -803,11 +928,73 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------------------------------------------------------- responzivně -- */
 
-@media (max-width: 1024px) {
-    .hlavicka { position: relative; top: 0; padding-top: 20px; }
+/* --------------------------------------------------------- tablet a mobil -- */
 
-    .hlavicka__lista { position: relative; }
+/* Zlomy podle originálu: desktop od 993 px, tablet 720–992, mobil do 719.
+   Na tabletu se sloupce NESKLÁDAJÍ — mřížka zůstává stejná jako na desktopu,
+   mění se jen velikosti písma a odsazení. Skládají se až pod 720 px. */
 
+@media (max-width: 992px) {
+    /* Lišta hlavičky se sama roztáhne na celou šířku, protože je užší než
+       --sirka-obsahu. Zůstává plovoucí jako na desktopu. */
+
+    .hero__nadpis { font-size: 48px; }
+
+    .nadpis { font-size: 32px; }
+
+    .podnadpis,
+    .cenik__sezona { font-size: 18px; }
+
+    .cenik__polozka { font-size: 17px; }
+
+    .rezervace__nadpis { font-size: 38px; }
+
+    /* Pole formuláře jdou přes celou šířku. */
+    .pole { width: 100%; }
+
+    /* Položky v aktivitách se naopak srovnají do dvou sloupců. */
+    .dvojice--aktivity .polozka { width: calc(50% - 12px); }
+
+    .mezipas { height: 50px; }
+
+    .mezipas--pred-rezervaci { height: 60px; }
+
+    /* Odsazení sekcí naměřené na ostrém webu při 800 px. */
+    #ubytovani { padding: 114px 0 113px; }
+    #vybaveni  { padding: 85px 0 83px; }
+    #aktivity  { padding: 112px 0 115px; margin-bottom: 0; }
+    #cenik     { padding: 83px 0 85px; }
+    #kontakt   { padding: 84px 0 110px; }
+
+    .paticka { padding: 98px 0 116px; }
+}
+
+@media (max-width: 719px) {
+    /* Sloupce se skládají pod sebe. */
+    .sl-4, .sl-5, .sl-6, .sl-7, .sl-8 { width: 100%; }
+
+    .sl-mezera { display: none; }
+
+    /* Mezi sloupce poskládané pod sebe patří 38 px — u originálu to dělá
+       vnitřní odsazení obalů řádku. */
+    .radek > .sl ~ .sl { margin-top: 38px; }
+
+    /* Dlaždice si mezeru řeší vlastním spodním okrajem. */
+    .dlazdice .radek > .sl ~ .sl { margin-top: 0; }
+
+    .hero__obsah,
+    .rezervace__sloupec { width: 100%; }
+
+    /* Na mobilu je hero nižší a mezera nad tlačítkem menší. */
+    .hero { min-height: 0; padding: 192px 0 88px; }
+
+    .hero__text { margin-bottom: 43px; }
+
+    .hlavicka__lista { min-height: 82px; }
+
+    .hlavicka .tlacitko { display: none; }
+
+    /* Odkazy se schovají za přepínač „Menu" a rozbalují se přes celou šířku. */
     .menu-prepinac { display: flex; }
 
     .menu {
@@ -818,9 +1005,9 @@ ul { margin: 0; padding: 0; list-style: none; }
         z-index: 20;
         flex-direction: column;
         align-items: stretch;
-        gap: 0;
-        margin: 0;
+        margin-top: 8px;
         padding: 0;
+        border-radius: 24px;
         background: var(--barva-bila);
         overflow: hidden;
         max-height: 0;
@@ -839,49 +1026,63 @@ ul { margin: 0; padding: 0; list-style: none; }
         color: var(--barva-text);
     }
 
-    .hero { min-height: 640px; padding: 90px 0; }
+    .hero__nadpis { font-size: 38px; }
 
-    .hero__nadpis { font-size: 44px; }
+    .nadpis { font-size: 26px; }
 
-    /* Sloupce se skládají pod sebe. */
-    .sl-4, .sl-5, .sl-6, .sl-8 { width: 100%; }
+    .podnadpis,
+    .cenik__sezona,
+    .cenik__polozka { font-size: 17px; }
 
-    .sl-mezera { display: none; }
+    .rezervace__nadpis { font-size: 31px; }
 
-    .dlazdice__polozka { margin-bottom: 24px; }
-}
-
-@media (max-width: 767px) {
-    .sekce { padding: 50px 0; }
-
-    .hlavicka__lista { padding: 0 16px; min-height: 84px; }
-
-    .hlavicka__logo img { width: 56px; height: 56px; }
-
-    .hlavicka .tlacitko { display: none; }
-
-    .hero { min-height: 520px; padding: 70px 0; }
-
-    .hero__nadpis { font-size: 34px; }
-
-    .hero__stitek { font-size: 17px; }
-
-    .nadpis { font-size: 30px; }
-
-    .rezervace__nadpis { font-size: 34px; }
-
-    /* Mozaika se na mobilu srovná na jeden sloupec. */
-    .galerie { grid-template-columns: 1fr; }
+    /* Mozaika se srovná na dva sloupce a všechny dlaždice mají stejný poměr. */
+    .galerie { grid-template-columns: repeat(2, 1fr); }
 
     .galerie__polozka--siroka { grid-column: span 1; }
 
-    .galerie__polozka,
-    .galerie__polozka--uzka { aspect-ratio: 4 / 3; }
+    .galerie__polozka--uzka { aspect-ratio: 715 / 477; }
 
-    .pole { width: 100%; }
+    .dlazdice__polozka { margin-bottom: 24px; }
+
+    .sl-3 { width: 100%; }
+
+    .mezipas { height: 33px; }
+
+    .mezipas--pred-rezervaci { height: 38px; }
+
+    /* Odsazení sekcí naměřené na ostrém webu při 500 px. */
+    .dlazdice { padding: 35px 0 15px; }
+
+    .dlazdice__polozka { gap: 16px; }
+
+    #ubytovani { padding: 64px 0 64px; }
+    #aktivity  { padding: 17px 0 67px; }
+    #cenik     { padding: 38px 0 36px; }
+    #kontakt   { padding: 84px 0 56px; }
+
+    .rezervace { padding: 31px 0; }
+
+    .paticka { padding: 105px 0 123px; }
+
+    /* Položky vybavení jsou v jednom sloupci, blíž u sebe a ikona je
+       zarovnaná s nadpisem, ne nad ním. */
+    .polozka-radek { margin-bottom: 16px; }
+
+    .polozka-radek:first-child { margin-top: 15px; }
+
+    .polozka-radek > div { margin-top: 0; }
+
+    /* Vybavení a ceník mají mezi poskládanými sloupci 28 px, ne 38. */
+    #vybaveni .radek > .sl ~ .sl,
+    #cenik .radek > .sl ~ .sl { margin-top: 28px; }
+
+    /* Bloky ceníku si mezeru řeší vlastním okrajem. */
+    #cenik .radek:last-of-type > .sl ~ .sl { margin-top: 0; }
 
     .lightbox { padding: 56px 12px 40px; }
 
     .lightbox__sipka--zpet  { left: 4px; }
     .lightbox__sipka--vpred { right: 4px; }
 }
+

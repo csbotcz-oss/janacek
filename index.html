@@ -21,6 +21,20 @@
 <link rel="preload" href="assets/fonts/barlow-400-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css">
 
+<!-- Výchozí (skrytý) stav najíždějících bloků zapíná až tenhle řádek. Bez JS
+     nebo s vypnutými animacemi tak zůstane obsah normálně viditelný. Pojistka
+     ho odkryje i tehdy, když se main.js nenačte — jinak by zůstala prázdná
+     stránka. -->
+<script>
+(function(d){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    d.className += ' animace';
+    setTimeout(function () {
+        if (!window.najizdeniBezi) d.className = d.className.replace(' animace', '');
+    }, 3000);
+})(document.documentElement);
+</script>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -46,7 +60,7 @@
 
 <!-- Ikony pro ovládání. Vloženo inline, ať web nedělá požadavek navíc. -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 20 14"><path d="M0 0h20v2H0V0Zm0 6h20v2H0V6Zm0 6h20v2H0v-2Z"/></symbol>
     <symbol id="i-zavrit" viewBox="0 0 24 24"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.89 18.3 9.18 12 2.89 5.71 4.3 4.29l6.29 6.3 6.3-6.3 1.41 1.42Z"/></symbol>
 </svg>
 
@@ -66,12 +80,19 @@
                 <a href="#aktivity">Aktivity</a>
                 <a href="#cenik">Ceník</a>
                 <a href="#kontakt">Kontakt</a>
+
+                <!-- Sem si skript odloží odkazy, které se na tablet nevejdou. -->
+                <div class="menu__vice" hidden>
+                    <button class="menu__vice-prepinac" type="button" aria-expanded="false">Více<svg aria-hidden="true" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4"/></svg></button>
+                    <div class="menu__vice-obsah"></div>
+                </div>
             </nav>
 
             <button class="menu-prepinac" type="button"
                     aria-controls="menu" aria-expanded="false" aria-label="Otevřít menu">
                 <svg class="menu-prepinac__otevrit" aria-hidden="true"><use href="#i-menu"></use></svg>
                 <svg class="menu-prepinac__zavrit" aria-hidden="true"><use href="#i-zavrit"></use></svg>
+                <span class="menu-prepinac__popis">Menu</span>
             </button>
 
             <a class="tlacitko" href="#kontakt">Rezervovat ubytování</a>
@@ -102,25 +123,25 @@
 <section class="dlazdice pas pas--meruna">
     <div class="obsah">
         <div class="radek">
-            <div class="sl sl-3" style="width:25%">
+            <div class="sl sl-3">
                 <div class="dlazdice__polozka">
                     <img src="assets/img/lide-icon.svg" width="120" height="120" alt="" loading="lazy">
                     <h3 class="podnadpis">Kapacita až 9 osob</h3>
                 </div>
             </div>
-            <div class="sl sl-3" style="width:25%">
+            <div class="sl sl-3">
                 <div class="dlazdice__polozka">
                     <img src="assets/img/loznice-icon.svg" width="120" height="120" alt="" loading="lazy">
                     <h3 class="podnadpis">3 ložnice</h3>
                 </div>
             </div>
-            <div class="sl sl-3" style="width:25%">
+            <div class="sl sl-3">
                 <div class="dlazdice__polozka">
                     <img src="assets/img/ohen-icon.svg" width="120" height="120" alt="" loading="lazy">
                     <h3 class="podnadpis">Vlastní les a ohniště</h3>
                 </div>
             </div>
-            <div class="sl sl-3" style="width:25%">
+            <div class="sl sl-3">
                 <div class="dlazdice__polozka">
                     <img src="assets/img/wifi-icon.svg" width="120" height="120" alt="" loading="lazy">
                     <h3 class="podnadpis">Wi-Fi zdarma</h3>
@@ -132,16 +153,16 @@
 
 
 <!-- ------------------------------------------------------------- ubytování -- -->
-<section class="sekce pas pas--bila" id="ubytovani" style="padding:162px 0 116px">
+<section class="sekce pas pas--bila" id="ubytovani">
     <div class="obsah">
         <div class="radek">
             <div class="sl sl-5">
                 <picture>
                     <source srcset="assets/img/ubytovani-500.webp 500w, assets/img/ubytovani-1000.webp 1000w"
-                            sizes="(max-width: 1024px) 92vw, 474px" type="image/webp">
+                            sizes="(max-width: 992px) 92vw, 474px" type="image/webp">
                     <img src="assets/img/ubytovani-500.jpg"
                          srcset="assets/img/ubytovani-500.jpg 500w, assets/img/ubytovani-1000.jpg 1000w"
-                         sizes="(max-width: 1024px) 92vw, 474px"
+                         sizes="(max-width: 992px) 92vw, 474px"
                          width="500" height="667"
                          class="foto-ubytovani" alt="Společenská místnost s ručně vyráběným nábytkem — Chata Prášilka" loading="lazy">
                 </picture>
@@ -194,30 +215,30 @@
         <a class="galerie__polozka galerie__polozka--siroka" href="assets/img/galerie-1-1600.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-1-800.webp 800w, assets/img/galerie-1-1600.webp 1600w"
-                        sizes="(max-width: 767px) 100vw, 50vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 50vw" type="image/webp">
                 <img src="assets/img/galerie-1-800.jpg"
                      srcset="assets/img/galerie-1-800.jpg 800w, assets/img/galerie-1-1600.jpg 1600w"
-                     sizes="(max-width: 767px) 100vw, 50vw" width="800" height="600"
+                     sizes="(max-width: 719px) 100vw, 50vw" width="800" height="600"
                      alt="Ubytování v chatě - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
         <a class="galerie__polozka galerie__polozka--uzka" href="assets/img/galerie-2-1000.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-2-500.webp 500w, assets/img/galerie-2-1000.webp 1000w"
-                        sizes="(max-width: 767px) 100vw, 25vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 25vw" type="image/webp">
                 <img src="assets/img/galerie-2-500.jpg"
                      srcset="assets/img/galerie-2-500.jpg 500w, assets/img/galerie-2-1000.jpg 1000w"
-                     sizes="(max-width: 767px) 100vw, 25vw" width="500" height="667"
+                     sizes="(max-width: 719px) 100vw, 25vw" width="500" height="667"
                      alt="Koupelna - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
         <a class="galerie__polozka galerie__polozka--uzka" href="assets/img/galerie-3-1000.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-3-500.webp 500w, assets/img/galerie-3-1000.webp 1000w"
-                        sizes="(max-width: 767px) 100vw, 25vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 25vw" type="image/webp">
                 <img src="assets/img/galerie-3-500.jpg"
                      srcset="assets/img/galerie-3-500.jpg 500w, assets/img/galerie-3-1000.jpg 1000w"
-                     sizes="(max-width: 767px) 100vw, 25vw" width="500" height="667"
+                     sizes="(max-width: 719px) 100vw, 25vw" width="500" height="667"
                      alt="Chata s plně vybavenou kuchyní - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
@@ -225,30 +246,30 @@
         <a class="galerie__polozka galerie__polozka--uzka" href="assets/img/galerie-4-1000.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-4-500.webp 500w, assets/img/galerie-4-1000.webp 1000w"
-                        sizes="(max-width: 767px) 100vw, 25vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 25vw" type="image/webp">
                 <img src="assets/img/galerie-4-500.jpg"
                      srcset="assets/img/galerie-4-500.jpg 500w, assets/img/galerie-4-1000.jpg 1000w"
-                     sizes="(max-width: 767px) 100vw, 25vw" width="500" height="667"
+                     sizes="(max-width: 719px) 100vw, 25vw" width="500" height="667"
                      alt="Příjemné ubytování na chatě - Chata Prášilka, Jaroměř" loading="lazy">
             </picture>
         </a>
         <a class="galerie__polozka galerie__polozka--uzka" href="assets/img/galerie-5-1000.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-5-500.webp 500w, assets/img/galerie-5-1000.webp 1000w"
-                        sizes="(max-width: 767px) 100vw, 25vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 25vw" type="image/webp">
                 <img src="assets/img/galerie-5-500.jpg"
                      srcset="assets/img/galerie-5-500.jpg 500w, assets/img/galerie-5-1000.jpg 1000w"
-                     sizes="(max-width: 767px) 100vw, 25vw" width="500" height="667"
+                     sizes="(max-width: 719px) 100vw, 25vw" width="500" height="667"
                      alt="Chata s terasou - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
         <a class="galerie__polozka galerie__polozka--siroka" href="assets/img/galerie-6-1600.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-6-800.webp 800w, assets/img/galerie-6-1600.webp 1600w"
-                        sizes="(max-width: 767px) 100vw, 50vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 50vw" type="image/webp">
                 <img src="assets/img/galerie-6-800.jpg"
                      srcset="assets/img/galerie-6-800.jpg 800w, assets/img/galerie-6-1600.jpg 1600w"
-                     sizes="(max-width: 767px) 100vw, 50vw" width="800" height="600"
+                     sizes="(max-width: 719px) 100vw, 50vw" width="800" height="600"
                      alt="Ložnice - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
@@ -256,30 +277,30 @@
         <a class="galerie__polozka galerie__polozka--siroka" href="assets/img/galerie-7-1440.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-7-800.webp 800w, assets/img/galerie-7-1440.webp 1440w"
-                        sizes="(max-width: 767px) 100vw, 50vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 50vw" type="image/webp">
                 <img src="assets/img/galerie-7-800.jpg"
                      srcset="assets/img/galerie-7-800.jpg 800w, assets/img/galerie-7-1440.jpg 1440w"
-                     sizes="(max-width: 767px) 100vw, 50vw" width="800" height="600"
+                     sizes="(max-width: 719px) 100vw, 50vw" width="800" height="600"
                      alt="Společenská místnost a kamna - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
         <a class="galerie__polozka galerie__polozka--uzka" href="assets/img/galerie-8-1000.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-8-500.webp 500w, assets/img/galerie-8-1000.webp 1000w"
-                        sizes="(max-width: 767px) 100vw, 25vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 25vw" type="image/webp">
                 <img src="assets/img/galerie-8-500.jpg"
                      srcset="assets/img/galerie-8-500.jpg 500w, assets/img/galerie-8-1000.jpg 1000w"
-                     sizes="(max-width: 767px) 100vw, 25vw" width="500" height="667"
+                     sizes="(max-width: 719px) 100vw, 25vw" width="500" height="667"
                      alt="Pronájem chaty s terasou - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
         <a class="galerie__polozka galerie__polozka--uzka" href="assets/img/galerie-9-1000.jpg" data-galerie>
             <picture>
                 <source srcset="assets/img/galerie-9-500.webp 500w, assets/img/galerie-9-1000.webp 1000w"
-                        sizes="(max-width: 767px) 100vw, 25vw" type="image/webp">
+                        sizes="(max-width: 719px) 100vw, 25vw" type="image/webp">
                 <img src="assets/img/galerie-9-500.jpg"
                      srcset="assets/img/galerie-9-500.jpg 500w, assets/img/galerie-9-1000.jpg 1000w"
-                     sizes="(max-width: 767px) 100vw, 25vw" width="500" height="667"
+                     sizes="(max-width: 719px) 100vw, 25vw" width="500" height="667"
                      alt="Chata k pronájmu - Chata Prášilka, Rychnovek" loading="lazy">
             </picture>
         </a>
@@ -288,7 +309,7 @@
 
 
 <!-- --------------------------------------------------------------- vybavení -- -->
-<section class="sekce pas pas--bila" id="vybaveni" style="padding:132px 0 86px">
+<section class="sekce pas pas--bila" id="vybaveni">
     <div class="obsah">
         <div class="radek">
             <div class="sl sl-12 na-stred">
@@ -301,10 +322,10 @@
             <div class="sl sl-4">
                 <picture>
                     <source srcset="assets/img/vybaveni-400.webp 400w, assets/img/vybaveni-800.webp 800w"
-                            sizes="(max-width: 1024px) 92vw, 373px" type="image/webp">
+                            sizes="(max-width: 992px) 92vw, 373px" type="image/webp">
                     <img src="assets/img/vybaveni-400.jpg"
                          srcset="assets/img/vybaveni-400.jpg 400w, assets/img/vybaveni-800.jpg 800w"
-                         sizes="(max-width: 1024px) 92vw, 373px"
+                         sizes="(max-width: 992px) 92vw, 373px"
                          width="400" height="533"
                          class="foto-vybaveni" alt="Společenská místnost - Chata Prášilka, Jaroměř" loading="lazy">
                 </picture>
@@ -370,57 +391,59 @@
 </section>
 
 
-<div class="mezipas"></div>
+<div class="mezipas mezipas--pred-rezervaci"></div>
 
 
 <!-- -------------------------------------------------------------- rezervace -- -->
 <section class="rezervace pas pas--meruna">
     <div class="obsah">
+        <div class="rezervace__sloupec">
         <h2 class="rezervace__nadpis">Rezervace</h2>
         <p>Pro rezervaci nás kontaktujte telefonicky nebo e-mailem.<br>
             <strong>Příjezd</strong>: od 16:00 (víkend od 14:00)<br>
             <strong>Odjezd</strong>: do 10:00<br>
             <strong>Záloha</strong>: 50 % při rezervaci, doplatek 14 dní před nástupem</p>
         <a class="tlacitko" href="#kontakt">Rezervovat ubytování</a>
+        </div>
     </div>
 </section>
 
 
 <!-- --------------------------------------------------------------- aktivity -- -->
-<section class="sekce pas pas--bila" id="aktivity" style="padding:112px 0 62px">
+<section class="sekce pas pas--bila" id="aktivity">
     <div class="obsah">
         <div class="radek">
             <div class="sl sl-5">
                 <picture>
                     <source srcset="assets/img/aktivity-1-500.webp 500w, assets/img/aktivity-1-1000.webp 1000w"
-                            sizes="(max-width: 1024px) 92vw, 474px" type="image/webp">
+                            sizes="(max-width: 992px) 92vw, 474px" type="image/webp">
                     <img src="assets/img/aktivity-1-500.jpg"
                          srcset="assets/img/aktivity-1-500.jpg 500w, assets/img/aktivity-1-1000.jpg 1000w"
-                         sizes="(max-width: 1024px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
+                         sizes="(max-width: 992px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
                          alt="Chata k pronájmu - Chata Prášilka, Rychnovek" loading="lazy">
                 </picture>
                 <picture>
                     <source srcset="assets/img/aktivity-2-500.webp 500w, assets/img/aktivity-2-1000.webp 1000w"
-                            sizes="(max-width: 1024px) 92vw, 474px" type="image/webp">
+                            sizes="(max-width: 992px) 92vw, 474px" type="image/webp">
                     <img src="assets/img/aktivity-2-500.jpg"
                          srcset="assets/img/aktivity-2-500.jpg 500w, assets/img/aktivity-2-1000.jpg 1000w"
-                         sizes="(max-width: 1024px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
+                         sizes="(max-width: 992px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
                          alt="Pronájem chaty - Chata Prášilka, Jaroměř" loading="lazy">
                 </picture>
                 <picture>
                     <source srcset="assets/img/aktivity-3-500.webp 500w, assets/img/aktivity-3-1000.webp 1000w"
-                            sizes="(max-width: 1024px) 92vw, 474px" type="image/webp">
+                            sizes="(max-width: 992px) 92vw, 474px" type="image/webp">
                     <img src="assets/img/aktivity-3-500.jpg"
                          srcset="assets/img/aktivity-3-500.jpg 500w, assets/img/aktivity-3-1000.jpg 1000w"
-                         sizes="(max-width: 1024px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
+                         sizes="(max-width: 992px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
                          alt="Ubytování v chatě - Chata Prášilka, Rychnovek" loading="lazy">
                 </picture>
                 <picture>
                     <source srcset="assets/img/aktivity-4-500.webp 500w, assets/img/aktivity-4-1000.webp 1000w"
-                            sizes="(max-width: 1024px) 92vw, 474px" type="image/webp">
+                            sizes="(max-width: 992px) 92vw, 474px" type="image/webp">
                     <img src="assets/img/aktivity-4-500.jpg"
                          srcset="assets/img/aktivity-4-500.jpg 500w, assets/img/aktivity-4-1000.jpg 1000w"
-                         sizes="(max-width: 1024px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
+                         sizes="(max-width: 992px) 92vw, 474px" width="500" height="333" class="foto-aktivita"
                          alt="Chata s velkou zahradou a ohništěm - Chata Prášilka, Jaroměř" loading="lazy">
                 </picture>
             </div>
@@ -433,61 +456,63 @@
                 <p><strong>Chata Prášilka</strong> se nachází za obcí <strong>Rychnovek</strong>,
                     v klidném prostředí <strong>u lesa nad řekou Metují</strong>. V okolí můžete:</p>
 
-                <div class="polozka">
-                    <img src="assets/img/nakupy-chata.svg" width="60" height="60" alt="" loading="lazy">
-                    <div>
-                        <p><strong>V obci Rychnovek naleznete:</strong></p>
-                        <ul>
-                            <li>• Obchod s potravinami</li>
-                            <li>• Poštu</li>
-                            <li>• Autobusovou i vlakovou zastávku</li>
-                            <li>• Sportovní klub Rychnovek, kde si mohou užít sportovní vyžití děti
-                                i dospělí – k dispozici je tenis, šipky, kulečník, ping-pong
-                                a míčové hry</li>
-                        </ul>
+                <div class="dvojice dvojice--aktivity">
+                    <div class="polozka">
+                        <img src="assets/img/nakupy-chata.svg" width="60" height="60" alt="" loading="lazy">
+                        <div>
+                            <p><strong>V obci Rychnovek naleznete:</strong></p>
+                            <ul>
+                                <li>• Obchod s potravinami</li>
+                                <li>• Poštu</li>
+                                <li>• Autobusovou i vlakovou zastávku</li>
+                                <li>• Sportovní klub Rychnovek, kde si mohou užít sportovní vyžití děti
+                                    i dospělí – k dispozici je tenis, šipky, kulečník, ping-pong
+                                    a míčové hry</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-
-                <div class="polozka">
-                    <img src="assets/img/pevnost-icon.svg" width="60" height="60" alt="" loading="lazy">
-                    <div>
-                        <p><strong>Tipy na výlety:</strong></p>
-                        <ul>
-                            <li>• Safari Park Dvůr Králové</li>
-                            <li>• Hospitál Kuks</li>
-                            <li>• Státní zámek Ratibořice</li>
-                            <li>• Muzeum Boženy Němcové v České Skalici</li>
-                            <li>• Muzeum betlémů v Třebechovicích pod Orebem</li>
-                            <li>• Státní zámek Opočno</li>
-                            <li>• Zámek Nové Město nad Metují</li>
-                            <li>• Státní zámek Náchod</li>
-                        </ul>
+    
+                    <div class="polozka">
+                        <img src="assets/img/pevnost-icon.svg" width="60" height="60" alt="" loading="lazy">
+                        <div>
+                            <p><strong>Tipy na výlety:</strong></p>
+                            <ul>
+                                <li>• Safari Park Dvůr Králové</li>
+                                <li>• Hospitál Kuks</li>
+                                <li>• Státní zámek Ratibořice</li>
+                                <li>• Muzeum Boženy Němcové v České Skalici</li>
+                                <li>• Muzeum betlémů v Třebechovicích pod Orebem</li>
+                                <li>• Státní zámek Opočno</li>
+                                <li>• Zámek Nové Město nad Metují</li>
+                                <li>• Státní zámek Náchod</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-
-                <div class="polozka">
-                    <img src="assets/img/kolo-icon.svg" width="60" height="60" alt="" loading="lazy">
-                    <div>
-                        <p><strong>Oblíbené cyklotrasy:</strong></p>
-                        <ul>
-                            <li>• Josefov</li>
-                            <li>• Jaroměř</li>
-                            <li>• Kuks</li>
-                            <li>• Hradec Králové</li>
-                            <li>• Česká Skalice</li>
-                        </ul>
+    
+                    <div class="polozka">
+                        <img src="assets/img/kolo-icon.svg" width="60" height="60" alt="" loading="lazy">
+                        <div>
+                            <p><strong>Oblíbené cyklotrasy:</strong></p>
+                            <ul>
+                                <li>• Josefov</li>
+                                <li>• Jaroměř</li>
+                                <li>• Kuks</li>
+                                <li>• Hradec Králové</li>
+                                <li>• Česká Skalice</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-
-                <div class="polozka">
-                    <img src="assets/img/koupaliste-icon.svg" width="60" height="60" alt="" loading="lazy">
-                    <div>
-                        <p><strong>Možnosti koupání:</strong></p>
-                        <ul>
-                            <li>• Plavecký areál v Jaroměři</li>
-                            <li>• Koupaliště Na Úpě – říční a sluneční lázně v Jaroměři</li>
-                            <li>• Vodní nádrž Rozkoš</li>
-                        </ul>
+    
+                    <div class="polozka">
+                        <img src="assets/img/koupaliste-icon.svg" width="60" height="60" alt="" loading="lazy">
+                        <div>
+                            <p><strong>Možnosti koupání:</strong></p>
+                            <ul>
+                                <li>• Plavecký areál v Jaroměři</li>
+                                <li>• Koupaliště Na Úpě – říční a sluneční lázně v Jaroměři</li>
+                                <li>• Vodní nádrž Rozkoš</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -502,7 +527,7 @@
 
 
 <!-- ------------------------------------------------------------------ ceník -- -->
-<section class="sekce pas pas--meruna" id="cenik" style="padding:83px 0 84px">
+<section class="sekce pas pas--meruna" id="cenik">
     <div class="obsah">
         <div class="radek">
             <div class="sl sl-12">
@@ -521,10 +546,10 @@
             <div class="sl sl-6">
                 <picture>
                     <source srcset="assets/img/cenik-600.webp 600w, assets/img/cenik-1200.webp 1200w"
-                            sizes="(max-width: 1024px) 92vw, 575px" type="image/webp">
+                            sizes="(max-width: 992px) 92vw, 575px" type="image/webp">
                     <img src="assets/img/cenik-600.jpg"
                          srcset="assets/img/cenik-600.jpg 600w, assets/img/cenik-1200.jpg 1200w"
-                         sizes="(max-width: 1024px) 92vw, 575px" width="600" height="293" class="foto-cenik"
+                         sizes="(max-width: 992px) 92vw, 575px" width="600" height="293" class="foto-cenik"
                          alt="Chata Prášilka" loading="lazy">
                 </picture>
             </div>
@@ -555,7 +580,7 @@
 
 
 <!-- ---------------------------------------------------------------- kontakt -- -->
-<section class="sekce pas pas--bila" id="kontakt" style="padding:134px 0 110px">
+<section class="sekce pas pas--bila" id="kontakt">
     <div class="obsah">
         <div class="radek">
             <div class="sl sl-4 kontakt__udaje">
