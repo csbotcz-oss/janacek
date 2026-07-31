@@ -42,11 +42,18 @@ Vědomé odchylky od originálu (na přání klienta):
 
 https://chata-prasilka.cstest.cz/ — původně Solidpixels, zdrojáky neexistují.
 
-**Stav: desktop hotový a ověřený proti snímkům ostrého webu, mobil
-a tablet neprojeté.**
+**Stav: hotovo na desktopu, tabletu i mobilu, ověřeno proti snímkům
+ostrého webu.** Pásy i vlny sedí na 1440, 800 i 500 px do 2 px.
 
-Na šířce 1440 sedí všechny pásy i řádky textu do 2 px a vlny na všech
-devíti předělech do 1 px. Celá stránka 8315 px proti 8316.
+Zlomy jsou 992 a 719 px jako v originálu. Na tabletu se sloupce
+neskládají — mřížka je stejná jako na desktopu, mění se jen velikosti
+písma, odsazení a výšky mezipásů. Odkazy, které se nevejdou do lišty, se
+přesouvají do rozbalovátka „Více"; hamburger nasazuje až pod 720 px.
+
+Bloky najíždějí zdola (posun 48 px, 0,9 s, cubic-bezier(.215,.61,.355,1),
+průhlednost o 0,1 s opožděná) — stejně jako originál přes plugin
+inViewport. Výchozí skrytý stav zapíná skript v hlavičce, aby bez JS ani
+s vypnutými animacemi obsah nezmizel.
 
 Struktura: meruňková je barva celé stránky, bílé pásy leží na ní. Bílý pás
 má vlnu ve svých prvních 50 px a v posledních 50 px tutéž vlnu otočenou
@@ -87,3 +94,8 @@ U chaty navíc nestačí ani sonda: Solidpixels drží před scroll-animací
 neodstraněný. Sonda pak hlásí obsah o 48 px níž, než ve skutečnosti je.
 Relativní geometrie uvnitř sekce je z ní správně, ale **počátek se musí
 vzít ze snímku** — na to jsou `nastroje/radky.php` a `nastroje/prechody.php`.
+
+Ve snímku ostrého webu zase ta samá animace část sekcí vůbec neodkryje.
+Na to je `nastroje/snimek-chata.php`, který třídu `in-viewport` nasadí
+ručně. Fotky pod ohybem se ani tak nenačtou — porovnávat jde jen text
+a hranice pásů.
