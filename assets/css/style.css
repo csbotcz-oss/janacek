@@ -89,7 +89,9 @@ body {
     font-weight: 400;
     line-height: 1.6;
     color: var(--barva-text);
-    background: var(--barva-bila);
+    /* Meruňková je barva celé stránky, bílé pásy leží na ní. Viz „pásy
+       a vlny" — masky z bílé vykusují a musí pod sebou najít tuhle. */
+    background: var(--barva-meruna);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -133,9 +135,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------------------------------------------------------- komponenty -- */
 
-/* Malý oranžový nadpisek nad hlavním nadpisem sekce. */
+/* Malý oranžový nadpisek nad hlavním nadpisem sekce. Odsazení je zvolené
+   tak, aby mezi jeho účařím a nadpisem bylo 48 px jako na originále —
+   Solidpixels drží mezi bloky textu jednotný rozestup, my ho musíme doplnit
+   ručně, protože náš odstavec má vyšší řádkování než jejich inline text. */
 .stitek {
-    margin: 0 0 8px;
+    margin: 0 0 28px;
     font-size: 14px;
     font-weight: 700;
     line-height: 1.65;
@@ -145,11 +150,20 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .nadpis {
+    margin: 0 0 28px;
     font-size: 40px;
     line-height: 1.3;
 }
 
 .na-stred { text-align: center; }
+
+/* Solidpixels obaluje každý blok textu ve sloupci divem s 14px vnitřním
+   odsazením, takže mezi bloky vychází 28 px. U ceníku a kontaktů má obal
+   12,8 px, tedy 25,6 px mezi bloky. Naše značkování obaly nemá, mezeru
+   proto dělá spodní okraj odstavce. */
+.sl > p { margin-bottom: 28px; }
+
+#cenik .sl > p { margin-bottom: 25.6px; }
 
 .podnadpis {
     font-size: 23px;
@@ -158,17 +172,18 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .tlacitko {
     display: inline-block;
-    padding: 14px 27px;
+    /* Naměřeno na originále: 54 px na výšku včetně 1px rámečku. */
+    padding: 14.3px 27.3px;
     font-family: var(--pismo);
     font-size: 13px;
     font-weight: 700;
-    line-height: 1.4;
-    letter-spacing: .04em;
+    line-height: 23.53px;
+    letter-spacing: 1.04px;
     text-transform: uppercase;
     text-decoration: none;
     color: var(--barva-bila);
     background: var(--barva-oranzova);
-    border: 0;
+    border: 1px solid transparent;
     border-radius: var(--radius-pole);
     cursor: pointer;
     transition: background-color .2s;
@@ -181,11 +196,17 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ------------------------------------------------------------- pásy a vlny -- */
 
 /* Web je poskládaný ze střídajících se meruňkových a bílých pásů a na každém
-   předělu je zvlněná hrana vysoká 50 px. Ověřeno rozborem barev po pixelech
-   na ostrém webu, ne odvozením z tříd.
+   předělu je zvlněná hrana vysoká 50 px.
 
-   Vlnu nese vždy pás pod hranou: přesahuje o 50 px nahoru do pásu nad sebou
-   a maska jí dá tvar. Tím je vždy vidět, i když jsou oba pásy různobarevné. */
+   Originál to dělá tak, že meruňková je barva celé stránky a bílé pásy leží
+   na ní s maskou: bílý pás má vlnu ve svých PRVNÍCH 50 px a znovu
+   v POSLEDNÍCH 50 px, kde je to tatáž vlna otočená o 180°. Proto vypadá
+   každý bílý blok zrcadlově. Ověřeno rozborem barev po pixelech na ostrém
+   webu, ne odvozením z tříd.
+
+   Kreslíme proto meruňkový výkus dovnitř bílého pásu, ne bílou vlnu ven
+   z něj — jinak hrana sedí o 50 px výš, než má. Meruňkové pásy vlastní
+   vlnu nemají, jejich hranu udělá vždycky soused. */
 .pas {
     position: relative;
     background: var(--pas-barva, transparent);
@@ -193,22 +214,29 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .pas > * { position: relative; z-index: 1; }
 
-.pas::before {
+.pas--bila::before,
+.mezipas::after,
+.hero::before {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    top: -49px;
     height: 50px;
-    z-index: 0;
-    background: var(--pas-barva, transparent);
-    -webkit-mask: url(../img/wave-top.svg) center / 100% 100% no-repeat;
-            mask: url(../img/wave-top.svg) center / 100% 100% no-repeat;
+    background: var(--barva-meruna);
+    -webkit-mask: url(../img/vlna.svg) center / 100% 100% no-repeat;
+            mask: url(../img/vlna.svg) center / 100% 100% no-repeat;
 }
 
-/* Mezi některými pásy je ještě 60px bílý pruh — originál je řeší
-   samostatnou sekcí. Vlna dalšího pásu do něj zasahuje. */
-.mezipas { height: 60px; background: var(--barva-bila); }
+.pas--bila::before { top: 0; z-index: 0; }
+
+/* Spodní hrana je ta samá vlna otočená o 180°. U hera musí ležet i nad
+   fotkou a jejím ztmavením, proto vyšší z-index. */
+.mezipas::after,
+.hero::before { bottom: 0; z-index: 2; transform: rotate(180deg); }
+
+/* Mezi bílou sekcí a následujícím meruňkovým pásem je ještě 60px bílý pruh —
+   originál ho řeší samostatnou sekcí a spodní vlnu nese on. */
+.mezipas { position: relative; height: 60px; background: var(--barva-bila); }
 
 .pas--meruna { --pas-barva: var(--barva-meruna); }
 .pas--bila   { --pas-barva: var(--barva-bila); }
@@ -241,16 +269,25 @@ ul { margin: 0; padding: 0; list-style: none; }
 .hlavicka__vpravo {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 15px;
 }
 
+/* Tlačítko v hlavičce je nižší a užší než tlačítka v obsahu. */
+.hlavicka .tlacitko {
+    padding: 9px 14px;
+    line-height: 1.4;
+    letter-spacing: normal;
+}
+
+/* Odkazy v menu mají na originále vnitřní odsazení 9/14 px a dotýkají se,
+   mezera mezi popisky je tedy 28 px. */
 .menu {
     display: flex;
     align-items: center;
-    gap: 26px;
 }
 
 .menu a {
+    padding: 9px 14px;
     font-size: 17px;
     font-weight: 700;
     line-height: 1.4;
@@ -292,7 +329,8 @@ ul { margin: 0; padding: 0; list-style: none; }
     display: flex;
     align-items: center;
     min-height: 867px;
-    padding: 150px 0;
+    /* Obsah začíná 290 px od horní hrany — naměřeno na snímku ostrého webu. */
+    padding: 290px 0 164px;
     background-image: image-set(url(../img/hero-1920.webp) type('image/webp'),
                                 url(../img/hero-1920.jpg)  type('image/jpeg'));
     background-size: cover;
@@ -310,12 +348,12 @@ ul { margin: 0; padding: 0; list-style: none; }
     z-index: 0;
     background-image: linear-gradient(220deg, rgb(0 0 0 / 0) 25.84%, rgb(0 0 0 / .76) 44.8%);
     mix-blend-mode: multiply;
-/}
+}
 
-.hero__obsah { max-width: 640px; position: relative; z-index: 1; }
+.hero__obsah { max-width: 676px; margin-left: 16px; position: relative; z-index: 1; }
 
 .hero__stitek {
-    margin: 0 0 8px;
+    margin: 0 0 28px;
     font-size: 20px;
     font-weight: 700;
     line-height: 1.6;
@@ -323,18 +361,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .hero__nadpis {
-    margin: 0 0 16px;
+    margin: 0 0 15px;
     font-size: 60px;
     font-weight: 700;
     line-height: 1.2;
 }
 
-.hero__text { margin-bottom: 24px; }
+.hero__text { margin-bottom: 58px; }
 
 /* ------------------------------------------------------------- dlaždice -- */
 
+/* Odsazení naměřené na snímku ostrého webu. */
 .dlazdice {
-    padding: 70px 0;
+    padding: 54px 0 85px;
     background: var(--barva-meruna);
     color: var(--barva-bila);
 }
@@ -358,6 +397,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .foto-cenik     { width: 100%; aspect-ratio: 575 / 281; object-fit: cover; border-radius: 15px; }
 
+/* Sekce aktivit se na originále o 5 px překrývá s tím, co je pod ní. */
+#aktivity { margin-bottom: -5px; }
+
+#aktivity .sl-5 { padding-top: 48px; }
+
 .foto-aktivita  {
     width: 100%;
     aspect-ratio: 474 / 316;
@@ -366,12 +410,17 @@ ul { margin: 0; padding: 0; list-style: none; }
     margin-bottom: 10px;
 }
 
+#aktivity .sl-5 picture:last-child .foto-aktivita { margin-bottom: 0; }
+
 /* --------------------------------------------------------------- položky -- */
 
 /* Web má dva typy položky s ikonou. Ubytování a aktivity mají ikonu NAD
    textem, vybavení VEDLE něj. Odstupy jsou naměřené na originále:
    ikona 60 px, pod ní 13 px mezera, mezi položkami 24 px. */
 .polozka { margin-bottom: 24px; }
+
+/* Za poslední položkou následuje tlačítko, a to je už jiný blok — 28 px. */
+.polozka:last-of-type { margin-bottom: 28px; }
 
 .polozka img {
     width: 60px;
@@ -384,12 +433,18 @@ ul { margin: 0; padding: 0; list-style: none; }
 .polozka p { margin: 0; }
 
 /* Vybavení: ikona vlevo, text vpravo, mezi položkami 58 px. */
+/* Ikona začíná o 13 px výš než text a první položka o 17 px níž než fotka
+   ve vedlejším sloupci — obojí naměřeno na originále. */
 .polozka-radek {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    margin-bottom: 58px;
+    margin-bottom: 45px;
 }
+
+.polozka-radek:first-child { margin-top: 17px; }
+.polozka-radek:last-child  { margin-bottom: 0; }
+.polozka-radek > div       { margin-top: 13px; }
 
 .polozka-radek img {
     flex: 0 0 auto;
@@ -444,46 +499,61 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ------------------------------------------------------------- rezervace -- */
 
-/* Odsazení podle skutečných hranic obsahu na originále. */
+/* Originál má obsah tohohle pásu svisle vycentrovaný, takže odsazení nahoře
+   i dole je stejné. Ověřeno na snímku ostrého webu — měření přes sondu tady
+   dávalo jiné číslo, protože se pás vykreslil vyšší. */
 .rezervace {
-    padding: 89px 0 0;
+    padding: 39px 0;
     color: var(--barva-text);
     text-align: center;
 }
 
 .rezervace__nadpis {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-size: 48px;
     line-height: 1.3;
 }
 
-.rezervace .tlacitko { margin-top: 8px; }
+.rezervace p { margin-bottom: 28px; }
+
 
 /* ---------------------------------------------------------------- ceník -- */
 
+/* Ceník má vlastní rytmus: řádky sekce jsou od sebe 28 px, uvnitř bloku
+   se střídá 10 px a 12,8 px podle toho, kde má originál obal navíc. */
+#cenik .nadpis { margin-bottom: 0; }
+
+#cenik .radek + .radek { margin-top: 28px; }
+
 .cenik__blok {
-    margin-bottom: 24px;
+    margin-bottom: 25.6px;
 }
 
 .cenik__sezona {
-    margin-bottom: 13px;
+    margin-bottom: 10px;
     font-size: 23px;
     line-height: 1.3;
 }
 
 /* Popisek a cena jsou pod sebou, bez linek — jako na originále. */
 .cenik__polozka {
-    margin: 0 0 6px;
+    margin: 0 0 10px;
     font-size: 20px;
     font-weight: 700;
     line-height: 1.3;
 }
 
+/* První cenu odsazuje originál navíc obalem s 12,8px odsazením. */
+.cenik__polozka:first-of-type { margin-bottom: 22.8px; }
+
 .cenik__cena {
-    margin: 0 0 17px;
+    margin: 0 0 12.8px;
     font-size: 17px;
     font-weight: 400;
+    line-height: 1.6;
 }
+
+.cenik__cena:last-child { margin-bottom: 0; }
 
 /* -------------------------------------------------------------- kontakt -- */
 
@@ -496,11 +566,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .kontakt__email:hover { text-decoration: underline; }
 
-.kontakt__udaje p { margin: 0 0 12px; }
+/* Bloky v kontaktech dělí 25,6 px, jen e-mail je samostatný blok s 28 px. */
+.kontakt__udaje p { margin: 0 0 25.6px; }
 
-.kontakt__udaje a { text-decoration: none; }
+.kontakt__udaje > p:first-of-type { margin-bottom: 28px; }
 
-.kontakt__udaje a:hover { text-decoration: underline; }
+/* Originál kontaktní odkazy podtrhává. */
+.kontakt__udaje a { text-decoration: underline; }
 
 /* ------------------------------------------------------------- formulář -- */
 
@@ -512,7 +584,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .pole {
     width: 50%;
-    padding: 0 16px 20px;
+    padding: 0 16px 12.8px;
 }
 
 .pole--cely { width: 100%; }
@@ -532,19 +604,20 @@ ul { margin: 0; padding: 0; list-style: none; }
 .pole textarea {
     display: block;
     width: 100%;
+    /* Naměřeno na originále: pole 42 px vysoké, písmo 16 px, rámeček černý. */
     padding: 8px 12px;
     font-family: inherit;
-    font-size: 17px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 24px;
     color: var(--barva-text);
     background: var(--barva-bila);
-    border: 1px solid #d5d0c9;
+    border: 1px solid #000;
     border-radius: var(--radius-pole);
 }
 
 .pole textarea {
-    height: 130px;
-    border-radius: 24px;
+    height: 128px;
+    line-height: 25.6px;
     resize: vertical;
 }
 
@@ -563,19 +636,46 @@ ul { margin: 0; padding: 0; list-style: none; }
     overflow: hidden;
 }
 
+/* Souhlas i tlačítko jsou zarovnané na levou hranu formuláře, ne na sloupec
+   pole — ta má vnitřní odsazení vyrušené záporným okrajem řádku. */
 .formular__souhlas {
+    margin: 0;
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    padding: 0 16px 16px;
+    gap: 8px;
+    padding: 0 0 12.8px;
     font-size: 17px;
     line-height: 1.6;
     color: var(--barva-popisek);
 }
 
-.formular__souhlas input { margin-top: 4px; }
+/* Originál nativní zaškrtávátko schová a kreslí si vlastní čtverec 16 px. */
+.formular__souhlas input {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    margin: 5px 0 0;
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--barva-bila);
+    border: 1px solid #000;
+    border-radius: 2px;
+    cursor: pointer;
+}
 
-.formular__odeslat { padding-inline: 16px; }
+.formular__souhlas input:checked {
+    background: var(--barva-oranzova)
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2.5'%3E%3Cpath d='M3 8.5 6.5 12 13 4.5'/%3E%3C/svg%3E")
+        center / 12px no-repeat;
+    border-color: var(--barva-oranzova);
+}
+
+.formular__souhlas input:focus-visible {
+    outline: 2px solid var(--barva-oranzova);
+    outline-offset: 1px;
+}
+
+.formular__odeslat { padding-inline: 0; }
 
 .formular__zprava {
     margin: 12px 16px 0;
