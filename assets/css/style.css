@@ -444,8 +444,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ------------------------------------------------------------- rezervace -- */
 
+/* Odsazení podle skutečných hranic obsahu na originále. */
 .rezervace {
-    padding: 25px 0;
+    padding: 89px 0 52px;
     color: var(--barva-text);
     text-align: center;
 }
@@ -592,7 +593,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* -------------------------------------------------------------- patička -- */
 
 .paticka {
-    padding: 25px 0;
+    padding: 87px 0 105px;
     color: var(--barva-text);
     text-align: center;
     font-size: 16px;
