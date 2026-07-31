@@ -42,18 +42,27 @@ Vědomé odchylky od originálu (na přání klienta):
 
 https://chata-prasilka.cstest.cz/ — původně Solidpixels, zdrojáky neexistují.
 
-**Stav: desktop doladěný, mobil a tablet neprojeté.**
+**Stav: desktop hotový a ověřený proti snímkům ostrého webu, mobil
+a tablet neprojeté.**
 
-Výšky všech sekcí sedí přesně, pozice do 8 px, celá stránka −15 px z 8338.
+Na šířce 1440 sedí všechny pásy i řádky textu do 2 px a vlny na všech
+devíti předělech do 1 px. Celá stránka 8315 px proti 8316.
 
-Struktura: střídající se meruňkové a bílé pásy, na každém předělu zvlněná
-hrana 50 px, plus 60px bílé mezipásy na čtyřech místech (mezi ubytováním
-a galerií, vybavením a rezervací, aktivitami a ceníkem, kontaktem
-a patičkou).
+Struktura: meruňková je barva celé stránky, bílé pásy leží na ní. Bílý pás
+má vlnu ve svých prvních 50 px a v posledních 50 px tutéž vlnu otočenou
+o 180° — proto vypadá každý bílý blok zrcadlově. Mezi bílou sekcí
+a následujícím meruňkovým pásem je ještě 60px bílý pruh (`.mezipas`), který
+nese spodní vlnu.
+
+Svislý rytmus vychází z toho, že Solidpixels obaluje každý blok textu divem
+s 14px vnitřním odsazením — mezi bloky je tedy 28 px, v ceníku a kontaktech
+25,6 px. Tlačítka v obsahu jsou 54 px vysoká včetně 1px rámečku, tlačítko
+v hlavičce 38 px, pole formuláře 42 px s černým rámečkem.
 
 Vědomé odchylky:
 - odstraněn odznak „Made by" (odkaz na netpromotion.cz)
-- cookie lišta se nedělá
+- cookie lišta se nedělá, v patičce proto chybí „Nastavení cookies"
+- u odkazu na adresu chybí ikonka „otevře se v novém okně"
 
 ## Co zbývá
 
@@ -72,3 +81,9 @@ Odhadovat hodnoty z CSS nefunguje. Elementor definuje proměnné, které
 z valné části nepoužívá; Solidpixels přičítá k odsazení sekce vnitřní
 okraje. Vždy měřit vykreslený výsledek — nástroje a jejich pasti jsou
 popsané v `nastroje/README.md`.
+
+U chaty navíc nestačí ani sonda: Solidpixels drží před scroll-animací
+`transform: translateY(48px)` a v dumpu DOMu bývá u části sekcí ještě
+neodstraněný. Sonda pak hlásí obsah o 48 px níž, než ve skutečnosti je.
+Relativní geometrie uvnitř sekce je z ní správně, ale **počátek se musí
+vzít ze snímku** — na to jsou `nastroje/radky.php` a `nastroje/prechody.php`.

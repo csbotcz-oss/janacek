@@ -19,6 +19,8 @@ Vyžadují `chromium` (nainstalovaný přes apt) a PHP s rozšířením Imagick.
 | `orientace.php` | srovnání EXIF orientace, používá ho `images-chata.php` |
 | `fonts.php` | z Google Fonts CSS stáhne woff2 (latin + latin-ext) a přepíše cesty |
 | `extract.php <html>` | vytáhne z uloženého HTML obsahovou kostru (nadpisy, texty, formulář) |
+| `radky.php <x1> <x2> <y1> <y2>` | porovná svislé rozložení textu ve dvou snímcích v zadaném pruhu |
+| `prechody.php <x>` | najde ve dvou snímcích všechny přechody mezi barvami pásů (kontrola vln) |
 
 ## Na co si dát pozor
 
@@ -47,6 +49,19 @@ hero. U chaty se proto spoléhá na měření pozic, ne na obrázkové porovnán
 **Elementor obaluje texty do `<span>`.** `porovnej.php` páruje podle textu,
 takže srovnává jejich vnitřní `<span>` proti našemu tlačítku. Rozdíl bývá
 přesně velikost odsazení — není to chyba.
+
+**U chaty neveřit sondě, kde obsah v sekci začíná.** Solidpixels drží před
+scroll-animací `transform: translateY(48px)`. Ve snímku se animace dokončí
+a obsah je na svém místě, v `probe.php` (dump DOMu ve virtuálním čase) často
+ne — sonda pak hlásí obsah sekce o 48 px níž, než ve skutečnosti je. Poznat
+se to dá tak, že celá sekce má konstantní odchylku. **Relativní geometrie
+uvnitř sekce je správně, počátek je potřeba vzít ze snímku.** Na to slouží
+porovnání řádků textu po pixelech (viz níže).
+
+**Fotky pod ohybem se v originálu do snímku nedostanou.** Snímek ostrého webu
+má načtený hero, ale fotky v ubytování, vybavení, aktivitách i galerii chybí.
+Porovnávat se proto dají jen textové sloupce, ne celé pásy — a výšky sekcí
+naštěstí drží, protože je Solidpixels má pevné.
 
 **Měřit vykreslený výsledek, ne deklarované hodnoty.** Elementor definuje
 proměnné, které skoro nepoužívá, a Solidpixels přičítá k odsazení sekce
