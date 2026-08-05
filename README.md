@@ -82,7 +82,7 @@ vyplnění 3 s a limit 5 odeslání za hodinu na IP.
 
 ## Před spuštěním na ostré doméně
 
-- [ ] `robots.txt` — nahradit obsahem `User-agent: *` / `Allow: /` a doplnit `Sitemap:`
+- [x] `robots.txt` — řeší deploy skript podle cíle nasazení, v gitu není
 - [ ] nastavit `config.local.php` s ostrými SMTP údaji
 - [ ] ověřit SPF/DMARC pro odesílací adresu, jinak poptávky spadnou do spamu
 - [ ] zkontrolovat `canonical` a `og:url` (míří na ostrou doménu)
