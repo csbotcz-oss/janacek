@@ -77,6 +77,15 @@ Běží přes mailserver klienta: `mail.cstech.cz`, **port 25 se STARTTLS**.
 Port 465 nás z tohohle serveru odmítá (`554 Permission denied`) a 587 je
 zavřený — spojení je i tak šifrované.
 
+Poptávky chodí na `racajda.m@seznam.cz` (chata) a `truhlarstvi.hesu@seznam.cz`
+(truhlářství).
+
+**SPF pro `webmailer.cstech.cz` se vědomě nedoplňuje** — rozhodnutí klienta,
+upozorněno na to bylo. Doména má MX, ale ne SPF, takže odesílání není ověřené
+a u Seznamu, kam obě adresy vedou, může pošta padat do spamu. Kdyby si někdo
+stěžoval, že poptávky nechodí, hledat problém nejdřív tady: stačí TXT záznam
+`v=spf1 ip4:82.208.14.50 -all`.
+
 Přihlašovací účty a hesla jsou v `config.local.php` v docrootu každého webu.
 Nejsou v gitu a deploy je z rsyncu vylučuje, ověřeno. Jako odesílatel slouží
 ten samý webmailerový účet; e-mail zákazníka jde do `Reply-To`, takže se dá
@@ -84,18 +93,11 @@ odpovídat rovnou.
 
 ## Co zbývá
 
-1. **Přepnout příjemce poptávek.** Teď obojí chodí na zkušební schránku
-   `matej.b@cstechnologies.cz`. Po odladění přepnout na `info@chata-prasilka.cz`
-   a `truhlarstvi.hesu@seznam.cz` — v obou `config.local.php` je u toho
-   poznámka.
-2. **Doplnit SPF pro `webmailer.cstech.cz`.** Doména má MX, ale ne SPF, takže
-   si příjemce nemá jak ověřit, že 82.208.14.50 smí odesílat. Stačí TXT
-   `v=spf1 ip4:82.208.14.50 -all`. Bez toho hrozí spam, hlavně u Seznamu.
-3. **Google Analytics a cookie lišta.** Domluvené, ale nezačaté. GA se nesmí
+1. **Google Analytics a cookie lišta.** Domluvené, ale nezačaté. GA se nesmí
    spustit před souhlasem, takže lišta musí být první. Klient chce navázat na
    stávající historii, takže se použije to samé měřicí ID, co běží na ostrých
    webech.
-4. **Spuštění na ostrých doménách** — checklist je v README každé větve
+2. **Spuštění na ostrých doménách** — checklist je v README každé větve
    (robots.txt, canonical, SPF/DMARC, přesměrování www).
 
 ## Poznámky k postupu
