@@ -102,10 +102,16 @@ volba se pamatuje rok v `localStorage` a mění se odkazem v patičce.
 nesouhlasí, web se s Googlem vůbec nespojí. Po odvolání souhlasu se cookies
 Google smažou a stránka se načte znovu.
 
-Zbývá doplnit **měřicí ID** do konstanty `MERICI_ID` na začátku
-`assets/js/souhlas.js` (každý web zvlášť). Dokud je prázdná, nenačte se nic
-a zbytek funguje beze změny. Musí to být to samé ID, které běží na ostrých
-webech, jinak se nenaváže historie.
+Měřicí ID jsou doplněná: chata `G-126284WQB9`, truhlářství `G-3QMPZ4TPHP`.
+
+**Měří se jen na ostré doméně** — konstanta `OSTRA_DOMENA` v `souhlas.js`.
+Na cstest.cz se neodešle nic ani po souhlasu, aby nám zkoušky nezanesly
+statistiky. Po přepnutí na ostrou doménu se měření rozjede samo.
+
+Zobrazení stránky posílá `gtag('config', ...)` samo. Odeslaná poptávka jde
+jako událost `generate_lead` — main.js po úspěšném odeslání jen ohlásí
+`poptavka-odeslana` na dokumentu a souhlas.js si to odchytí. Kdyby už
+property měla vlastní konverzi, přejmenovat konstantu `UDALOST_POPTAVKA`.
 
 Kdyby přibyla reklamní kategorie (Google Ads, remarketing), mění se
 `gtag('consent', ...)` ve `spustAnalytiku()`, přidá se přepínač do okna
@@ -113,10 +119,9 @@ nastavení a zvýší se `VERZE`, aby si web řekl o souhlas znovu.
 
 ## Co zbývá
 
-1. **Měřicí ID do `MERICI_ID`** na obou webech — viz výš.
-2. **Odklepnout texty v liště.** Napsal jsem návrh, ale je to právní text
+1. **Odklepnout texty v liště.** Napsal jsem návrh, ale je to právní text
    a měl by ho někdo schválit.
-3. **Spuštění na ostrých doménách** — checklist je v README každé větve
+2. **Spuštění na ostrých doménách** — checklist je v README každé větve
    (robots.txt, canonical, SPF/DMARC, přesměrování www).
 
 ## Poznámky k postupu
