@@ -1064,6 +1064,146 @@ strong { font-weight: 700; }
     font-weight: 700;
 }
 
+/* -------------------------------------------------------------- cookies -- */
+
+/* Lišta sedí dole přes celou šířku. Zavírá se jen rozhodnutím, ne klikem
+   vedle — souhlas musí být vědomý. */
+.souhlas {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    background: var(--barva-bila);
+    box-shadow: 0 -4px 24px rgb(0 0 0 / .16);
+}
+
+.souhlas[hidden] { display: none; }
+
+.souhlas__vnitrek {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    max-width: var(--sirka-obsahu);
+    margin-inline: auto;
+    padding: 20px 24px;
+}
+
+.souhlas__text {
+    margin: 0;
+    font-family: var(--pismo-text);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--barva-text);
+}
+
+.souhlas__tlacitka {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 auto;
+}
+
+/* Přijmout i odmítnout vypadají stejně — odmítnutí nesmí být schované. */
+.souhlas__tlacitko {
+    padding: 12px 26px;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--barva-zelena);
+    font-family: var(--pismo-tlacitko);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--barva-krem);
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.souhlas__tlacitko:hover,
+.souhlas__tlacitko:focus-visible { background: #096b00; }
+
+.souhlas__odkaz {
+    padding: 4px;
+    border: 0;
+    background: none;
+    font-family: var(--pismo-text);
+    font-size: 15px;
+    line-height: 1.4;
+    text-decoration: underline;
+    color: var(--barva-text);
+    cursor: pointer;
+}
+
+.souhlas-okno {
+    width: min(520px, calc(100vw - 32px));
+    max-width: none;
+    padding: 28px;
+    border: 0;
+    border-radius: var(--radius-male);
+    background: var(--barva-bila);
+    font-family: var(--pismo-text);
+    color: var(--barva-text);
+}
+
+.souhlas-okno::backdrop { background: rgb(0 0 0 / .5); }
+
+.souhlas-okno__nadpis {
+    margin: 0 0 20px;
+    font-family: var(--pismo-nadpis);
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--barva-text-tmava);
+}
+
+.souhlas-okno__polozka { margin-bottom: 20px; }
+
+.souhlas-okno__polozka label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.souhlas-okno__polozka input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--barva-zelena);
+}
+
+.souhlas-okno__polozka input:disabled { cursor: default; }
+
+.souhlas-okno__polozka p {
+    margin: 6px 0 0 26px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.souhlas-okno__poznamka {
+    margin: 0 0 22px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.souhlas-okno__tlacitka {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Odkaz v patičce, kterým se dá volba kdykoli změnit. */
+.paticka__cookies {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-decoration: underline;
+    color: inherit;
+    cursor: pointer;
+}
+
 /* --------------------------------------------------------- responzivně -- */
 
 @media (max-width: 1024px) {
@@ -1164,6 +1304,20 @@ strong { font-weight: 700; }
 }
 
 @media (max-width: 767px) {
+
+    /* Na mobilu se lišta skládá pod sebe a tlačítka jsou přes celou šířku. */
+    .souhlas__vnitrek {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding: 18px 20px;
+    }
+
+    .souhlas__tlacitka { flex-wrap: wrap; }
+
+    .souhlas__tlacitka .souhlas__tlacitko { flex: 1 1 auto; }
+
+    .souhlas__odkaz { flex: 1 0 100%; text-align: center; }
     :root { --sekce-y: 20px; --sekce-x: 5px; }
 
     .realizace { padding-inline: 15px; }
