@@ -114,7 +114,7 @@ try {
     $smtp = new Smtp($nastaveni['smtp']);
     $smtp->odesli([
         'od'            => $nastaveni['odesilatel'],
-        'odJmeno'       => $nastaveni['odesilatelJmeno'] ?? 'Web truhlářství Suchánek',
+        'odJmeno'       => $nastaveni['odesilatelJmeno'] ?? 'Web Chata Prášilka',
         'komu'          => $nastaveni['prijemce'],
         'odpovedetKomu' => $email,
         'predmet'       => 'Poptávka z webu chaty' . ($celeJmeno !== '' ? ' – ' . $celeJmeno : ''),
