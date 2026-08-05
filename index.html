@@ -22,7 +22,7 @@
 <!-- ?v= je proti cache: server neposílá Cache-Control, takže bez toho
      může prohlížeč držet staré CSS k novému JS. Při změně stylů nebo
      skriptu číslo zvýšit. -->
-<link rel="stylesheet" href="assets/css/style.css?v=2">
+<link rel="stylesheet" href="assets/css/style.css?v=3">
 
 <!-- Výchozí (skrytý) stav najíždějících bloků zapíná až tenhle řádek. Bez JS
      nebo s vypnutými animacemi tak zůstane obsah normálně viditelný. Pojistka
@@ -674,6 +674,7 @@
 <footer class="paticka pas pas--meruna">
     <div class="obsah">
         <p>© 2026 Všechna práva vyhrazena | Chata Prášilka | Rychnovek</p>
+        <p><button class="paticka__cookies" type="button" data-souhlas="nastaveni">Nastavení cookies</button></p>
     </div>
 </footer>
 
@@ -703,6 +704,59 @@
     </figure>
 </dialog>
 
-<script src="assets/js/main.js?v=2" defer></script>
+<!-- Lišta souhlasu. Skript ji ukáže jen tomu, kdo ještě nerozhodl — proto je
+     schovaná už v kódu a nikde nebliká. -->
+<div class="souhlas" id="cookie-lista" hidden role="region" aria-label="Souhlas s cookies">
+    <div class="souhlas__vnitrek">
+        <p class="souhlas__text">
+            Na webu používáme cookies. Nezbytné potřebujeme k tomu, aby web fungoval.
+            Analytické nám pomáhají zjistit, které stránky lidi zajímají — ty spustíme
+            jen s vaším souhlasem. Volbu můžete kdykoli změnit odkazem v patičce.
+        </p>
+        <div class="souhlas__tlacitka">
+            <button class="souhlas__tlacitko" type="button" data-souhlas="vse">Přijmout vše</button>
+            <button class="souhlas__tlacitko" type="button" data-souhlas="nic">Odmítnout vše</button>
+            <button class="souhlas__odkaz" type="button" data-souhlas="nastaveni">Nastavení</button>
+        </div>
+    </div>
+</div>
+
+<dialog class="souhlas-okno" id="cookie-nastaveni" aria-labelledby="cookie-okno-nadpis">
+    <h2 class="souhlas-okno__nadpis" id="cookie-okno-nadpis">Nastavení cookies</h2>
+
+    <div class="souhlas-okno__polozka">
+        <label>
+            <input type="checkbox" checked disabled>
+            <span><strong>Nezbytné</strong> — vždy zapnuté</span>
+        </label>
+        <p>Drží základní chod webu a pamatují si tuhle vaši volbu. Bez nich by web
+            nefungoval, proto se nedají vypnout. Ukládají se u vás v prohlížeči,
+            nikam se neodesílají.</p>
+    </div>
+
+    <div class="souhlas-okno__polozka">
+        <label>
+            <input type="checkbox" name="analytika">
+            <span><strong>Analytické</strong></span>
+        </label>
+        <p>Google Analytics. Měří návštěvnost — kolik lidí web navštíví a co si
+            prohlédnou. Data se ukládají u společnosti Google. Dokud nesouhlasíte,
+            web se s Googlem vůbec nespojí.</p>
+    </div>
+
+    <p class="souhlas-okno__poznamka">
+        Souhlas platí rok a můžete ho kdykoli změnit. Podrobnosti o zpracování
+        najdete v <a href="dokumenty/zasady-ochrany-osobnich-udaju.pdf" target="_blank" rel="noopener">zásadách
+        ochrany osobních údajů</a>.
+    </p>
+
+    <div class="souhlas-okno__tlacitka">
+        <button class="souhlas__tlacitko" type="button" data-souhlas="ulozit">Uložit volbu</button>
+        <button class="souhlas__odkaz" type="button" data-souhlas="zavrit">Zavřít</button>
+    </div>
+</dialog>
+
+<script src="assets/js/main.js?v=3" defer></script>
+<script src="assets/js/souhlas.js?v=1" defer></script>
 </body>
 </html>
