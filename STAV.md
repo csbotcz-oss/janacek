@@ -91,13 +91,32 @@ Nejsou v gitu a deploy je z rsyncu vylučuje, ověřeno. Jako odesílatel slouž
 ten samý webmailerový účet; e-mail zákazníka jde do `Reply-To`, takže se dá
 odpovídat rovnou.
 
+## Cookies a měření
+
+Oba weby mají lištu souhlasu (`assets/js/souhlas.js`, značkování na konci
+`index.html`, styly v sekci „cookies"). Kategorie jsou dvě: nezbytné a
+analytické. Přijmout i odmítnout vypadají stejně, nic není předzaškrtnuté,
+volba se pamatuje rok v `localStorage` a mění se odkazem v patičce.
+
+**Analytika se nespouští předem se zamítnutým souhlasem** — dokud návštěvník
+nesouhlasí, web se s Googlem vůbec nespojí. Po odvolání souhlasu se cookies
+Google smažou a stránka se načte znovu.
+
+Zbývá doplnit **měřicí ID** do konstanty `MERICI_ID` na začátku
+`assets/js/souhlas.js` (každý web zvlášť). Dokud je prázdná, nenačte se nic
+a zbytek funguje beze změny. Musí to být to samé ID, které běží na ostrých
+webech, jinak se nenaváže historie.
+
+Kdyby přibyla reklamní kategorie (Google Ads, remarketing), mění se
+`gtag('consent', ...)` ve `spustAnalytiku()`, přidá se přepínač do okna
+nastavení a zvýší se `VERZE`, aby si web řekl o souhlas znovu.
+
 ## Co zbývá
 
-1. **Google Analytics a cookie lišta.** Domluvené, ale nezačaté. GA se nesmí
-   spustit před souhlasem, takže lišta musí být první. Klient chce navázat na
-   stávající historii, takže se použije to samé měřicí ID, co běží na ostrých
-   webech.
-2. **Spuštění na ostrých doménách** — checklist je v README každé větve
+1. **Měřicí ID do `MERICI_ID`** na obou webech — viz výš.
+2. **Odklepnout texty v liště.** Napsal jsem návrh, ale je to právní text
+   a měl by ho někdo schválit.
+3. **Spuštění na ostrých doménách** — checklist je v README každé větve
    (robots.txt, canonical, SPF/DMARC, přesměrování www).
 
 ## Poznámky k postupu
