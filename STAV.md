@@ -12,12 +12,14 @@ Cíl je **vizuální shoda 1:1 s ostrými weby** (dohodnuto s klientem).
 | Repozitář | `git@github-janacek:csbotcz-oss/janacek.git` (deploy key, read+write) |
 | Bare repo | `/root/projects/janacek/.bare` |
 | Worktrees | `_main/`, `truhlarstvi-suchanek/`, `chata-prasilka/` |
-| Deploy | `/root/projects/janacek/deploy.sh <vetev> [--dry-run]` |
+| Deploy | `/root/projects/janacek/deploy.sh <vetev> [test\|ostry\|oba] [--dry-run]` |
 | Nástroje na měření | `/root/projects/janacek/nastroje/` (viz README tamtéž) |
 | Zálohy a podklady | `/root/backup/janacek/2026-07-30/` |
 
 Deploy zrcadlí větev do docrootu rsyncem s `--delete`; vyloučené jsou
-`.env`, `config.local.php`, `*.md`, `*.vzor`.
+`.env`, `config.local.php`, `robots.txt`, `*.md`, `*.vzor`. Testovací a ostré
+prostředí sdílí jednu větev — liší se jen tím, co dopíše deploy: `robots.txt`
+(test zakazuje indexaci) a `config.local.php`.
 
 ## Truhlářství Suchánek
 
@@ -121,8 +123,9 @@ nastavení a zvýší se `VERZE`, aby si web řekl o souhlas znovu.
 
 1. **Odklepnout texty v liště.** Napsal jsem návrh, ale je to právní text
    a měl by ho někdo schválit.
-2. **Spuštění na ostrých doménách** — checklist je v README každé větve
-   (robots.txt, canonical, SPF/DMARC, přesměrování www).
+2. **Spuštění na ostrých doménách** — postup krok za krokem je v
+   [SPUSTENI.md](SPUSTENI.md). Připravené je všechno kromě certifikátů
+   a přehození DNS, na což jsou potřeba už existující domény.
 
 ## Poznámky k postupu
 
