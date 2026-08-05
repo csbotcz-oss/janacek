@@ -71,15 +71,31 @@ Vědomé odchylky:
 - cookie lišta se nedělá, v patičce proto chybí „Nastavení cookies"
 - u odkazu na adresu chybí ikonka „otevře se v novém okně"
 
+## Odesílání formulářů
+
+Běží přes mailserver klienta: `mail.cstech.cz`, **port 25 se STARTTLS**.
+Port 465 nás z tohohle serveru odmítá (`554 Permission denied`) a 587 je
+zavřený — spojení je i tak šifrované.
+
+Přihlašovací účty a hesla jsou v `config.local.php` v docrootu každého webu.
+Nejsou v gitu a deploy je z rsyncu vylučuje, ověřeno. Jako odesílatel slouží
+ten samý webmailerový účet; e-mail zákazníka jde do `Reply-To`, takže se dá
+odpovídat rovnou.
+
 ## Co zbývá
 
-1. **SMTP na obou webech.** Formuláře jsou hotové včetně antispamu, ale
-   chybí přístupové údaje. Bez nich vracejí srozumitelnou hlášku s kontaktem.
-   Postup: `cp config.local.php.vzor <docroot>/config.local.php` a doplnit
-   host, port, uživatele, heslo. Odesílací adresa musí patřit k doméně,
-   jinak to spadne do spamu kvůli SPF.
-2. **Chata: mobil a tablet.** Zatím vůbec neprojeté.
-3. **Spuštění na ostrých doménách** — checklist je v README každé větve
+1. **Přepnout příjemce poptávek.** Teď obojí chodí na zkušební schránku
+   `matej.b@cstechnologies.cz`. Po odladění přepnout na `info@chata-prasilka.cz`
+   a `truhlarstvi.hesu@seznam.cz` — v obou `config.local.php` je u toho
+   poznámka.
+2. **Doplnit SPF pro `webmailer.cstech.cz`.** Doména má MX, ale ne SPF, takže
+   si příjemce nemá jak ověřit, že 82.208.14.50 smí odesílat. Stačí TXT
+   `v=spf1 ip4:82.208.14.50 -all`. Bez toho hrozí spam, hlavně u Seznamu.
+3. **Google Analytics a cookie lišta.** Domluvené, ale nezačaté. GA se nesmí
+   spustit před souhlasem, takže lišta musí být první. Klient chce navázat na
+   stávající historii, takže se použije to samé měřicí ID, co běží na ostrých
+   webech.
+4. **Spuštění na ostrých doménách** — checklist je v README každé větve
    (robots.txt, canonical, SPF/DMARC, přesměrování www).
 
 ## Poznámky k postupu
