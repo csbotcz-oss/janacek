@@ -10,9 +10,19 @@
 (function () {
     'use strict';
 
-    // Měřicí ID z Google Analytics (G-XXXXXXXXXX). Dokud je prázdné,
-    // nic se nenačítá a lišta se chová jako by analytika neexistovala.
-    var MERICI_ID = '';
+    // Měřicí ID z Google Analytics.
+    var MERICI_ID = 'G-126284WQB9';
+
+    // Měří se jen na ostré doméně. Na testovací se nic neodesílá, i kdyby
+    // návštěvník souhlasil — jinak by se do statistik zamíchaly naše zkoušky.
+    // Po přepnutí na ostrou doménu se měření rozjede samo, není co zapínat.
+    var OSTRA_DOMENA = 'chata-prasilka.cz';
+
+    // Název události pro odeslanou poptávku. `generate_lead` je to, co GA4
+    // doporučuje pro poptávkové formuláře a co jde označit za konverzi.
+    // Pokud už property nějakou konverzi má, přejmenovat tady, ať se řada
+    // nepřetrhne.
+    var UDALOST_POPTAVKA = 'generate_lead';
 
     var KLIC = 'cookies-souhlas';
     var VERZE = 1;                  // zvýšit, když přibude kategorie — vyžádá si souhlas znovu
@@ -51,8 +61,13 @@
 
     var bezi = false;
 
+    function meritSe() {
+        return MERICI_ID !== ''
+            && (location.hostname === OSTRA_DOMENA || location.hostname === 'www.' + OSTRA_DOMENA);
+    }
+
     function spustAnalytiku() {
-        if (bezi || !MERICI_ID) return;
+        if (bezi || !meritSe()) return;
         bezi = true;
 
         window.dataLayer = window.dataLayer || [];
@@ -68,6 +83,8 @@
         });
 
         gtag('js', new Date());
+
+        // `config` odešle zobrazení stránky sám, nic dalšího k tomu netřeba.
         gtag('config', MERICI_ID);
 
         var s = document.createElement('script');
@@ -128,6 +145,19 @@
             location.reload();
         }
     }
+
+    /* --------------------------------------------------------------- události -- */
+
+    function udalost(nazev, parametry) {
+        if (!bezi || typeof window.gtag !== 'function') return;
+        window.gtag('event', nazev, parametry || {});
+    }
+
+    // main.js po úspěšném odeslání formuláře ohlásí `poptavka-odeslana`.
+    // Když k měření není souhlas, `udalost` prostě nic neudělá.
+    document.addEventListener('poptavka-odeslana', function () {
+        udalost(UDALOST_POPTAVKA, { form_id: 'poptavka' });
+    });
 
     /* --------------------------------------------------------------- obsluha -- */
 
