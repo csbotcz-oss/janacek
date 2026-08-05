@@ -64,6 +64,8 @@ if (count($pokusy) >= 5) {
 $jmeno    = trim((string) ($_POST['jmeno'] ?? ''));
 $prijmeni = trim((string) ($_POST['prijmeni'] ?? ''));
 $telefon  = trim((string) ($_POST['telefon'] ?? ''));
+$termin   = trim((string) ($_POST['termin'] ?? ''));
+$osoby    = trim((string) ($_POST['osoby'] ?? ''));
 $email    = trim((string) ($_POST['email'] ?? ''));
 $text     = trim((string) ($_POST['zprava'] ?? ''));
 
@@ -80,7 +82,7 @@ if (($_POST['souhlas'] ?? '') === '') {
 }
 
 // Vložené hlavičky do jména/e-mailu = pokus o injection.
-foreach ([$jmeno, $prijmeni, $email, $telefon] as $hodnota) {
+foreach ([$jmeno, $prijmeni, $email, $telefon, $termin, $osoby] as $hodnota) {
     if (preg_match('/[\r\n]/', $hodnota)) {
         odpoved(false, 'Neplatný vstup.', 400);
     }
@@ -94,6 +96,16 @@ if (mb_strlen($text) > 5000) {
     odpoved(false, 'Zpráva je příliš dlouhá.', 422);
 }
 
+// Termín i počet osob jsou nepovinné, ale co přijde, musí dávat smysl.
+// Devět je kapacita chaty, výš to nedává smysl.
+if (mb_strlen($termin) > 100) {
+    odpoved(false, 'Termín je příliš dlouhý.', 422);
+}
+
+if ($osoby !== '' && (!ctype_digit($osoby) || (int) $osoby < 1 || (int) $osoby > 9)) {
+    odpoved(false, 'Počet osob zadejte prosím číslem od 1 do 9.', 422);
+}
+
 // -------------------------------------------------------------- odeslání --
 
 $celeJmeno = trim($jmeno . ' ' . $prijmeni);
@@ -102,7 +114,9 @@ $telo = "Nová poptávka z webu chata-prasilka.cz\n"
       . str_repeat('-', 46) . "\n\n"
       . 'Jméno:    ' . ($celeJmeno !== '' ? $celeJmeno : '(neuvedeno)') . "\n"
       . 'Telefon:  ' . $telefon . "\n"
-      . 'E-mail:   ' . $email . "\n\n"
+      . 'E-mail:   ' . $email . "\n"
+      . 'Termín:   ' . ($termin !== '' ? $termin : '(neuveden)') . "\n"
+      . 'Osob:     ' . ($osoby !== '' ? $osoby : '(neuvedeno)') . "\n\n"
       . "Zpráva:\n" . ($text !== '' ? $text : '(prázdná)') . "\n\n"
       . str_repeat('-', 46) . "\n"
       . 'Odesláno: ' . date('j. n. Y H:i:s') . "\n"

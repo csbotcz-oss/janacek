@@ -624,6 +624,17 @@
                             <input type="tel" id="telefon" name="telefon" autocomplete="tel">
                         </div>
 
+                        <div class="pole">
+                            <label for="termin">Požadovaný termín</label>
+                            <input type="text" id="termin" name="termin"
+                                   placeholder="např. 12.–19. 7. nebo srpen, flexibilně">
+                        </div>
+
+                        <div class="pole">
+                            <label for="osoby">Počet osob</label>
+                            <input type="number" id="osoby" name="osoby" min="1" max="9" inputmode="numeric">
+                        </div>
+
                         <div class="pole pole--cely">
                             <label for="zprava">Zpráva <span class="pole__povinne" aria-hidden="true">*</span></label>
                             <textarea id="zprava" name="zprava" required></textarea>
