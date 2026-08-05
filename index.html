@@ -21,7 +21,10 @@
 <link rel="preload" href="assets/fonts/ubuntu-700-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/open-sans-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/montserrat-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">
+<!-- ?v= je proti cache: server neposílá Cache-Control, takže bez toho
+     může prohlížeč držet staré CSS k novému JS. Při změně stylů nebo
+     skriptu číslo zvýšit. -->
+<link rel="stylesheet" href="assets/css/style.css?v=1">
 
 <script type="application/ld+json">
 {
@@ -576,7 +579,7 @@
     </div>
 </dialog>
 
-<script src="assets/js/main.js" defer></script>
-<script src="assets/js/souhlas.js" defer></script>
+<script src="assets/js/main.js?v=1" defer></script>
+<script src="assets/js/souhlas.js?v=1" defer></script>
 </body>
 </html>

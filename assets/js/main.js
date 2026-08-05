@@ -386,7 +386,11 @@
                 .then(function (r) { return r.json().catch(function () { return { ok: false, zprava: 'Server vrátil neočekávanou odpověď.' }; }); })
                 .then(function (data) {
                     ukazHlasku(data.zprava || (data.ok ? 'Odesláno.' : 'Zprávu se nepodařilo odeslat.'), !!data.ok);
-                    if (data.ok) formular.reset();
+                    if (data.ok) {
+                        formular.reset();
+                        // Měření si to odchytí samo, pokud k němu je souhlas.
+                        document.dispatchEvent(new CustomEvent('poptavka-odeslana'));
+                    }
                 })
                 .catch(function () {
                     ukazHlasku('Zprávu se nepodařilo odeslat. Zkuste to prosím znovu, nebo nám zavolejte.', false);
