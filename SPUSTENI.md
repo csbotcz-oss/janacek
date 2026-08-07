@@ -1,5 +1,9 @@
 # Spuštění na ostrých doménách
 
+> **Spuštěno 7. 8. 2026.** Oba weby běží na ostrých doménách, certifikáty
+> i přesměrování jsou nastavené. Níž zůstává postup a hlavně to, co se muselo
+> udělat ručně mimo vps-centrum — viz „Ruční zásahy do nginxu".
+
 Postup pro přehození `chata-prasilka.cz` a `truhlarstvi-suchanek.cz` na tenhle
 server. Weby už tu běží na testovacích subdoménách — nic se nikam nestěhuje,
 jen se přidají ostré domény a přehodí DNS.
@@ -126,3 +130,32 @@ Nepovinné: dnešní web truhlářství má zásady na
 `/wp-content/uploads/2026/01/zasady-ochrany-osobnich-udaju.pdf`. Kdyby na tu
 adresu někdo odkazoval, dá se tam dát přesměrování na `/dokumenty/`. Oba weby
 jsou jinak jednostránkové, takže se jiné adresy ztratit nemají.
+
+## Ruční zásahy do nginxu
+
+Nové vps-centrum tyhle věci nenabízí, takže jsou dopsané přímo do
+`/etc/nginx/sites-available/domains_conf/<doména>.conf`. **Panel je při
+regeneraci konfigurace může přepsat** — kdyby po zásahu ve vps-centeru přestalo
+fungovat HTTPS nebo přesměrování, hledat nejdřív tady. Zálohy původních
+souborů jsou v `/root/projects/janacek/zaloha-nginx-*.conf`.
+
+Doplněno:
+
+1. **Cesta k certifikátu** — panel nechával `ssl-bundle.pem`, tedy obecný
+   serverový certifikát. Weby kvůli tomu hlásily chybu; u chaty se kvůli HSTS
+   nedala odkliknout. Nastaveno na `/etc/letsencrypt/live/<doména>/`.
+
+2. **Kanonická adresa** — všechno na `https://www.<doména>/`. Apex se
+   přesměrovává rovnou na cílovou adresu, aby to byl jeden skok:
+
+   ```
+   if ($host = <doména>) { return 301 https://www.<doména>$request_uri; }
+   if ($scheme != https)  { return 308 https://$host$request_uri; }
+   ```
+
+3. **HSTS u chaty** — původní web ho posílal s dvouletou platností. Kdybychom
+   přestali, prohlížeče by HTTPS stejně dva roky vynucovaly a jen bychom
+   o tu ochranu přišli. Truhlářství ho nemá, protože ho nemělo ani předtím.
+
+Certifikáty jsou vystavené přes webové ověření (`--webroot`), takže se
+obnovují samy. Sdílený webroot je `/www/hosting/vas-server.cz/acme`.
