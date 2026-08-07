@@ -10,7 +10,7 @@ jen se přidají ostré domény a přehodí DNS.
 |---|---|
 | IP tohoto serveru | **37.235.102.28** |
 | Kanonická adresa chaty | `https://www.chata-prasilka.cz/` (bez www → 301 na www) |
-| Kanonická adresa truhlářství | `https://truhlarstvi-suchanek.cz/` (www → 301 bez www) |
+| Kanonická adresa truhlářství | `https://www.truhlarstvi-suchanek.cz/` (bez www → 301 na www) |
 | Pošta chaty | Seznam Email Profi, na A záznamu webu nezávislá |
 | Pošta truhlářství | `mail.gransy.com` přes CNAME, na A záznamu webu nezávislá |
 
@@ -83,8 +83,8 @@ Ostrý vhost jde vyzkoušet, aniž by se na DNS sáhlo — stačí adresu podstr
 ```
 curl -sI --resolve www.chata-prasilka.cz:443:37.235.102.28 \
      https://www.chata-prasilka.cz/
-curl -sI --resolve truhlarstvi-suchanek.cz:443:37.235.102.28 \
-     https://truhlarstvi-suchanek.cz/
+curl -sI --resolve www.truhlarstvi-suchanek.cz:443:37.235.102.28 \
+     https://www.truhlarstvi-suchanek.cz/
 ```
 
 Musí odpovědět 200 s platným certifikátem. Když tohle projde, přepnutí DNS už
@@ -109,7 +109,7 @@ certbot certonly --webroot -w <docroot> --cert-name chata-prasilka.cz \
 ### 7. Ověřit
 
 - [ ] HTTPS na obou doménách, platný certifikát
-- [ ] Přesměrování: chata bez www → www, truhlářství www → bez www
+- [ ] Přesměrování: obojí bez www → www
 - [ ] `robots.txt` povoluje indexaci
 - [ ] Formulář odešle a poptávka dorazí
 - [ ] Cookie lišta naskočí a dá se odmítnout
