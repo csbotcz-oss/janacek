@@ -12,18 +12,23 @@ Cíl je **vizuální shoda 1:1 s ostrými weby** (dohodnuto s klientem).
 | Repozitář | `git@github-janacek:csbotcz-oss/janacek.git` (deploy key, read+write) |
 | Bare repo | `/root/projects/janacek/.bare` |
 | Worktrees | `_main/`, `truhlarstvi-suchanek/`, `chata-prasilka/` |
+| Ostré weby | https://www.chata-prasilka.cz/ a https://www.truhlarstvi-suchanek.cz/ |
 | Deploy | `/root/projects/janacek/deploy.sh <vetev> [test\|ostry\|oba] [--dry-run]` |
 | Nástroje na měření | `/root/projects/janacek/nastroje/` (viz README tamtéž) |
 | Zálohy a podklady | `/root/backup/janacek/2026-07-30/` |
 
 Deploy zrcadlí větev do docrootu rsyncem s `--delete`; vyloučené jsou
-`.env`, `config.local.php`, `robots.txt`, `*.md`, `*.vzor`. Testovací a ostré
-prostředí sdílí jednu větev — liší se jen tím, co dopíše deploy: `robots.txt`
-(test zakazuje indexaci) a `config.local.php`.
+`.env`, `config.local.php`, `robots.txt`, `sitemap.xml`, `*.md`, `*.vzor`.
+`robots.txt` a `sitemap.xml` dopisuje deploy sám podle kanonické adresy.
+
+**Testovací subdomény na cstest.cz byly 7. 8. 2026 zrušené.** Deploy proto
+nasazuje rovnou na ostrou doménu. Cíl `test` ve skriptu zůstal — kdyby se
+náhledové prostředí někdy hodilo zpátky, stačí vytvořit docroot. Záloha
+posledního stavu je v `/root/backup/janacek/cstest-pred-zrusenim-2026-08-07/`.
 
 ## Truhlářství Suchánek
 
-https://truhlarstvi-suchanek.cstest.cz/ — původně WordPress + Elementor.
+https://www.truhlarstvi-suchanek.cz/ — původně WordPress + Elementor.
 
 **Stav: hotovo na desktopu, mobilu i tabletu.** Odladěno přes měření
 vypočítaných stylů na 1440 / 768 / 375 px.
@@ -42,7 +47,7 @@ Vědomé odchylky od originálu (na přání klienta):
 
 ## Chata Prášilka
 
-https://chata-prasilka.cstest.cz/ — původně Solidpixels, zdrojáky neexistují.
+https://www.chata-prasilka.cz/ — původně Solidpixels, zdrojáky neexistují.
 
 **Stav: hotovo na desktopu, tabletu i mobilu, ověřeno proti snímkům
 ostrého webu.** Pásy i vlny sedí na 1440, 800 i 500 px do 2 px.

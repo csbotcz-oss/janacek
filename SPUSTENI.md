@@ -68,8 +68,8 @@ přepnutí; po něm se vystaví znovu přes web (krok 6) a obnovování se rozje
 ```
 
 Skript si docroot najde sám; kdyby ho vps-center pojmenoval nečekaně, dá se
-přebít proměnnou `DOCROOT_OSTRY`. Testovací weby zůstávají běžet — cíl `oba`
-nasadí obojí najednou.
+přebít proměnnou `DOCROOT_OSTRY`. Testovací subdomény byly po spuštění
+zrušené, `ostry` je proto výchozí cíl.
 
 `robots.txt` dopisuje deploy podle cíle: test zakazuje indexaci, ostrý povoluje.
 V gitu není právě proto, aby se to nemohlo splést.
