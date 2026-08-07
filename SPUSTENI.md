@@ -153,9 +153,13 @@ Doplněno:
    if ($scheme != https)  { return 308 https://$host$request_uri; }
    ```
 
-3. **HSTS u chaty** — původní web ho posílal s dvouletou platností. Kdybychom
-   přestali, prohlížeče by HTTPS stejně dva roky vynucovaly a jen bychom
-   o tu ochranu přišli. Truhlářství ho nemá, protože ho nemělo ani předtím.
+3. **HSTS na obou webech** — `max-age=63072000; includeSubDomains`, tedy dva
+   roky. U chaty ho posílal i původní web; u truhlářství je to novinka na přání
+   klienta. Bez `preload`, ten by znamenal zápis do seznamu v prohlížečích
+   a nešel by snadno vzít zpět.
+
+   Praktický dopad: **žádná subdoména těchto domén nesmí běžet bez HTTPS.**
+   Pošty se to netýká, HSTS platí jen pro prohlížeče.
 
 Certifikáty jsou vystavené přes webové ověření (`--webroot`), takže se
 obnovují samy. Sdílený webroot je `/www/hosting/vas-server.cz/acme`.
